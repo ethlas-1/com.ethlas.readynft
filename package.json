@@ -1,0 +1,25 @@
+{
+  "name": "com.ews.readynft",
+  "version": "1.0.0",
+  "displayName": "ReadyNFT",
+  "description": "ReadyNFT is your one stop shop for fetching NFTs from the blockchain and displaying them in your app.",
+  "unity": "2019.1",
+  "dependencies": {},
+  "keywords": [
+    "library",
+    "utility",
+    "nft",
+    "sprites",
+    "images",
+    "fetching",
+    "blockchain",
+    "ethereum",
+    "erc721",
+    "erc1155"
+  ],
+  "author": {
+    "name": "Ethlas Studios Pte. Ltd.",
+    "email": "hello@ethlas.com",
+    "url": "https://ethlas.com"
+  }
+}
