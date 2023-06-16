@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Text;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -37,13 +38,13 @@ public class ReadyNFT
 
         if (string.IsNullOrEmpty(apiKey))
         {
-            Debug.Log("API key not set!");
+            Debug.Log("FetchSpritesAsync: API key not set!");
             return new List<ReadyNFTSpriteObject>();
         }
 
         if (string.IsNullOrEmpty(gameId))
         {
-            Debug.Log("Game ID not set!");
+            Debug.Log("FetchSpritesAsync: Game ID not set!");
             return new List<ReadyNFTSpriteObject>();
         }
 
@@ -62,16 +63,72 @@ public class ReadyNFT
                 }
                 else
                 {
-                    Debug.Log("Request failed: " + response.StatusCode);
+                    Debug.Log("FetchSpritesAsync Request failed: " + response.StatusCode);
                 }
             }
             catch (Exception e)
             {
-                Debug.Log("Request failed: " + e.Message);
+                Debug.Log("FetchSpritesAsync Request failed: " + e.Message);
             }
         }
 
         return new List<ReadyNFTSpriteObject>(); // return empty list if request fails
+    }
+
+    public async Task<List<ReadyNFTOwnedNFTObject>> FetchOwnedNFTsAsync(string email)
+    {
+        if (string.IsNullOrEmpty(apiKey))
+        {
+            Debug.Log("FetchOwnedNFTsAsync: API key not set!");
+            return new List<ReadyNFTOwnedNFTObject>();
+        }
+
+        if (string.IsNullOrEmpty(gameId))
+        {
+            Debug.Log("FetchOwnedNFTsAsync: Game ID not set!");
+            return new List<ReadyNFTOwnedNFTObject>();
+        }
+
+        if (string.IsNullOrEmpty(email))
+        {
+            Debug.Log("FetchOwnedNFTsAsync: Email not set!");
+            return new List<ReadyNFTOwnedNFTObject>();
+        }
+
+        string url = API_ENDPOINTS_ROOT_URL + "/readyNFT/fetchOnChainNFTsFromEmail";
+        using (HttpClient client = new HttpClient())
+        {
+            try
+            {
+                var requestData = new
+                {
+                    email,
+                    gameId
+                };
+                string requestDataJson = JsonConvert.SerializeObject(requestData);
+                HttpContent content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await client.PostAsync(url, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseString = await response.Content.ReadAsStringAsync();
+                    FetchOwnedNFTsResponse result = JsonConvert.DeserializeObject<FetchOwnedNFTsResponse>(responseString);
+                    Debug.Log("result.data.nfts: " + result.data.nfts);
+                    return result.data.nfts;
+                }
+                else
+                {
+                    Debug.Log("FetchOwnedNFTsAsync: Request failed: " + response.StatusCode);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log("FetchOwnedNFTsAsync: Request failed: " + e.Message);
+            }
+        }
+
+        return new List<ReadyNFTOwnedNFTObject>(); // return empty list if request fails
     }
 
 
