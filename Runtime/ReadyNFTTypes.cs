@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System;
 
 
 // sprites start
+[Serializable]
 public class ReadyNFTSpriteObject
 {
     public string gameId { get; set; }
@@ -25,6 +27,7 @@ public class FetchSpritesData
 // sprites end
 
 // ownedNFTs start
+[Serializable]
 public class ReadyNFTOwnedNFTObject
 {
     public string contractAddress { get; set; }
