@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Text;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -13,7 +13,7 @@ public class ReadyNFT
 {
     private string apiKey;
     private string gameId;
-    private string API_ENDPOINTS_ROOT_URL = "http://localhost:4000/dev";
+    private string API_ENDPOINTS_ROOT_URL = "https://3caea960hb.execute-api.ap-southeast-1.amazonaws.com/prod";
 
     // Initialization method to store the API key
     public void Init(string _apiKey, string _gameId)

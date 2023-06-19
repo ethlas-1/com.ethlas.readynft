@@ -5,6 +5,9 @@ using System.Collections.Generic;
 public class ReadyNFTSpriteObject
 {
     public string gameId { get; set; }
+    public string nftId { get; set; }
+    public string nftName { get; set; }
+    public string contract { get; set; }
     public Dictionary<string, string> images { get; set; }
     public Dictionary<string, int> stats { get; set; }
 }
