@@ -12,6 +12,7 @@ using UnityEngine.Networking;
 
 public class ReadyNFTHelpers
 {
+    public string SPRITE_METADATA_JSON = "sprite_metadata.json";
     public string GetReadyNFTImageDirectory()
     {
         string path = Application.persistentDataPath + "/ReadyNFT/Images/";
@@ -58,6 +59,13 @@ public class ReadyNFTHelpers
 
     public async Task DownloadImageAsync(string imageUrl, string savePath)
     {
+        // Check if file exists
+        if (File.Exists(savePath))
+        {
+            Debug.Log($"Image already exists: {savePath}");
+            return;
+        }
+
         using (UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(imageUrl))
         {
             // Send the request and wait for a response
