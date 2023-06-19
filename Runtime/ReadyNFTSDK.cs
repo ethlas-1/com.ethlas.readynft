@@ -48,12 +48,18 @@ public class ReadyNFT
             return new List<ReadyNFTSpriteObject>();
         }
 
-        string url = API_ENDPOINTS_ROOT_URL + "/readyNFT/fetchSprites?gameId=" + gameId;
+        string url = API_ENDPOINTS_ROOT_URL + "/readyNFT/fetchSprites";
         using (HttpClient client = new HttpClient())
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync(url);
+                var requestData = new {
+                    gameId
+                };
+                string requestDataJson = JsonConvert.SerializeObject(requestData);
+                HttpContent content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await client.PostAsync(url, content);
 
                 if (response.IsSuccessStatusCode)
                 {

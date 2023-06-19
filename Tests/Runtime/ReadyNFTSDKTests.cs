@@ -55,7 +55,7 @@ public class ReadyNFTTests
     {
         // Arrange
         ReadyNFT readyNFT = new ReadyNFT();
-        readyNFT.Init("apiKey", "ec455cff-cc34-4463-a067-225e46c17d6f");
+        readyNFT.Init("apiKey", "8f85c1eb-d3e9-4cd7-b8ed-640abab2770c");
 
         // Act
         List<ReadyNFTSpriteObject> result = await readyNFT.FetchSpritesAsync();
@@ -113,7 +113,7 @@ public class ReadyNFTTests
     {
         // Arrange
         ReadyNFT readyNFT = new ReadyNFT();
-        readyNFT.Init("apiKey", "ec455cff-cc34-4463-a067-225e46c17d6f");
+        readyNFT.Init("apiKey", "8f85c1eb-d3e9-4cd7-b8ed-640abab2770c");
 
         // Act
         List<ReadyNFTOwnedNFTObject> result = await readyNFT.FetchOwnedNFTsAsync("email");
