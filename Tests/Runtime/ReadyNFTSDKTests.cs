@@ -55,6 +55,7 @@ public class ReadyNFTTests
     {
         // Arrange
         ReadyNFT readyNFT = new ReadyNFT();
+        ReadyNFTHelpers RNFTHelpers = new ReadyNFTHelpers();
         readyNFT.Init("apiKey", "8f85c1eb-d3e9-4cd7-b8ed-640abab2770c");
 
         // Act
@@ -62,6 +63,9 @@ public class ReadyNFTTests
 
         // Assert
         Assert.IsTrue(result.Count > 0);
+
+        // save the sprites onto the device
+        await RNFTHelpers.DownloadSpriteImagesAsync(result);
     }
 
     [Test]

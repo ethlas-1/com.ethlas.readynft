@@ -15,6 +15,18 @@ public class ReadyNFT
     private string gameId;
     private string API_ENDPOINTS_ROOT_URL = "https://3caea960hb.execute-api.ap-southeast-1.amazonaws.com/prod";
 
+    // Get the API key
+    public string GetApiKey()
+    {
+        return apiKey;
+    }
+
+    // Get the Game ID
+    public string GetGameId()
+    {
+        return gameId;
+    }
+
     // Initialization method to store the API key
     public void Init(string _apiKey, string _gameId)
     {
@@ -53,7 +65,8 @@ public class ReadyNFT
         {
             try
             {
-                var requestData = new {
+                var requestData = new
+                {
                     gameId
                 };
                 string requestDataJson = JsonConvert.SerializeObject(requestData);
@@ -135,18 +148,5 @@ public class ReadyNFT
         }
 
         return new List<ReadyNFTOwnedNFTObject>(); // return empty list if request fails
-    }
-
-
-    // Get the API key
-    public string GetApiKey()
-    {
-        return apiKey;
-    }
-
-    // Get the Game ID
-    public string GetGameId()
-    {
-        return gameId;
     }
 }
