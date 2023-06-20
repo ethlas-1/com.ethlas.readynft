@@ -26,7 +26,7 @@ public class FetchSpritesData
 }
 // sprites end
 
-// ownedNFTs start
+// owned NFTs start
 [Serializable]
 public class ReadyNFTOwnedNFTObject
 {
@@ -47,3 +47,22 @@ public class FetchOwnedNFTsData
 {
     public List<ReadyNFTOwnedNFTObject> nfts { get; set; }
 }
+// owned NFTs end
+
+// download progress report
+[Serializable]
+public class ReadyNFTDownloadReport
+{
+    public float percent { get; set; }
+    public int total { get; set; }
+    public int current { get; set; }
+
+    public ReadyNFTDownloadReport(float percent, int total, int current)
+    {
+        this.percent = percent;
+        this.total = total;
+        this.current = current;
+    }
+}
+// download progress report end
+

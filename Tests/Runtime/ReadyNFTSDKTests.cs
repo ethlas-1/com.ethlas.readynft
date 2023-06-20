@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -65,7 +66,12 @@ public class ReadyNFTTests
         Assert.IsTrue(result.Count > 0);
 
         // save the sprites onto the device
-        await RNFTHelpers.DownloadSpriteImagesAsync(result);
+        Progress<ReadyNFTDownloadReport> reporter = new Progress<ReadyNFTDownloadReport>(report =>
+        {
+            Debug.Log("Files downloaded: " + report.current + "/" + report.total + " (" + report.percent + "%)");
+        });
+
+        await RNFTHelpers.DownloadSpriteImagesAsync(result, reporter);
     }
 
     [Test]

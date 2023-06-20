@@ -36,11 +36,21 @@ public class ReadyNFTHelpers
     }
 
     // overloading: the nature of the function changes based on the parameters passed
-    public async Task DownloadSpriteImagesAsync(List<ReadyNFTSpriteObject> sprites)
+    public async Task DownloadSpriteImagesAsync(List<ReadyNFTSpriteObject> sprites, IProgress<ReadyNFTDownloadReport> progress = null)
     {
+        int total = sprites.Count;
+        int current = 0;
         foreach (ReadyNFTSpriteObject sprite in sprites)
-        {
+        { 
             await DownloadSpriteImagesAsync(sprite);
+            current++;
+            // no decimal places in percentage
+            float percent = (float)current / (float)total * 100f;
+            if (progress != null)
+            {
+                ReadyNFTDownloadReport report = new ReadyNFTDownloadReport(percent, total, current);
+                progress.Report(report);
+            }
         }
     }
 
