@@ -82,12 +82,15 @@ public class ReadyNFT
                 }
                 else
                 {
-                    Debug.Log("FetchSpritesAsync Request failed: " + response.StatusCode);
+                    Debug.Log("FetchSpritesAsync Request failed - not succcessful: " + response.StatusCode);
+                    Debug.Log(response);
                 }
             }
             catch (Exception e)
             {
                 Debug.Log("FetchSpritesAsync Request failed: " + e.Message);
+                Debug.Log(e);
+
             }
         }
 
