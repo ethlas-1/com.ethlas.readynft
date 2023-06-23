@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 
-
 public class ReadyNFT
 {
     private string apiKey;
@@ -65,10 +64,7 @@ public class ReadyNFT
         {
             try
             {
-                var requestData = new
-                {
-                    gameId
-                };
+                FetchSpritesRequestData requestData = new FetchSpritesRequestData(gameId);
                 string requestDataJson = JsonConvert.SerializeObject(requestData);
                 HttpContent content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
 
@@ -122,11 +118,7 @@ public class ReadyNFT
         {
             try
             {
-                var requestData = new
-                {
-                    email,
-                    gameId
-                };
+                FetchOwnedNFTsRequestData requestData = new FetchOwnedNFTsRequestData(gameId, email);
                 string requestDataJson = JsonConvert.SerializeObject(requestData);
                 HttpContent content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
 
