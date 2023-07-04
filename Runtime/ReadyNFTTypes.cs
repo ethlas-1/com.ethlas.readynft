@@ -4,6 +4,56 @@ using UnityEngine.Scripting;
 using UnityEngine;
 using Newtonsoft.Json;
 
+[Preserve]
+[Serializable]
+public class ReadyNFTMetaData
+{
+    [Preserve]
+    [JsonProperty("country")]
+    public string country { get; set; } = "default_country";
+
+    [Preserve]
+    [JsonProperty("deviceId")]
+    public string deviceId { get; set; } = "default_deviceId";
+
+    [Preserve]
+    [JsonProperty("deviceBrand")]
+    public string deviceBrand { get; set; } = "default_deviceBrand";
+
+    [Preserve]
+    [JsonProperty("deviceManufacturer")]
+    public string deviceManufacturer { get; set; } = "default_deviceManufacturer";
+
+    [Preserve]
+    [JsonProperty("deviceModel")]
+    public string deviceModel { get; set; } = "default_deviceModel";
+
+    [Preserve]
+    [JsonProperty("osName")]
+    public string osName { get; set; } = "default_osName";
+
+    [Preserve]
+    [JsonProperty("osVersion")]
+    public string osVersion { get; set; } = "default_osVersion";
+
+    public ReadyNFTMetaData()
+    {
+        // Default constructor
+
+    }
+
+    public ReadyNFTMetaData(string _country, string _deviceId, string _deviceBrand, string _deviceManufacturer, string _deviceModel, string _osName, string _osVersion)
+    {
+        country = _country;
+        deviceId = _deviceId;
+        deviceBrand = _deviceBrand;
+        deviceManufacturer = _deviceManufacturer;
+        deviceModel = _deviceModel;
+        osName = _osName;
+        osVersion = _osVersion;
+    }
+}
+
 // sprites start
 [Preserve]
 [Serializable]
@@ -45,7 +95,7 @@ public class ReadyNFTSpriteObject
 
 [Preserve]
 [Serializable]
-public class FetchSpritesRequestData
+public class FetchSpritesRequestData: ReadyNFTMetaData
 {
     [Preserve]
     [JsonProperty("gameId")]
@@ -59,6 +109,17 @@ public class FetchSpritesRequestData
     public FetchSpritesRequestData(string _gameId)
     {
         gameId = _gameId;
+    }
+
+    public FetchSpritesRequestData(string _gameId, ReadyNFTMetaData _readyNFTMetaData) {
+        gameId = _gameId;
+        country = _readyNFTMetaData.country;
+        deviceId = _readyNFTMetaData.deviceId;
+        deviceBrand = _readyNFTMetaData.deviceBrand;
+        deviceManufacturer = _readyNFTMetaData.deviceManufacturer;
+        deviceModel = _readyNFTMetaData.deviceModel;
+        osName = _readyNFTMetaData.osName;
+        osVersion = _readyNFTMetaData.osVersion;
     }
 }
 
@@ -82,7 +143,7 @@ public class FetchSpritesResponse
 
 [Preserve]
 [Serializable]
-public class FetchSpritesData
+public class FetchSpritesData : ReadyNFTMetaData
 {
     [Preserve]
     [JsonProperty("sprites")]
@@ -123,7 +184,7 @@ public class ReadyNFTOwnedNFTObject
 
 [Preserve]
 [Serializable]
-public class FetchOwnedNFTsRequestData
+public class FetchOwnedNFTsRequestData: ReadyNFTMetaData
 {
     [Preserve]
     [JsonProperty("gameId")]
@@ -142,6 +203,18 @@ public class FetchOwnedNFTsRequestData
     {
         gameId = _gameId;
         email = _email;
+    }
+
+    public FetchOwnedNFTsRequestData(string _gameId, string _email, ReadyNFTMetaData _readyNFTMetaData) {
+        gameId = _gameId;
+        email = _email;
+        country = _readyNFTMetaData.country;
+        deviceId = _readyNFTMetaData.deviceId;
+        deviceBrand = _readyNFTMetaData.deviceBrand;
+        deviceManufacturer = _readyNFTMetaData.deviceManufacturer;
+        deviceModel = _readyNFTMetaData.deviceModel;
+        osName = _readyNFTMetaData.osName;
+        osVersion = _readyNFTMetaData.osVersion;
     }
 }
 

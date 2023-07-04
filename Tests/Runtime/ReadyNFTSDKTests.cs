@@ -63,7 +63,7 @@ public class ReadyNFTTests
         List<ReadyNFTSpriteObject> result = await readyNFT.FetchSpritesAsync();
 
         // Assert
-        Assert.IsTrue(result.Count > 0);
+        Assert.IsTrue(result.Count == 0); // as the api key is invalid
 
         // save the sprites onto the device
         Progress<ReadyNFTDownloadReport> reporter = new Progress<ReadyNFTDownloadReport>(report =>

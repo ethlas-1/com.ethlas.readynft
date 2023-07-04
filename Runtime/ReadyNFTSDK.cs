@@ -13,6 +13,10 @@ public class ReadyNFT
     private string apiKey;
     private string gameId;
     private string API_ENDPOINTS_ROOT_URL = "https://3caea960hb.execute-api.ap-southeast-1.amazonaws.com/prod";
+    private string API_READY_NFT_ROUTE = "/readyNFT";
+    private string API_FETCH_SPRITES_ROUTE = "/v1/fetchSprites";
+    private string API_FETCH_OWNED_NFTS_ROUTE = "/v1/fetchOnChainNFTsFromEmail";
+
 
     // Get the API key
     public string GetApiKey()
@@ -43,7 +47,6 @@ public class ReadyNFT
         gameId = _gameId;
     }
 
-
     public async Task<List<ReadyNFTSpriteObject>> FetchSpritesAsync()
     {
 
@@ -59,14 +62,22 @@ public class ReadyNFT
             return new List<ReadyNFTSpriteObject>();
         }
 
-        string url = API_ENDPOINTS_ROOT_URL + "/readyNFT/fetchSprites";
+        string url = API_ENDPOINTS_ROOT_URL + API_READY_NFT_ROUTE + API_FETCH_SPRITES_ROUTE;
+
+        // fetch the metadata
+        ReadyNFTMetaDataHelpers metadataHelpers = new ReadyNFTMetaDataHelpers();
+        ReadyNFTMetaData metadata = metadataHelpers.GetMetaData();
+
         using (HttpClient client = new HttpClient())
         {
             try
             {
-                FetchSpritesRequestData requestData = new FetchSpritesRequestData(gameId);
+                FetchSpritesRequestData requestData = new FetchSpritesRequestData(gameId, metadata);
                 string requestDataJson = JsonConvert.SerializeObject(requestData);
                 HttpContent content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+
+                // Add the header
+                client.DefaultRequestHeaders.Add("x-api-key", apiKey);
 
                 HttpResponseMessage response = await client.PostAsync(url, content);
 
@@ -113,14 +124,22 @@ public class ReadyNFT
             return new List<ReadyNFTOwnedNFTObject>();
         }
 
-        string url = API_ENDPOINTS_ROOT_URL + "/readyNFT/fetchOnChainNFTsFromEmail";
+        string url = API_ENDPOINTS_ROOT_URL + API_READY_NFT_ROUTE + API_FETCH_OWNED_NFTS_ROUTE;
+
+        // fetch the metadata
+        ReadyNFTMetaDataHelpers metadataHelpers = new ReadyNFTMetaDataHelpers();
+        ReadyNFTMetaData metadata = metadataHelpers.GetMetaData();
+
         using (HttpClient client = new HttpClient())
         {
             try
             {
-                FetchOwnedNFTsRequestData requestData = new FetchOwnedNFTsRequestData(gameId, email);
+                FetchOwnedNFTsRequestData requestData = new FetchOwnedNFTsRequestData(gameId, email, metadata);
                 string requestDataJson = JsonConvert.SerializeObject(requestData);
                 HttpContent content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+
+                // Add the header
+                client.DefaultRequestHeaders.Add("x-api-key", apiKey);
 
                 HttpResponseMessage response = await client.PostAsync(url, content);
 
@@ -128,7 +147,6 @@ public class ReadyNFT
                 {
                     string responseString = await response.Content.ReadAsStringAsync();
                     FetchOwnedNFTsResponse result = JsonConvert.DeserializeObject<FetchOwnedNFTsResponse>(responseString);
-                    Debug.Log("result.data.nfts: " + result.data.nfts);
                     return result.data.nfts;
                 }
                 else
