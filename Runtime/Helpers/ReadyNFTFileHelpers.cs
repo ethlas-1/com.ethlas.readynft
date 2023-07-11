@@ -182,6 +182,16 @@ public class ReadyNFTFileHelpers
             Debug.Log($"Image downloaded and saved to: {savePath}");
         }
     }
+    
+    public void DeleteSpritesMetaData()
+    {
+        string path = GetReadyNFTMetadataDirectory() + SPRITE_METADATA_JSON;
+        if (Directory.Exists(path))
+        {
+            Directory.Delete(path, true);
+            Debug.Log("Directory deleted: " + path);
+        }
+    }
 
     public void DeleteAllImages()
     {
