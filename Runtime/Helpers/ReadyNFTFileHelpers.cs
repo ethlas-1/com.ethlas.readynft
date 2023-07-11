@@ -39,31 +39,41 @@ public class ReadyNFTFileHelpers
     public async Task CreateSpriteMetadataFileAsync(List<ReadyNFTSpriteObject> sprites)
     {
         string path = GetReadyNFTMetadataDirectory() + SPRITE_METADATA_JSON;
-        Dictionary<string, string> dict = new Dictionary<string, string>();
+        Dictionary<string, int> dict = new Dictionary<string, int>();
+
+        // check if the key already exists, if it does, just update it
+        // else add in a new key
         foreach (ReadyNFTSpriteObject sprite in sprites)
         {
-            dict.Add(sprite.contract, sprite.version);
+            if (dict.ContainsKey(sprite.contract))
+            {
+                dict[sprite.contract] = sprite.version;
+            }
+            else
+            {
+                dict.Add(sprite.contract, sprite.version);
+            }
         }
         string json = JsonConvert.SerializeObject(dict);
         await File.WriteAllTextAsync(path, json);
     }
 
-    public async Task<Dictionary<string, string>> ReadSpriteMetadataFileAsync()
+    public async Task<Dictionary<string, int>> ReadSpriteMetadataFileAsync()
     {
         string path = GetReadyNFTMetadataDirectory() + SPRITE_METADATA_JSON;
         if (!File.Exists(path))
         {
-            return new Dictionary<string, string>();
+            return new Dictionary<string, int>();
         }
         string json = await File.ReadAllTextAsync(path);
-        Dictionary<string, string> dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+        Dictionary<string, int> dict = JsonConvert.DeserializeObject<Dictionary<string, int>>(json);
         return dict;
     }
 
     public async Task UpdateSpriteMetadataFileAsync(ReadyNFTSpriteObject sprite)
     {
         string path = GetReadyNFTMetadataDirectory() + SPRITE_METADATA_JSON;
-        Dictionary<string, string> dict = await ReadSpriteMetadataFileAsync();
+        Dictionary<string, int> dict = await ReadSpriteMetadataFileAsync();
         if (dict.ContainsKey(sprite.contract))
         {
             dict[sprite.contract] = sprite.version;
@@ -78,15 +88,15 @@ public class ReadyNFTFileHelpers
 
     public async Task<List<string>> GetCollectionsToUpdate(List<ReadyNFTSpriteObject> sprites)
     {
-        Dictionary<string, string> metadataDict = await ReadSpriteMetadataFileAsync();
+        Dictionary<string, int> metadataDict = await ReadSpriteMetadataFileAsync();
         List<string> keysToUpdate = new List<string>();
         foreach (ReadyNFTSpriteObject sprite in sprites)
         {
             string contract = sprite.contract;
-            string version = sprite.version;
+            int version = sprite.version;
             if (metadataDict.ContainsKey(contract))
             {
-                string metadataVersion = metadataDict[contract];
+                int metadataVersion = metadataDict[contract];
                 if (metadataVersion < version)
                 {
                     keysToUpdate.Add(contract);
@@ -103,10 +113,18 @@ public class ReadyNFTFileHelpers
     // overloading: the nature of the function changes based on the parameters passed
     public async Task DownloadSpriteImagesAsync(List<ReadyNFTSpriteObject> sprites, IProgress<ReadyNFTDownloadReport> progress = null)
     {
-        int total = sprites.Count;
+        // fetch the list of contracts that need to be updated
+        List<string> updatedCollections = await GetCollectionsToUpdate(sprites);
+
+        int total = updatedCollections.Count;
         int current = 0;
         foreach (ReadyNFTSpriteObject sprite in sprites)
         {
+            if (!updatedCollections.Contains(sprite.contract))
+            {
+                continue;
+            }
+
             await DownloadSpriteImagesAsync(sprite);
             current++;
             // no decimal places in percentage
@@ -117,6 +135,9 @@ public class ReadyNFTFileHelpers
                 progress.Report(report);
             }
         }
+
+        // update the metadata file
+        await CreateSpriteMetadataFileAsync(sprites);
     }
 
     public async Task DownloadSpriteImagesAsync(ReadyNFTSpriteObject sprite)
@@ -134,13 +155,6 @@ public class ReadyNFTFileHelpers
 
     public async Task DownloadImageAsync(string imageUrl, string savePath)
     {
-        // Check if file exists
-        if (File.Exists(savePath))
-        {
-            Debug.Log($"Image already exists: {savePath}");
-            return;
-        }
-
         using (UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(imageUrl))
         {
             // Send the request and wait for a response
