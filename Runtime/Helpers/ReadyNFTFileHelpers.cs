@@ -36,6 +36,70 @@ public class ReadyNFTFileHelpers
         return path;
     }
 
+    public async Task CreateSpriteMetadataFileAsync(List<ReadyNFTSpriteObject> sprites)
+    {
+        string path = GetReadyNFTMetadataDirectory() + SPRITE_METADATA_JSON;
+        Dictionary<string, string> dict = new Dictionary<string, string>();
+        foreach (ReadyNFTSpriteObject sprite in sprites)
+        {
+            dict.Add(sprite.contract, sprite.version);
+        }
+        string json = JsonConvert.SerializeObject(dict);
+        await File.WriteAllTextAsync(path, json);
+    }
+
+    public async Task<Dictionary<string, string>> ReadSpriteMetadataFileAsync()
+    {
+        string path = GetReadyNFTMetadataDirectory() + SPRITE_METADATA_JSON;
+        if (!File.Exists(path))
+        {
+            return new Dictionary<string, string>();
+        }
+        string json = await File.ReadAllTextAsync(path);
+        Dictionary<string, string> dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+        return dict;
+    }
+
+    public async Task UpdateSpriteMetadataFileAsync(ReadyNFTSpriteObject sprite)
+    {
+        string path = GetReadyNFTMetadataDirectory() + SPRITE_METADATA_JSON;
+        Dictionary<string, string> dict = await ReadSpriteMetadataFileAsync();
+        if (dict.ContainsKey(sprite.contract))
+        {
+            dict[sprite.contract] = sprite.version;
+        }
+        else
+        {
+            dict.Add(sprite.contract, sprite.version);
+        }
+        string json = JsonConvert.SerializeObject(dict);
+        await File.WriteAllTextAsync(path, json);
+    }
+
+    public async Task<List<string>> GetCollectionsToUpdate(List<ReadyNFTSpriteObject> sprites)
+    {
+        Dictionary<string, string> metadataDict = await ReadSpriteMetadataFileAsync();
+        List<string> keysToUpdate = new List<string>();
+        foreach (ReadyNFTSpriteObject sprite in sprites)
+        {
+            string contract = sprite.contract;
+            string version = sprite.version;
+            if (metadataDict.ContainsKey(contract))
+            {
+                string metadataVersion = metadataDict[contract];
+                if (metadataVersion < version)
+                {
+                    keysToUpdate.Add(contract);
+                }
+            }
+            else
+            {
+                keysToUpdate.Add(contract);
+            }
+        }
+        return keysToUpdate;
+    }
+
     // overloading: the nature of the function changes based on the parameters passed
     public async Task DownloadSpriteImagesAsync(List<ReadyNFTSpriteObject> sprites, IProgress<ReadyNFTDownloadReport> progress = null)
     {

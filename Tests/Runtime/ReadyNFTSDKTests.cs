@@ -132,7 +132,6 @@ public class ReadyNFTTests
         Assert.IsTrue(result.Count == 0);
     }
 
-    // test to delete all the files
     [Test]
     public void DeleteAllImages_Success()
     {
