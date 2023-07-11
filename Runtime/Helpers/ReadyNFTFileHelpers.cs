@@ -104,4 +104,25 @@ public class ReadyNFTFileHelpers
             Debug.Log($"Image downloaded and saved to: {savePath}");
         }
     }
+
+    public void DeleteAllImages()
+    {
+        string path = GetReadyNFTImageDirectory();
+        if (Directory.Exists(path))
+        {
+            Directory.Delete(path, true);
+            Debug.Log("Directory deleted: " + path);
+        }
+    }
+
+    public int GetNumberOfImages()
+    {
+        string path = GetReadyNFTImageDirectory();
+        if (Directory.Exists(path))
+        {
+            string[] files = Directory.GetFiles(path);
+            return files.Length;
+        }
+        return 0;
+    }
 }

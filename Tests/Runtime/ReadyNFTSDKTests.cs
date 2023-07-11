@@ -131,4 +131,19 @@ public class ReadyNFTTests
         // Assert
         Assert.IsTrue(result.Count == 0);
     }
+
+    // test to delete all the files
+    [Test]
+    public void DeleteAllImages_Success()
+    {
+        // Arrange
+        ReadyNFTFileHelpers fileHelper = new ReadyNFTFileHelpers();
+
+        // Act
+        fileHelper.DeleteAllImages();
+        int files = fileHelper.GetNumberOfImages();
+
+        // Assert
+        Assert.IsTrue(files == 0);
+    }
 }
