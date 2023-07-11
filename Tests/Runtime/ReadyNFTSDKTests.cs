@@ -56,7 +56,7 @@ public class ReadyNFTTests
     {
         // Arrange
         ReadyNFT readyNFT = new ReadyNFT();
-        ReadyNFTHelpers RNFTHelpers = new ReadyNFTHelpers();
+        ReadyNFTFileHelpers RNFTHelpers = new ReadyNFTFileHelpers();
         readyNFT.Init("apiKey", "8f85c1eb-d3e9-4cd7-b8ed-640abab2770c");
 
         // Act
