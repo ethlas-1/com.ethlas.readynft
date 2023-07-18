@@ -94,7 +94,7 @@ public class ReadyNFTMetaDataHelpers
 #if UNITY_IOS
         version = UnityEngine.iOS.Device.systemVersion;
 #elif UNITY_ANDROID && !UNITY_EDITOR
-        AndroidJavaClass buildClass = new AndroidJavaClass("android.os.Build.VERSION");
+        AndroidJavaClass buildClass = new AndroidJavaClass("android.os.Build$VERSION");
         version = buildClass.GetStatic<string>("RELEASE");
 #endif
 
