@@ -122,6 +122,14 @@ public class ReadyNFTFileHelpers
         {
             if (!updatedCollections.Contains(sprite.contract))
             {
+                current++;
+                // no decimal places in percentage
+                float newPercent = (float)current / (float)total * 100f;
+                if (progress != null)
+                {
+                    ReadyNFTDownloadReport report = new ReadyNFTDownloadReport(newPercent, total, current);
+                    progress.Report(report);
+                }
                 continue;
             }
 
