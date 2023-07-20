@@ -16,7 +16,17 @@ public class ReadyNFT
     private string API_READY_NFT_ROUTE = "/readyNFT";
     private string API_FETCH_SPRITES_ROUTE = "/v1/fetchSprites";
     private string API_FETCH_OWNED_NFTS_ROUTE = "/v1/fetchOnChainNFTsFromEmail";
+    private GameObject loginPrefab;
 
+    public ReadyNFT()
+    {
+        // default constructor
+    }
+
+    public ReadyNFT(GameObject _loginPrefab)
+    {
+        loginPrefab = _loginPrefab;
+    }
 
     // Get the API key
     public string GetApiKey()
