@@ -232,7 +232,7 @@ public class RNFTAuthManager : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log("[RNFT] Deep Link Manager Awake!");
+        Debug.Log("[RNFT] Auth Manager Awake!");
         CachePath = Application.persistentDataPath;
     }
 }
