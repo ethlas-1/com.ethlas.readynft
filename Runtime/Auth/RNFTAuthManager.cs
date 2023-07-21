@@ -6,12 +6,10 @@ public class RNFTAuthManager : MonoBehaviour
 {
     public static string CachePath;
 
-    // TODO: fill in the files carefully since they will be available to the public
-    // TODO: Move the below into a config file for production
-    private const string AppClientID = "YOUR_APP_CLIENT_ID"; // App client ID, found under App Client Settings
-    private const string AuthCognitoDomainPrefix = "YOUR_COGNITO_DOMAIN"; // Found under App Integration -> Domain Name. Changing this means it must be updated in all linked Social providers redirect and javascript origins
-    private const string RedirectUrl = "YOUR_REDIRECT_URL";
-    private const string Region = "asia-southeast-1"; // Update with the AWS Region that contains your services
+    private const string AppClientID = RNFTAuthConfig.AppClientID; 
+    private const string AuthCognitoDomainPrefix = RNFTAuthConfig.AuthCognitoDomainPrefix; 
+    private const string RedirectUrl = RNFTAuthConfig.RedirectUrl;
+    private const string Region = RNFTAuthConfig.Region; 
 
     private const string AuthCodeGrantType = "authorization_code";
     private const string RefreshTokenGrantType = "refresh_token";
@@ -39,6 +37,7 @@ public class RNFTAuthManager : MonoBehaviour
             {
                 string grantCode = param.Split('=')[1];
                 string grantCodeCleaned = grantCode.removeAllNonAlphanumericCharsExceptDashes(); // sometimes the url has a # at the end of the string
+                Debug.Log("The CLEANED GRANT CODE is " + grantCode);
                 return await CallCodeExchangeEndpoint(grantCodeCleaned);
             }
             else
@@ -77,6 +76,7 @@ public class RNFTAuthManager : MonoBehaviour
             // Debug.Log("ID token: " + authenticationResultType.id_token);
 
             _userid = RNFTAuthUtilities.GetUserSubFromIdToken(authenticationResultType.id_token);
+            Debug.Log("THE USER ID OBTAINED FOR THIS USER IS " + _userid);
 
             // update session cache
             RNFTSaveDataManager.SaveJsonData(new RNFTUserSessionCache(authenticationResultType, _userid));
@@ -232,7 +232,7 @@ public class RNFTAuthManager : MonoBehaviour
 
     void Awake()
     {
+        Debug.Log("[RNFT] Deep Link Manager Awake!");
         CachePath = Application.persistentDataPath;
-        // Debug.Log("CachePath: " + CachePath);
     }
 }
