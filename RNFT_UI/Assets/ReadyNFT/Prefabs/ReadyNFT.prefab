@@ -1640,7 +1640,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8357179970030735413}
-  - component: {fileID: 8973442384355375588}
+  - component: {fileID: 3055986394896479218}
   m_Layer: 5
   m_Name: ReadyNFT
   m_TagString: Untagged
@@ -1670,7 +1670,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8973442384355375588
+--- !u!114 &3055986394896479218
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1679,7 +1679,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8357179970030735412}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f3d392c01e2342b0877130137202b8f, type: 3}
+  m_Script: {fileID: 11500000, guid: 69035642aab81409994b6565655af0fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   loginWithRNFTButton: {fileID: 6331204500876950748}
@@ -1733,7 +1733,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8357179971227347637}
-  - component: {fileID: 1320872736658880193}
+  - component: {fileID: 1586037041221897380}
   m_Layer: 5
   m_Name: LoginWindow
   m_TagString: Untagged
@@ -1763,7 +1763,7 @@ RectTransform:
   m_AnchoredPosition: {x: -1.7000122, y: -86.5}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1320872736658880193
+--- !u!114 &1586037041221897380
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1772,7 +1772,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8357179971227347636}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbe3bec709bd44f10b25e318a80a0cf5, type: 3}
+  m_Script: {fileID: 11500000, guid: 9bb3b776f6aa74d459cc9974be903119, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   email: {fileID: 5408735892411680580}
