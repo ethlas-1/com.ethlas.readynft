@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class RNFTLoginWindowManager : MonoBehaviour
 {
@@ -60,16 +61,39 @@ public class RNFTLoginWindowManager : MonoBehaviour
     private void HandleGenerateOTPButtonClick()
     {
         string _submittedEmail = email.text;
-        if (_submittedEmail != "")
-        {
-            string _session = RNFTAuthHelpers.SignInUser(_submittedEmail);
-            session = _session;
-            submittedEmail = _submittedEmail;
-        }
-        else
+        if (_submittedEmail == "")
         {
             Debug.Log("[RNFT] Email field is empty");
+            return;
         }
+
+        string _session;
+        // check if the error thrown is due to the cognito user not existing using a try catch
+
+        try
+        {
+            _session = RNFTAuthHelpers.SignInUser(_submittedEmail);
+
+        }
+        catch (Exception e)
+        {
+            // check if eroor is due to user not existing
+
+            if (!e.Message.Contains("User does not exist"))
+            {
+                Debug.Log("[RNFT] " + e.Message);
+                return;
+            }
+
+            RNFTAuthHelpers.SignUpUser(_submittedEmail);
+            HandleGenerateOTPButtonClick();
+            return;
+        }
+
+        session = _session;
+        submittedEmail = _submittedEmail;
+
+
     }
 
     // function to handle the login button click

@@ -94,6 +94,47 @@ public static class RNFTAuthHelpers
         return res;
     }
 
+    public static void SignUpUser(string email)
+    {
+        // create a new instance of the cognito identity provider client
+        AmazonCognitoIdentityProviderClient providerClient = new AmazonCognitoIdentityProviderClient(new Amazon.Runtime.AnonymousAWSCredentials(), RegionEndpoint.APSoutheast1);
+
+        // create a sign up user request 
+        Amazon.CognitoIdentityProvider.Model.SignUpRequest signUpRequest = new Amazon.CognitoIdentityProvider.Model.SignUpRequest();
+
+        // set the client id
+        signUpRequest.ClientId = RNFTAuthConfig.UserPoolClientID;
+
+        // set the username
+        signUpRequest.Username = email;
+
+        // set the password
+        signUpRequest.Password = "password";
+
+        // define the user attributes
+        List<Amazon.CognitoIdentityProvider.Model.AttributeType> userAttributes = new List<Amazon.CognitoIdentityProvider.Model.AttributeType>();
+
+        // create a new attribute type
+        Amazon.CognitoIdentityProvider.Model.AttributeType emailAttribute = new Amazon.CognitoIdentityProvider.Model.AttributeType();
+        
+        // set the name of the attribute
+        emailAttribute.Name = "email";
+
+        // set the value of the attribute
+        emailAttribute.Value = email;
+
+        // add the attribute to the list of attributes
+        userAttributes.Add(emailAttribute);
+
+        // set the user attributes
+        signUpRequest.UserAttributes = userAttributes;
+
+        // sign up the user and store the response
+        Amazon.CognitoIdentityProvider.Model.SignUpResponse signUpResponse = providerClient.SignUpAsync(signUpRequest).Result;
+
+        // log the response challenge type
+        Debug.Log("[RNFT] The user has been signed up.");
+    }
 
     // function to get the uid of the user
     public static string GetUID(string accessToken)
