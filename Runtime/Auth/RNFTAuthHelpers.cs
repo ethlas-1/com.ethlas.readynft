@@ -1,93 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using Amazon;
 using Amazon.CognitoIdentityProvider;
+using System.Collections.Generic;
 
-public class RNFTLoginWindowManager : MonoBehaviour
+public static class RNFTAuthHelpers
 {
-
-    public static RNFTLoginWindowManager Instance { get; private set; }
-
-    [SerializeField] private InputField email;
-    [SerializeField] private InputField otp;
-    [SerializeField] private Button loginButton;
-    [SerializeField] private Button generateOTPButton;
-
-    // submitted email and the session class vaiables
-    public string submittedEmail;
-    public string session;
-    private string idToken;
-    private string accessToken;
-    private string refreshToken;
-
-    void Start()
-    {
-        SetupLoginButton();
-        SetupGenerateOTPButton();
-    }
-
-    void Awake()
-    {
-        Debug.Log("[RNFT] Passwordless Auth Manager Awake!");
-
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    // function to setup listeners for the generate otp button
-    private void SetupGenerateOTPButton()
-    {
-        generateOTPButton.onClick.RemoveAllListeners();
-        generateOTPButton.onClick.AddListener(HandleGenerateOTPButtonClick);
-    }
-
-    // function to setup listeners for the login button
-    private void SetupLoginButton()
-    {
-        loginButton.onClick.RemoveAllListeners();
-        loginButton.onClick.AddListener(HandleLoginButtonClick);
-    }
-
-    // function to hanlde the generate otp button click 
-    private void HandleGenerateOTPButtonClick()
-    {
-        if (email.text != "")
-        {
-            SignInUser(email.text);
-        }
-        else
-        {
-            Debug.Log("[RNFT] Email field is empty");
-        }
-    }
-
-    // function to handle the login button click
-    private void HandleLoginButtonClick()
-    {
-        // submitted email should not be "" or null
-        if (otp.text != "" && submittedEmail != "" && submittedEmail != null)
-        {
-            VerifyUserOTP(submittedEmail, otp.text);
-        }
-        else
-        {
-            Debug.Log("OTP field is empty");
-        }
-    }
-
-
-    // helper functions
-    public void SignInUser(string email)
+    public static string SignInUser(string email)
     {
         // create a new instance of the cognito identity provider client
         AmazonCognitoIdentityProviderClient providerClient = new AmazonCognitoIdentityProviderClient(new Amazon.Runtime.AnonymousAWSCredentials(), RegionEndpoint.APSoutheast1);
@@ -115,16 +34,17 @@ public class RNFTLoginWindowManager : MonoBehaviour
         Amazon.CognitoIdentityProvider.Model.InitiateAuthResponse authResponse = providerClient.InitiateAuthAsync(authRequest).Result;
 
         // store the session and the email that was submitted in class variables
-        session = authResponse.Session;
-        submittedEmail = email;
+        string session = authResponse.Session;
 
         // log the response challenge type 
         Debug.Log("[RNFT] " + authResponse.ChallengeName + " has been initiated.");
+
+        return session;
     }
 
 
     // function to verify the otp entered by the user
-    public void VerifyUserOTP(string email, string otp)
+    public static RNFTAuthTokensType VerifyUserOTP(string email, string otp, string session)
     {
         // create a response to the auth challenge
         Amazon.CognitoIdentityProvider.Model.RespondToAuthChallengeRequest authChallengeResponse = new Amazon.CognitoIdentityProvider.Model.RespondToAuthChallengeRequest();
@@ -150,7 +70,7 @@ public class RNFTLoginWindowManager : MonoBehaviour
         AmazonCognitoIdentityProviderClient providerClient = new AmazonCognitoIdentityProviderClient(new Amazon.Runtime.AnonymousAWSCredentials(), RegionEndpoint.APSoutheast1);
 
         // respond to the auth challenge and store the response
-        Amazon.CognitoIdentityProvider.Model.RespondToAuthChallengeResponse authChallengeResponseResult 
+        Amazon.CognitoIdentityProvider.Model.RespondToAuthChallengeResponse authChallengeResponseResult
             = providerClient.RespondToAuthChallengeAsync(authChallengeResponse).Result;
 
 
@@ -158,23 +78,25 @@ public class RNFTLoginWindowManager : MonoBehaviour
         Amazon.CognitoIdentityProvider.Model.AuthenticationResultType authResult = authChallengeResponseResult.AuthenticationResult;
 
         // retreive the id tokem, the access token and the refresh token of the user
-        idToken = authResult.IdToken;
-        accessToken = authResult.AccessToken;
-        refreshToken = authResult.RefreshToken;
-
+        string idToken = authResult.IdToken;
+        string accessToken = authResult.AccessToken;
+        string refreshToken = authResult.RefreshToken;
 
 
         // log the response challenge type
-        Debug.Log("[RNFT] The custom challenge has been responded to."); 
+        Debug.Log("[RNFT] The custom challenge has been responded to.");
 
         // get the uid of the user
-        string uid = GetUID();
-        Debug.Log("the uid of the user is " + uid);
+        string uid = GetUID(accessToken);
+
+        // create the response
+        RNFTAuthTokensType res = new RNFTAuthTokensType(idToken, accessToken, refreshToken, uid);
+        return res;
     }
 
 
     // function to get the uid of the user
-    public string GetUID()
+    public static string GetUID(string accessToken)
     {
         // verify that the access token is not null
         if (accessToken == null)
@@ -202,5 +124,4 @@ public class RNFTLoginWindowManager : MonoBehaviour
         return username;
     }
 }
-
 
