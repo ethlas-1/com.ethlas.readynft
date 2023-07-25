@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
+using System;
 
 public class RNFTAuthManager : MonoBehaviour
 {
+    public static RNFTAuthManager Instance { get; private set; }
     public static string CachePath;
 
     private const string AppClientID = RNFTAuthConfig.AppClientID; 
@@ -234,5 +236,16 @@ public class RNFTAuthManager : MonoBehaviour
     {
         Debug.Log("[RNFT] Auth Manager Awake!");
         CachePath = Application.persistentDataPath;
+
+
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 }

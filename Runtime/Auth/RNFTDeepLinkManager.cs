@@ -8,9 +8,7 @@ using UnityEngine;
 public class RNFTDeepLinkManager : MonoBehaviour
 {
     public static RNFTDeepLinkManager Instance { get; private set; }
-
     private string deeplinkURL;
-    private RNFTAuthManager _authManager;
 
     private void onDeepLinkActivated(string url)
     {
@@ -19,7 +17,7 @@ public class RNFTDeepLinkManager : MonoBehaviour
         ProcessDeepLink(url);
     }
 
-    private void Awake()
+    void Awake()
     {
         Debug.Log("[RNFT] Deep Link Manager Awake!");
 
@@ -45,7 +43,6 @@ public class RNFTDeepLinkManager : MonoBehaviour
         }
         else
         {
-            // I think this would destroy a new instance that was attempted to be created when one already exists
             Destroy(gameObject);
         }
     }
@@ -59,8 +56,7 @@ public class RNFTDeepLinkManager : MonoBehaviour
     {
         Debug.Log("[RNFT] Processing deep link: " + deepLinkUrl);
 
-        // fetching the auth manager from the hierarchy
-        _authManager = FindObjectOfType<RNFTAuthManager>();
+        RNFTAuthManager _authManager = RNFTAuthManager.Instance
 
         // check to ensure that the auth manager is not null
         if (_authManager == null)
