@@ -56,7 +56,7 @@ public class RNFTDeepLinkManager : MonoBehaviour
     {
         Debug.Log("[RNFT] Processing deep link: " + deepLinkUrl);
 
-        RNFTAuthManager _authManager = RNFTAuthManager.Instance
+        RNFTAuthManager _authManager = RNFTAuthManager.Instance;
 
         // check to ensure that the auth manager is not null
         if (_authManager == null)
