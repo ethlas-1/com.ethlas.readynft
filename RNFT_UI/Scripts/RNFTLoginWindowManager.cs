@@ -18,7 +18,10 @@ public class RNFTLoginWindowManager : MonoBehaviour
 
     // submitted email and the session class vaiables
     public string submittedEmail;
-    public string session; 
+    public string session;
+    private string idToken;
+    private string accessToken;
+    private string refreshToken;
 
     void Start()
     {
@@ -147,11 +150,57 @@ public class RNFTLoginWindowManager : MonoBehaviour
         AmazonCognitoIdentityProviderClient providerClient = new AmazonCognitoIdentityProviderClient(new Amazon.Runtime.AnonymousAWSCredentials(), RegionEndpoint.APSoutheast1);
 
         // respond to the auth challenge and store the response
-        Amazon.CognitoIdentityProvider.Model.RespondToAuthChallengeResponse authChallengeResponseResult = providerClient.RespondToAuthChallengeAsync(authChallengeResponse).Result;
+        Amazon.CognitoIdentityProvider.Model.RespondToAuthChallengeResponse authChallengeResponseResult 
+            = providerClient.RespondToAuthChallengeAsync(authChallengeResponse).Result;
+
+
+        // get the authentication result
+        Amazon.CognitoIdentityProvider.Model.AuthenticationResultType authResult = authChallengeResponseResult.AuthenticationResult;
+
+        // retreive the id tokem, the access token and the refresh token of the user
+        idToken = authResult.IdToken;
+        accessToken = authResult.AccessToken;
+        refreshToken = authResult.RefreshToken;
+
+
 
         // log the response challenge type
-        Debug.Log("[RNFT] The custom challenge has been responded to.");        
+        Debug.Log("[RNFT] The custom challenge has been responded to."); 
 
+        // get the uid of the user
+        string uid = GetUID();
+        Debug.Log("the uid of the user is " + uid);
+    }
+
+
+    // function to get the uid of the user
+    public string GetUID()
+    {
+        // verify that the access token is not null
+        if (accessToken == null)
+        {
+            Debug.Log("[RNFT] Access token is null, cannot get uid!");
+            return "";
+        }
+
+        // create a new instance of the cognito identity provider client
+        AmazonCognitoIdentityProviderClient providerClient = new AmazonCognitoIdentityProviderClient(new Amazon.Runtime.AnonymousAWSCredentials(), RegionEndpoint.APSoutheast1);
+
+        // use the id token, the access token and the refresh token to get details such as the user's username
+        Amazon.CognitoIdentityProvider.Model.GetUserRequest userRequest = new Amazon.CognitoIdentityProvider.Model.GetUserRequest();
+
+        // set the access token
+        userRequest.AccessToken = accessToken;
+
+        // get the user details and store the response
+        Amazon.CognitoIdentityProvider.Model.GetUserResponse userResponse = providerClient.GetUserAsync(userRequest).Result;
+
+        // get the user's username
+        string username = userResponse.Username;
+
+        // return the username
+        return username;
     }
 }
+
 
