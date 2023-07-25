@@ -38,12 +38,11 @@ public class RNFTLoginWindowManager : MonoBehaviour
     {
         if (email.text != "")
         {
-            Debug.Log("email is " + email.text);
-            SignIn(email.text);
+            SignInUser(email.text);
         }
         else
         {
-            Debug.Log("Email field is empty");
+            Debug.Log("[RNFT] Email field is empty");
         }
     }
 
@@ -61,7 +60,9 @@ public class RNFTLoginWindowManager : MonoBehaviour
         }
     }
 
-    public void SignIn(string email)
+
+    // helper functions
+    public static void SignInUser(string email)
     {
         // create a new instance of the cognito identity provider client
         AmazonCognitoIdentityProviderClient providerClient = new AmazonCognitoIdentityProviderClient(new Amazon.Runtime.AnonymousAWSCredentials(), RegionEndpoint.APSoutheast1);
@@ -73,7 +74,6 @@ public class RNFTLoginWindowManager : MonoBehaviour
         authRequest.AuthFlow = Amazon.CognitoIdentityProvider.AuthFlowType.CUSTOM_AUTH;
 
         // set the client id
-        Debug.Log("the client id is " + RNFTAuthConfig.UserPoolClientID);
         authRequest.ClientId = RNFTAuthConfig.UserPoolClientID;
 
         // define the auth parameters
@@ -90,12 +90,7 @@ public class RNFTLoginWindowManager : MonoBehaviour
         Amazon.CognitoIdentityProvider.Model.InitiateAuthResponse authResponse = providerClient.InitiateAuthAsync(authRequest).Result;
 
         // log the response challenge type 
-        Debug.Log("response is " + authResponse.ChallengeName);
-
-
+        Debug.Log("[RNFT] " + authResponse.ChallengeName + " has been initiated.");
     }
-
-
-
 }
 
