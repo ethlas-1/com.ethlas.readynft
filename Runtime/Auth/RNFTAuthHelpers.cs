@@ -128,7 +128,7 @@ public static class RNFTAuthHelpers
         // create a new instance of the cognito identity provider client
         AmazonCognitoIdentityProviderClient providerClient = new AmazonCognitoIdentityProviderClient(new Amazon.Runtime.AnonymousAWSCredentials(), RegionEndpoint.APSoutheast1);
 
-        // use the id token, the access token and the refresh token to get details such as the user's username
+        // use the access token and the refresh token to get details such as the user's username
         Amazon.CognitoIdentityProvider.Model.GetUserRequest userRequest = new Amazon.CognitoIdentityProvider.Model.GetUserRequest();
 
         // set the access token
@@ -146,7 +146,98 @@ public static class RNFTAuthHelpers
         // return the user details object
         RNFTUserDetails userDetails = new RNFTUserDetails(username, email);
         return userDetails;
+    }
 
+    public static RNFTAuthTokensType RefreshAccessToken(string refreshToken)
+    {
+        // create a new instance of the cognito identity provider client
+        AmazonCognitoIdentityProviderClient providerClient = new AmazonCognitoIdentityProviderClient(new Amazon.Runtime.AnonymousAWSCredentials(), RegionEndpoint.APSoutheast1);
+
+        // create a refresh token request
+        Amazon.CognitoIdentityProvider.Model.InitiateAuthRequest authRequest = new Amazon.CognitoIdentityProvider.Model.InitiateAuthRequest();
+
+        // set the auth flow type to refresh token
+        authRequest.AuthFlow = Amazon.CognitoIdentityProvider.AuthFlowType.REFRESH_TOKEN_AUTH;
+
+        // set the client id
+        authRequest.ClientId = RNFTAuthConfig.UserPoolClientID;
+
+        // define the auth parameters
+        Dictionary<string, string> authParams = new Dictionary<string, string>();
+        authParams.Add("REFRESH_TOKEN", refreshToken);
+
+        // set the auth parameters
+        authRequest.AuthParameters = authParams;
+
+        try
+        {
+            // initiate the auth request and store the response
+            Amazon.CognitoIdentityProvider.Model.InitiateAuthResponse authResponse = providerClient.InitiateAuthAsync(authRequest).Result;
+
+            // get the authentication result
+            Amazon.CognitoIdentityProvider.Model.AuthenticationResultType authResult = authResponse.AuthenticationResult;
+
+            // retreive the id tokem, the access token and the refresh token of the user
+            string idToken = authResult.IdToken;
+            string accessToken = authResult.AccessToken;
+            string newRefreshToken = authResult.RefreshToken;
+
+            // create a new auth tokens object
+            RNFTAuthTokensType tokens = new RNFTAuthTokensType(idToken, accessToken, newRefreshToken);
+
+            // return the tokens
+            return tokens;
+        }
+        catch
+        {
+            Debug.Log("[RNFT] Refresh token is invalid!");
+            RNFTAuthTokensType tokens = new RNFTAuthTokensType();
+            return tokens;
+        }
+    }
+
+    public static bool IsUserLoggedIn(string accessToken, string refreshToken)
+    {
+
+        // if the access token is null, the user is not logged in
+        if (accessToken == null || accessToken == "")
+        {
+            return false;
+        }
+
+        if (refreshToken == null || refreshToken == "")
+        {
+            return false;
+        }
+
+        // check if the access token is still valid. if not, refersh the access token using the refresh token
+        try
+        {
+            RNFTUserDetails userDetails = GetUserDetails(accessToken);
+            return true;
+        }
+        catch (Exception e)
+        {
+            if (e.Message.Contains("NotAuthorizedException"))
+            {
+                // refresh the access token
+                RNFTAuthTokensType tokens = RefreshAccessToken(refreshToken);
+                string _accessToken = tokens.AccessToken;
+                string _refreshToken = tokens.RefreshToken;
+                string _idToken = tokens.IdToken;
+
+                if (_accessToken == "" || _refreshToken == "" || _idToken == "")
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
 
