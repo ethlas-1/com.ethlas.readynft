@@ -49,12 +49,7 @@ public class RNFTAuthManager : MonoBehaviour
             this.tokens = tokens;
             RNFTUserDetails _userDetials = RNFTAuthHelpers.GetUserDetails(tokens.AccessToken);
 
-            // get the user details from the db using the uid 
             RNFTUserDetails userDetailsFromDB = await RNFTAuthHelpers.FetchUserDetailsFromDB(_userDetials.UID, _userDetials.email);
-
-            // log the details from the db
-            Debug.Log("[RNFT] User details from DB: " + userDetailsFromDB.UID + " " + userDetailsFromDB.email + " " + userDetailsFromDB.custodialWalletAddress);
-
             this.userDetials = userDetailsFromDB;
         }
 

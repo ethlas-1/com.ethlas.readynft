@@ -116,15 +116,10 @@ public class RNFTLoginWindowManager : MonoBehaviour
                 return;
             }
 
-            // get the user details from the db using the uid 
-            RNFTUserDetails userDetailsFromDB = await RNFTAuthHelpers.FetchUserDetailsFromDB(uid, submittedEmail);
-
-            // log the details from the db
-            Debug.Log("[RNFT] User details from DB: " + userDetailsFromDB.UID + " " + userDetailsFromDB.email + " " + userDetailsFromDB.custodialWalletAddress);
-
             RNFTAuthSessionHelpers.UpdateAuthSessionData(tokens);
-            RNFTAuthManager.Instance?.SetTokens(tokens);
+            RNFTUserDetails userDetailsFromDB = await RNFTAuthHelpers.FetchUserDetailsFromDB(uid, submittedEmail);
             RNFTAuthManager.Instance?.SetUserDetails(userDetailsFromDB);
+            RNFTAuthManager.Instance?.SetTokens(tokens);
             RNFTAuthManager.Instance?.SetUserLoggedInStatus(true);
             RNFTUIManager.Instance?.ShowUserProfile();
         }
