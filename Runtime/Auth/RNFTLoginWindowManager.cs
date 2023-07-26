@@ -103,7 +103,15 @@ public class RNFTLoginWindowManager : MonoBehaviour
         if (otp.text != "" && submittedEmail != "" && submittedEmail != null)
         {
             RNFTAuthTokensType user = RNFTAuthHelpers.VerifyUserOTP(submittedEmail, otp.text, session);
-            Debug.Log("the user is " + user.UID);
+            string uid = user.UID;
+
+            // ensure that uid is not an empty string or null
+            if (uid == "" || uid == null)
+            {
+                return;
+            }
+
+            RNFTUIManager.Instance.ShowUserProfile();
         }
         else
         {

@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class RNFTUIManager : MonoBehaviour
 {
+    public static RNFTUIManager Instance { get; private set; }
+
     [SerializeField] private Button loginWithRNFTButton;
     [SerializeField] private GameObject uiContainer;
     [SerializeField] private GameObject loginWindow;
@@ -17,17 +19,42 @@ public class RNFTUIManager : MonoBehaviour
     }
 
     // function to setup listeners for the ready nft button
-    private void SetupRNFTButtonListeners()
+    public void SetupRNFTButtonListeners()
     {
         loginWithRNFTButton.onClick.RemoveAllListeners();
         loginWithRNFTButton.onClick.AddListener(ShowLoginWindow);
     }
 
     // function to show the login window once it is clicked
-    private void ShowLoginWindow()
+    public void ShowLoginWindow()
     {
         uiContainer.SetActive(true);
         loginWindow.SetActive(true);
     }
-    
+
+    // function to bring up login screen
+    public void ShowUserProfile()
+    {
+        uiContainer.SetActive(true);
+        loginWindow.SetActive(false);
+        loggedInWindow.SetActive(true);
+    }
+
+
+    void Awake()
+    {
+        Debug.Log("[RNFT] UI Manager Awake!");
+
+
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
 }
