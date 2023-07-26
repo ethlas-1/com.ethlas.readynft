@@ -64,7 +64,7 @@ public class ReadyNFT
         string url = API_ENDPOINTS_ROOT_URL + API_READY_NFT_ROUTE + API_FETCH_SPRITES_ROUTE;
 
         // fetch the metadata
-        ReadyNFTMetaDataHelpers metadataHelpers = new ReadyNFTMetaDataHelpers();
+        RNFTMetaDataHelpers metadataHelpers = new RNFTMetaDataHelpers();
         ReadyNFTMetaData metadata = metadataHelpers.GetMetaData();
 
         using (HttpClient client = new HttpClient())
@@ -126,7 +126,7 @@ public class ReadyNFT
         string url = API_ENDPOINTS_ROOT_URL + API_READY_NFT_ROUTE + API_FETCH_OWNED_NFTS_ROUTE;
 
         // fetch the metadata
-        ReadyNFTMetaDataHelpers metadataHelpers = new ReadyNFTMetaDataHelpers();
+        RNFTMetaDataHelpers metadataHelpers = new RNFTMetaDataHelpers();
         ReadyNFTMetaData metadata = metadataHelpers.GetMetaData();
 
         using (HttpClient client = new HttpClient())

@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 
-public class ReadyNFTFileHelpers
+public class RNFTSpriteMetadataHelpers
 {
     public string SPRITE_METADATA_JSON = "sprite_metadata.json";
     public string GetReadyNFTImageDirectory()

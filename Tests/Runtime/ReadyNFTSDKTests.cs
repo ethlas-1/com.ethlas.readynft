@@ -56,7 +56,7 @@ public class ReadyNFTTests
     {
         // Arrange
         ReadyNFT readyNFT = new ReadyNFT();
-        ReadyNFTFileHelpers RNFTHelpers = new ReadyNFTFileHelpers();
+        RNFTSpriteMetadataHelpers RNFTHelpers = new RNFTSpriteMetadataHelpers();
         readyNFT.Init("apiKey", "8f85c1eb-d3e9-4cd7-b8ed-640abab2770c");
 
         // Act
@@ -136,7 +136,7 @@ public class ReadyNFTTests
     public void DeleteAllImages_Success()
     {
         // Arrange
-        ReadyNFTFileHelpers fileHelper = new ReadyNFTFileHelpers();
+        RNFTSpriteMetadataHelpers fileHelper = new RNFTSpriteMetadataHelpers();
 
         // Act
         fileHelper.DeleteAllImages();

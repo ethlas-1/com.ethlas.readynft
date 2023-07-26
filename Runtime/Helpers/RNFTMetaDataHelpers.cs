@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class ReadyNFTMetaDataHelpers
+public class RNFTMetaDataHelpers
 {
     public string GetDeviceId()
     {
