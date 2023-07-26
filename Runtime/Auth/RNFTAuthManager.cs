@@ -53,6 +53,20 @@ public class RNFTAuthManager : MonoBehaviour
         this.IsUserLoggedIn = _isUserLoggedIn;
     }
 
+    void LogOutUser()
+    {
+        RNFTAuthHelpers.RevokeAccessToken(this.tokens);
+        RNFTAuthSessionHelpers.DeleteAuthDataFile();
+
+        this.IsUserLoggedIn = false;
+        this.tokens = new RNFTAuthTokensType();
+        this.userDetials = new RNFTUserDetails();
+
+        RNFTUIManager.Instance?.ShowLoginScreen();
+
+        Debug.Log("[RNFT] User logged out.");
+    }
+
     // method to set the user logged in status
     public void SetUserLoggedInStatus(bool status)
     {
