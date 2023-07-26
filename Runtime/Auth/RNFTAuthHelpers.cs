@@ -148,8 +148,10 @@ public static class RNFTAuthHelpers
         return userDetails;
     }
 
-    public static RNFTAuthTokensType RefreshAccessToken(string refreshToken)
+    public static RNFTAuthTokensType RefreshAccessToken(RNFTAuthTokensType currTokens)
     {
+        string refreshToken = currTokens.RefreshToken;
+
         // create a new instance of the cognito identity provider client
         AmazonCognitoIdentityProviderClient providerClient = new AmazonCognitoIdentityProviderClient(new Amazon.Runtime.AnonymousAWSCredentials(), RegionEndpoint.APSoutheast1);
 
@@ -178,17 +180,15 @@ public static class RNFTAuthHelpers
             Amazon.CognitoIdentityProvider.Model.AuthenticationResultType authResult = authResponse.AuthenticationResult;
 
             // retreive the id tokem, the access token and the refresh token of the user
-            string idToken = authResult.IdToken;
             string accessToken = authResult.AccessToken;
-            string newRefreshToken = authResult.RefreshToken;
 
             // create a new auth tokens object
-            RNFTAuthTokensType tokens = new RNFTAuthTokensType(idToken, accessToken, newRefreshToken);
+            RNFTAuthTokensType tokens = new RNFTAuthTokensType(currTokens.IdToken, accessToken, currTokens.RefreshToken);
 
             // return the tokens
             return tokens;
         }
-        catch
+        catch (Exception e)
         {
             Debug.Log("[RNFT] Refresh token is invalid!");
             RNFTAuthTokensType tokens = new RNFTAuthTokensType();
@@ -196,8 +196,10 @@ public static class RNFTAuthHelpers
         }
     }
 
-    public static bool IsUserLoggedIn(string accessToken, string refreshToken)
+    public static bool IsUserLoggedIn(RNFTAuthTokensType tokens)
     {
+        string accessToken = tokens.AccessToken;
+        string refreshToken = tokens.RefreshToken;
 
         // if the access token is null, the user is not logged in
         if (accessToken == null || accessToken == "")
@@ -221,10 +223,10 @@ public static class RNFTAuthHelpers
             if (e.Message.Contains("NotAuthorizedException"))
             {
                 // refresh the access token
-                RNFTAuthTokensType tokens = RefreshAccessToken(refreshToken);
-                string _accessToken = tokens.AccessToken;
-                string _refreshToken = tokens.RefreshToken;
-                string _idToken = tokens.IdToken;
+                RNFTAuthTokensType newTokens = RefreshAccessToken(tokens);
+                string _accessToken = newTokens.AccessToken;
+                string _refreshToken = newTokens.RefreshToken;
+                string _idToken = newTokens.IdToken;
 
                 if (_accessToken == "" || _refreshToken == "" || _idToken == "")
                 {
