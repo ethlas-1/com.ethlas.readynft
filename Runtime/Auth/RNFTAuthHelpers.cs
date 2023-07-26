@@ -241,5 +241,32 @@ public static class RNFTAuthHelpers
             }
         }
     }
+
+    // function to revoke the access token of the user
+    public static void RevokeAccessToken(RNFTAuthTokensType tokens)
+    {
+
+        // create a new instance of the cognito identity provider client
+        AmazonCognitoIdentityProviderClient providerClient = new AmazonCognitoIdentityProviderClient(new Amazon.Runtime.AnonymousAWSCredentials(), RegionEndpoint.APSoutheast1);
+
+        // create a revoke token request
+        Amazon.CognitoIdentityProvider.Model.GlobalSignOutRequest globalSignOutRequest = new Amazon.CognitoIdentityProvider.Model.GlobalSignOutRequest();
+
+        // set the access token
+        globalSignOutRequest.AccessToken = tokens.AccessToken;
+
+        try
+        {
+            // revoke the access token
+            providerClient.GlobalSignOutAsync(globalSignOutRequest);
+
+            Debug.Log("[RNFT] The access token has been revoked.");
+        }
+        catch (Exception e)
+        {
+            Debug.Log("[RNFT] There was an error while trying to revoke the access token.");
+            Debug.Log(e.Message);
+        }
+    }
 }
 
