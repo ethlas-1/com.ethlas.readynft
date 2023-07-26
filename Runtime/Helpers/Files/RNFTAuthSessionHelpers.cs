@@ -10,11 +10,11 @@ using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class RNFTAuthSessionHelpers
+public static class RNFTAuthSessionHelpers
 {
-    public string AUTH_SESSION_JSON = "auth_session_data.json";
+    public static string AUTH_SESSION_JSON = "auth_session_data.json";
 
-    public string GetRNFTAuthDataDirectory()
+    public static string GetRNFTAuthDataDirectory()
     {
         string path = Application.persistentDataPath + "/ReadyNFT/Auth/";
         if (!Directory.Exists(path))
@@ -25,14 +25,14 @@ public class RNFTAuthSessionHelpers
         return path;
     }
 
-    public async Task CreateAuthDataFile(RNFTAuthTokensType tokens)
+    public static async Task CreateAuthDataFile(RNFTAuthTokensType tokens)
     {
         string path = GetRNFTAuthDataDirectory() + AUTH_SESSION_JSON;
         string json = JsonConvert.SerializeObject(tokens);
         await File.WriteAllTextAsync(path, json);
     }
 
-    public async Task<RNFTAuthTokensType> ReadAuthDataFileAsync()
+    public static async Task<RNFTAuthTokensType> ReadAuthDataFileAsync()
     {
         string path = GetRNFTAuthDataDirectory() + AUTH_SESSION_JSON;
         if (!File.Exists(path))
@@ -44,13 +44,13 @@ public class RNFTAuthSessionHelpers
         return tokens;
     }
 
-    public async void UpdateSpriteMetadataFileAsync(RNFTAuthTokensType tokens)
+    public static async void UpdateSpriteMetadataFileAsync(RNFTAuthTokensType tokens)
     {
         DeleteAuthDataFile();
         await CreateAuthDataFile(tokens);
     }
     
-    public void DeleteAuthDataFile()
+    public static void DeleteAuthDataFile()
     {
         string path = GetRNFTAuthDataDirectory() + AUTH_SESSION_JSON;
         if (Directory.Exists(path))
