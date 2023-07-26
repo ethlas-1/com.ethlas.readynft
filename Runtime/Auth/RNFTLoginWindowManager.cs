@@ -60,7 +60,8 @@ public class RNFTLoginWindowManager : MonoBehaviour
     // function to hanlde the generate otp button click 
     private void HandleGenerateOTPButtonClick()
     {
-        string _submittedEmail = email.text;
+        // convert the email to all lower case
+        string _submittedEmail = email.text.ToLower();
         if (_submittedEmail == "")
         {
             Debug.Log("[RNFT] Email field is empty");
