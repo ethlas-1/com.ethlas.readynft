@@ -1334,7 +1334,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3566123991070374364
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3077,7 +3077,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8357179970684146398
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3154,10 +3154,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62f9f1f02fc02443bad56d651f65db09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  email: {fileID: 0}
-  otp: {fileID: 0}
-  loginButton: {fileID: 0}
-  generateOTPButton: {fileID: 0}
+  email: {fileID: 164242521824045604}
+  otp: {fileID: 6767658108689208570}
+  loginButton: {fileID: 2877967171899997406}
+  generateOTPButton: {fileID: 132358341465520214}
   submittedEmail: 
   session: 
 --- !u!1 &8357179971869768464
