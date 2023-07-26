@@ -49,15 +49,26 @@ public class FetchUserDataFromDBRequestData
     [JsonProperty("uid")]
     public string uid { get; set; } = "";
 
+    [Preserve]
+    [JsonProperty("email")]
+    public string email { get; set; } = "";
+
+    [Preserve]
+    [JsonProperty("loginMethod")]
+    public string loginMethod { get; set; } = "email";
+
     public FetchUserDataFromDBRequestData()
     {
         // Default constructor
     }
 
-    public FetchUserDataFromDBRequestData(string _uid)
+    public FetchUserDataFromDBRequestData(string _uid, string _email)
     {
         uid = _uid;
+        email = _email;
+        loginMethod = "email";
     }
+
 }
 
 [Preserve]

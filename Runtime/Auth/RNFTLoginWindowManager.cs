@@ -98,7 +98,7 @@ public class RNFTLoginWindowManager : MonoBehaviour
     }
 
     // function to handle the login button click
-    private void HandleLoginButtonClick()
+    private async void HandleLoginButtonClick()
     {
         // submitted email should not be "" or null
         if (otp.text != "" && submittedEmail != "" && submittedEmail != null)
@@ -116,9 +116,15 @@ public class RNFTLoginWindowManager : MonoBehaviour
                 return;
             }
 
+            // get the user details from the db using the uid 
+            RNFTUserDetails userDetailsFromDB = await RNFTAuthHelpers.FetchUserDetailsFromDB(uid, submittedEmail);
+
+            // log the details from the db
+            Debug.Log("[RNFT] User details from DB: " + userDetailsFromDB.UID + " " + userDetailsFromDB.email + " " + userDetailsFromDB.custodialWalletAddress);
+
             RNFTAuthSessionHelpers.UpdateAuthSessionData(tokens);
             RNFTAuthManager.Instance?.SetTokens(tokens);
-            RNFTAuthManager.Instance?.SetUserDetails(userDetails);
+            RNFTAuthManager.Instance?.SetUserDetails(userDetailsFromDB);
             RNFTAuthManager.Instance?.SetUserLoggedInStatus(true);
             RNFTUIManager.Instance?.ShowUserProfile();
         }

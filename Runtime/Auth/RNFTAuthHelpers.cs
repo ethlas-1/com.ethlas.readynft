@@ -276,7 +276,7 @@ public static class RNFTAuthHelpers
     }
 
     // function to fetch the user data from the database
-    public static async Task<RNFTUserDetails> FetchUserDetailsFromDB(string uid)
+    public static async Task<RNFTUserDetails> FetchUserDetailsFromDB(string uid, string email)
     {
 
         if (string.IsNullOrEmpty(uid))
@@ -285,13 +285,13 @@ public static class RNFTAuthHelpers
             return new RNFTUserDetails();
         }
 
-        string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_READY_NFT_ROUTE + RNFTRequestsConfig.API_FETCH_USER_DETAILS_FROM_DB_ROUTE;
+        string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL+ RNFTRequestsConfig.API_FETCH_USER_DETAILS_FROM_DB_ROUTE;
 
         using (HttpClient client = new HttpClient())
         {
             try
             {
-                FetchUserDataFromDBRequestData requestData = new FetchUserDataFromDBRequestData(uid);
+                FetchUserDataFromDBRequestData requestData = new FetchUserDataFromDBRequestData(uid, email);
                 string requestDataJson = JsonConvert.SerializeObject(requestData);
                 HttpContent content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
 

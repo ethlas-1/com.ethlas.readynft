@@ -15,6 +15,6 @@ public static class RNFTRequestsConfig
     public const string API_FETCH_OWNED_NFTS_ROUTE = "/v1/fetchOnChainNFTsFromEmail";
 
     // API fetch user details from db
-    public const string API_FETCH_USER_DETAILS_FROM_DB_ROUTE = "/v1/login";
+    public const string API_FETCH_USER_DETAILS_FROM_DB_ROUTE = "/login";
 
 }
