@@ -41,9 +41,16 @@ public class RNFTAuthManager : MonoBehaviour
             return;
         }
 
-        this.IsUserLoggedIn = RNFTAuthHelpers.IsUserLoggedIn(tokens);
-        this.tokens = tokens;
-        this.userDetials = RNFTAuthHelpers.GetUserDetails(tokens.AccessToken);
+        bool _isUserLoggedIn = RNFTAuthHelpers.IsUserLoggedIn(tokens);
+
+        if (_isUserLoggedIn)
+        {
+            Debug.Log("[RNFT] Logged in user detected");
+            this.tokens = tokens;
+            this.userDetials = RNFTAuthHelpers.GetUserDetails(tokens.AccessToken);
+        }
+
+        this.IsUserLoggedIn = _isUserLoggedIn;
     }
 
     // method to set the user logged in status
