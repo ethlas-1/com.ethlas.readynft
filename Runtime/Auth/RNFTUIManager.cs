@@ -22,17 +22,25 @@ public class RNFTUIManager : MonoBehaviour
     public void SetupRNFTButtonListeners()
     {
         loginWithRNFTButton.onClick.RemoveAllListeners();
-        loginWithRNFTButton.onClick.AddListener(ShowLoginWindow);
+        loginWithRNFTButton.onClick.AddListener(ShowReadyNFTScreen);
     }
 
     // function to show the login window once it is clicked
-    public void ShowLoginWindow()
+    public void ShowReadyNFTScreen()
     {
-        uiContainer.SetActive(true);
-        loginWindow.SetActive(true);
+
+        bool? isLoggedIn = RNFTAuthManager.Instance?.IsUserLoggedIn;
+
+        if (isLoggedIn == false || isLoggedIn == null)
+        {
+            ShowLoginScreen();
+        } else
+        {
+            ShowUserProfile();
+        }
     }
 
-    // function to bring up login screen
+    // function to bring up logged in  screen
     public void ShowUserProfile()
     {
         uiContainer.SetActive(true);
@@ -40,6 +48,13 @@ public class RNFTUIManager : MonoBehaviour
         loggedInWindow.SetActive(true);
     }
 
+    // function to bring up log in screen
+    public void ShowLoginScreen()
+    {
+        uiContainer.SetActive(true);
+        loggedInWindow.SetActive(false);
+        loginWindow.SetActive(true);
+    }
 
     void Awake()
     {

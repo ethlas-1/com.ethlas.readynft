@@ -115,7 +115,11 @@ public class RNFTLoginWindowManager : MonoBehaviour
                 return;
             }
 
-            RNFTUIManager.Instance.ShowUserProfile();
+            RNFTAuthSessionHelpers.UpdateAuthSessionData(tokens);
+            RNFTAuthManager.Instance?.SetTokens(tokens);
+            RNFTAuthManager.Instance?.SetUserDetails(userDetails);
+            RNFTAuthManager.Instance?.SetUserLoggedInStatus(true);
+            RNFTUIManager.Instance?.ShowUserProfile();
         }
         else
         {

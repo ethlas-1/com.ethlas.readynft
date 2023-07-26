@@ -8,18 +8,13 @@ public class RNFTAuthManager : MonoBehaviour
     public static RNFTAuthManager Instance { get; private set; }
 
     public bool IsUserLoggedIn;
-
+    public RNFTAuthTokensType tokens;
+    public RNFTUserDetails userDetials;
 
     // Use this for initialization
-    async void Start()
+    void Start()
 	{
-		await CheckUserAuth();		
-	}
-
-	// Update is called once per frame
-	void Update()
-	{
-			
+		CheckUserAuth();		
 	}
 
 	void Awake()
@@ -37,17 +32,36 @@ public class RNFTAuthManager : MonoBehaviour
         }
     }
 
-	async Task<bool> CheckUserAuth()
+	async void CheckUserAuth()
 	{
         RNFTAuthTokensType tokens =  await RNFTAuthSessionHelpers.ReadAuthDataFileAsync();
 
         if (tokens.AccessToken == "" || tokens.RefreshToken == "")
         {
-            return false;
+            return;
         }
 
-        bool isUserLoggedIn = RNFTAuthHelpers.IsUserLoggedIn(tokens);
-        return isUserLoggedIn;
+        this.IsUserLoggedIn = RNFTAuthHelpers.IsUserLoggedIn(tokens);
+        this.tokens = tokens;
+        this.userDetials = RNFTAuthHelpers.GetUserDetails(tokens.AccessToken);
+    }
+
+    // method to set the user logged in status
+    public void SetUserLoggedInStatus(bool status)
+    {
+        this.IsUserLoggedIn = status;
+    }
+
+    // method to set the tokens
+    public void SetTokens(RNFTAuthTokensType tokens)
+    {
+        this.tokens = tokens;
+    }
+
+    // method to set the user details
+    public void SetUserDetails(RNFTUserDetails userDetails)
+    {
+        this.userDetials = userDetails;
     }
 }
 

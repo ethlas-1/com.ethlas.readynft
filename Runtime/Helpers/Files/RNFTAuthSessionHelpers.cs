@@ -30,6 +30,7 @@ public static class RNFTAuthSessionHelpers
         string path = GetRNFTAuthDataDirectory() + AUTH_SESSION_JSON;
         string json = JsonConvert.SerializeObject(tokens);
         await File.WriteAllTextAsync(path, json);
+        Debug.Log("[RNFT] Created Auth Session JSON");
     }
 
     public static async Task<RNFTAuthTokensType> ReadAuthDataFileAsync()
@@ -44,7 +45,7 @@ public static class RNFTAuthSessionHelpers
         return tokens;
     }
 
-    public static async void UpdateSpriteMetadataFileAsync(RNFTAuthTokensType tokens)
+    public static async void UpdateAuthSessionData(RNFTAuthTokensType tokens)
     {
         DeleteAuthDataFile();
         await CreateAuthDataFile(tokens);
