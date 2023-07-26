@@ -12,11 +12,7 @@ public class ReadyNFT
 {
     private string apiKey;
     private string gameId;
-    private string API_ENDPOINTS_ROOT_URL = "https://3caea960hb.execute-api.ap-southeast-1.amazonaws.com/prod";
-    private string API_READY_NFT_ROUTE = "/readyNFT";
-    private string API_FETCH_SPRITES_ROUTE = "/v1/fetchSprites";
-    private string API_FETCH_OWNED_NFTS_ROUTE = "/v1/fetchOnChainNFTsFromEmail";
-
+    
     // Get the API key
     public string GetApiKey()
     {
@@ -61,7 +57,7 @@ public class ReadyNFT
             return new List<ReadyNFTSpriteObject>();
         }
 
-        string url = API_ENDPOINTS_ROOT_URL + API_READY_NFT_ROUTE + API_FETCH_SPRITES_ROUTE;
+        string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_READY_NFT_ROUTE + RNFTRequestsConfig.API_FETCH_SPRITES_ROUTE;
 
         // fetch the metadata
         RNFTMetaDataHelpers metadataHelpers = new RNFTMetaDataHelpers();
@@ -123,7 +119,7 @@ public class ReadyNFT
             return new List<ReadyNFTOwnedNFTObject>();
         }
 
-        string url = API_ENDPOINTS_ROOT_URL + API_READY_NFT_ROUTE + API_FETCH_OWNED_NFTS_ROUTE;
+        string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_READY_NFT_ROUTE + RNFTRequestsConfig.API_FETCH_OWNED_NFTS_ROUTE;
 
         // fetch the metadata
         RNFTMetaDataHelpers metadataHelpers = new RNFTMetaDataHelpers();

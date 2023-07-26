@@ -1,8 +1,14 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Networking;
 using Amazon;
 using Amazon.CognitoIdentityProvider;
+using System.Text;
+using System.Net.Http;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+
 
 public static class RNFTAuthHelpers
 {
@@ -267,6 +273,54 @@ public static class RNFTAuthHelpers
             Debug.Log("[RNFT] There was an error while trying to revoke the access token.");
             Debug.Log(e.Message);
         }
+    }
+
+    // function to fetch the user data from the database
+    public static async Task<RNFTUserDetails> FetchUserDetailsFromDB(string uid)
+    {
+
+        if (string.IsNullOrEmpty(uid))
+        {
+            Debug.Log("FetchUserDetailsFromDB: UID not set!");
+            return new RNFTUserDetails();
+        }
+
+        string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_READY_NFT_ROUTE + RNFTRequestsConfig.API_FETCH_USER_DETAILS_FROM_DB_ROUTE;
+
+        using (HttpClient client = new HttpClient())
+        {
+            try
+            {
+                FetchUserDataFromDBRequestData requestData = new FetchUserDataFromDBRequestData(uid);
+                string requestDataJson = JsonConvert.SerializeObject(requestData);
+                HttpContent content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await client.PostAsync(url, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseString = await response.Content.ReadAsStringAsync();
+                    FetchUserDataFromDBResponse result = JsonConvert.DeserializeObject<FetchUserDataFromDBResponse>(responseString);
+                    
+                    string _uid = result.data.uid;
+                    string _email = result.data.email;
+                    string _custodialWalletAddress = result.data.custodialWalletAddress;
+
+                    RNFTUserDetails userDetails = new RNFTUserDetails(_uid, _email, _custodialWalletAddress);
+                    return userDetails;
+                }
+                else
+                {
+                    Debug.Log("FetchUserDetailsFromDB: Request failed: " + response.StatusCode);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log("FetchUserDetailsFromDB: Request failed: " + e.Message);
+            }
+        }
+
+        return new RNFTUserDetails(); // return empty list if request fails
     }
 }
 
