@@ -1,11 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Scripting;
+using Newtonsoft.Json;
 
+[Preserve]
 [Serializable]
 public class RNFTAuthTokensType
 {
-	public string IdToken { get; set; } = "";
-	public string AccessToken { get; set; } = "";
-	public string RefreshToken { get; set; } = "";
+    [Preserve]
+    [JsonProperty("IdToken")]
+    public string IdToken { get; set; } = "";
+
+    [Preserve]
+    [JsonProperty("AccessToken")]
+    public string AccessToken { get; set; } = "";
+
+    [Preserve]
+    [JsonProperty("RefreshToken")]
+    public string RefreshToken { get; set; } = "";
 
 	public RNFTAuthTokensType()
 	{
