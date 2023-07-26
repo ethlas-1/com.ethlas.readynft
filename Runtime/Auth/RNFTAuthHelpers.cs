@@ -86,11 +86,8 @@ public static class RNFTAuthHelpers
         // log the response challenge type
         Debug.Log("[RNFT] The custom challenge has been responded to.");
 
-        // get the uid of the user
-        string uid = GetUID(accessToken);
-
         // create the response
-        RNFTAuthTokensType res = new RNFTAuthTokensType(idToken, accessToken, refreshToken, uid);
+        RNFTAuthTokensType res = new RNFTAuthTokensType(idToken, accessToken, refreshToken);
         return res;
     }
 
@@ -118,14 +115,14 @@ public static class RNFTAuthHelpers
         Debug.Log("[RNFT] The user has been signed up.");
     }
 
-    // function to get the uid of the user
-    public static string GetUID(string accessToken)
+    public static RNFTUserDetails GetUserDetails(string accessToken)
     {
-        // verify that the access token is not null
+        // verify that the id token is not null
         if (accessToken == null)
         {
-            Debug.Log("[RNFT] Access token is null, cannot get uid!");
-            return "";
+            Debug.Log("[RNFT] ID token is null, cannot get user details!");
+            RNFTUserDetails _userDetails = new RNFTUserDetails();
+            return _userDetails;
         }
 
         // create a new instance of the cognito identity provider client
@@ -143,8 +140,13 @@ public static class RNFTAuthHelpers
         // get the user's username
         string username = userResponse.Username;
 
-        // return the username
-        return username;
+        // get the user's email
+        string email = userResponse.UserAttributes[2].Value;
+
+        // return the user details object
+        RNFTUserDetails userDetails = new RNFTUserDetails(username, email);
+        return userDetails;
+
     }
 }
 

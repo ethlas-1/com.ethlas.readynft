@@ -102,8 +102,12 @@ public class RNFTLoginWindowManager : MonoBehaviour
         // submitted email should not be "" or null
         if (otp.text != "" && submittedEmail != "" && submittedEmail != null)
         {
-            RNFTAuthTokensType user = RNFTAuthHelpers.VerifyUserOTP(submittedEmail, otp.text, session);
-            string uid = user.UID;
+            RNFTAuthTokensType tokens = RNFTAuthHelpers.VerifyUserOTP(submittedEmail, otp.text, session);
+            string accessToken = tokens.AccessToken;
+
+            // get the user details
+            RNFTUserDetails userDetails = RNFTAuthHelpers.GetUserDetails(accessToken);
+            string uid = userDetails.UID;
 
             // ensure that uid is not an empty string or null
             if (uid == "" || uid == null)
