@@ -188,7 +188,7 @@ public static class RNFTAuthHelpers
             // return the tokens
             return tokens;
         }
-        catch (Exception e)
+        catch
         {
             Debug.Log("[RNFT] Refresh token is invalid!");
             RNFTAuthTokensType tokens = new RNFTAuthTokensType();
