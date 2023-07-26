@@ -111,24 +111,6 @@ public static class RNFTAuthHelpers
         // set the password
         signUpRequest.Password = "password";
 
-        // define the user attributes
-        List<Amazon.CognitoIdentityProvider.Model.AttributeType> userAttributes = new List<Amazon.CognitoIdentityProvider.Model.AttributeType>();
-
-        // create a new attribute type
-        Amazon.CognitoIdentityProvider.Model.AttributeType emailAttribute = new Amazon.CognitoIdentityProvider.Model.AttributeType();
-        
-        // set the name of the attribute
-        emailAttribute.Name = "email";
-
-        // set the value of the attribute
-        emailAttribute.Value = email;
-
-        // add the attribute to the list of attributes
-        userAttributes.Add(emailAttribute);
-
-        // set the user attributes
-        signUpRequest.UserAttributes = userAttributes;
-
         // sign up the user and store the response
         Amazon.CognitoIdentityProvider.Model.SignUpResponse signUpResponse = providerClient.SignUpAsync(signUpRequest).Result;
 
