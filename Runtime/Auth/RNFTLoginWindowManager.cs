@@ -38,7 +38,7 @@ public class RNFTLoginWindowManager : MonoBehaviour
     void OnEnable()
     {
         isOTPRunning = false;
-        helpText.SetActive(false);
+        helpText.gameObject.SetActive(false);
         generateOTPButton.interactable = true;
         otpText.text = "Get Code";
     }
@@ -83,7 +83,7 @@ public class RNFTLoginWindowManager : MonoBehaviour
     // function to hanlde the generate otp button click 
     private void HandleGenerateOTPButtonClick()
     {
-        helpText.SetActive(false);
+        helpText.gameObject.SetActive(false);
 
         // convert the email to all lower case
         string _submittedEmail = email.text.ToLower();
@@ -99,7 +99,7 @@ public class RNFTLoginWindowManager : MonoBehaviour
         try
         {
             helpText.text = "Check your email for the OTP";
-            helpText.SetActive(true);
+            helpText.gameObject.SetActive(true);
             _session = RNFTAuthHelpers.SignInUser(_submittedEmail);
 
             isOTPRunning = true;
@@ -131,7 +131,7 @@ public class RNFTLoginWindowManager : MonoBehaviour
         if (isLoggingIn)
             return;
 
-        helpText.SetActive(false);
+        helpText.gameObject.SetActive(false);
 
         // submitted email should not be "" or null
         if (otp.text != "" && submittedEmail != "" && submittedEmail != null)
@@ -144,7 +144,7 @@ public class RNFTLoginWindowManager : MonoBehaviour
             if (accessToken == "" || accessToken == null)
             {
                 helpText.text = "Invalid OTP";
-                helpText.SetActive(true);
+                helpText.gameObject.SetActive(true);
                 otp.text = "";
                 OnUserLoginCallback?.Invoke(false);
                 isLoggingIn = false;
