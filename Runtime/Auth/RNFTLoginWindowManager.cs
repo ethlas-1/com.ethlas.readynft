@@ -14,6 +14,8 @@ public class RNFTLoginWindowManager : MonoBehaviour
     [SerializeField] private InputField otp;
     [SerializeField] private Button loginButton;
     [SerializeField] private Button generateOTPButton;
+    [SerializeField] private Text otpText;
+    [SerializeField] private Text helpText;
 
     // submitted email and the session class vaiables
     public string submittedEmail;
@@ -22,12 +24,48 @@ public class RNFTLoginWindowManager : MonoBehaviour
     private string accessToken;
     private string refreshToken;
 
+    private bool isOTPRunning = false;
+    private float timeMax = 30f;
+    private float timeCounter = 0f;
+    private bool isLoggingIn = false;
+
     void Start()
     {
         SetupLoginButton();
         SetupGenerateOTPButton();
     }
-    
+
+    void OnEnable()
+    {
+        isOTPRunning = false;
+        helpText.SetActive(false);
+        generateOTPButton.interactable = true;
+        otpText.text = "Get Code";
+    }
+
+    void OnDisable()
+    {
+        otp.text = "";
+    }
+
+    private void Update()
+    {
+        if (!isOTPRunning)
+            return;
+
+        timeCounter -= Time.deltaTime;
+        if (timeCounter <= 0f)
+        {
+            isOTPRunning = false;
+            generateOTPButton.interactable = true;
+            otpText.text = "Get Code";
+        }
+        else
+        {
+            otpText.text = "Get Code (" + Mathf.CeilToInt(timeCounter) + ")";
+        }
+    }
+
     // function to setup listeners for the generate otp button
     private void SetupGenerateOTPButton()
     {
@@ -45,6 +83,8 @@ public class RNFTLoginWindowManager : MonoBehaviour
     // function to hanlde the generate otp button click 
     private void HandleGenerateOTPButtonClick()
     {
+        helpText.SetActive(false);
+
         // convert the email to all lower case
         string _submittedEmail = email.text.ToLower();
         if (_submittedEmail == "")
@@ -58,8 +98,13 @@ public class RNFTLoginWindowManager : MonoBehaviour
 
         try
         {
+            helpText.text = "Check your email for the OTP";
+            helpText.SetActive(true);
             _session = RNFTAuthHelpers.SignInUser(_submittedEmail);
 
+            isOTPRunning = true;
+            timeCounter = timeMax;
+            generateOTPButton.interactable = false;
         }
         catch (Exception e)
         {
@@ -78,22 +123,31 @@ public class RNFTLoginWindowManager : MonoBehaviour
 
         session = _session;
         submittedEmail = _submittedEmail;
-
-
     }
 
     // function to handle the login button click
     private async void HandleLoginButtonClick()
     {
+        if (isLoggingIn)
+            return;
+
+        helpText.SetActive(false);
+
         // submitted email should not be "" or null
         if (otp.text != "" && submittedEmail != "" && submittedEmail != null)
         {
+            isLoggingIn = true;
+            
             RNFTAuthTokensType tokens = RNFTAuthHelpers.VerifyUserOTP(submittedEmail, otp.text, session);
             string accessToken = tokens.AccessToken;
 
             if (accessToken == "" || accessToken == null)
             {
+                helpText.text = "Invalid OTP";
+                helpText.SetActive(true);
+                otp.text = "";
                 OnUserLoginCallback?.Invoke(false);
+                isLoggingIn = false;
                 return;
 
             }
@@ -106,7 +160,7 @@ public class RNFTLoginWindowManager : MonoBehaviour
             if (uid == "" || uid == null)
             {
                 OnUserLoginCallback?.Invoke(false);
-
+                isLoggingIn = false;
                 return;
             }
 
@@ -118,11 +172,17 @@ public class RNFTLoginWindowManager : MonoBehaviour
             RNFTAuthManager.Instance?.SetUserLoggedInStatus(true);
             RNFTUIManager.Instance?.ShowUserProfile();
 
+            email.text = "";
+            otp.text = "";
+
+            isLoggingIn = false;
         }
         else
         {
             Debug.Log("One of the required fields is empty");
         }
+
+        isLoggingIn = false;
     }
 }
 
