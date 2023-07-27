@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class RNFTUIManager : MonoBehaviour
 {
@@ -12,10 +11,25 @@ public class RNFTUIManager : MonoBehaviour
     [SerializeField] private GameObject uiContainer;
     [SerializeField] private GameObject loginWindow;
     [SerializeField] private GameObject loggedInWindow;
+    [SerializeField] private Button bgBtn;
+    [SerializeField] private Button closeButton;
 
-    void Start()
+    private void Awake()
     {
-        SetupRNFTButtonListeners();
+        Debug.Log("[RNFT] UI Manager Awake!");
+
+
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+         SetupRNFTButtonListeners();
     }
 
     // function to setup listeners for the ready nft button
@@ -23,6 +37,12 @@ public class RNFTUIManager : MonoBehaviour
     {
         loginWithRNFTButton.onClick.RemoveAllListeners();
         loginWithRNFTButton.onClick.AddListener(ShowReadyNFTScreen);
+
+        bgBtn.onClick.RemoveAllListeners();
+        bgBtn.onClick.AddListener(HideReadyNFTScreen);
+
+        closeButton.onClick.RemoveAllListeners();
+        closeButton.onClick.AddListener(HideReadyNFTScreen);
     }
 
     // function to show the login window once it is clicked
@@ -40,6 +60,14 @@ public class RNFTUIManager : MonoBehaviour
         }
     }
 
+    // function to hide uiContainer
+    public void HideReadyNFTScreen()
+    {
+        uiContainer.SetActive(false);
+        loginWindow.SetActive(false);
+        loggedInWindow.SetActive(false);
+    }
+
     // function to bring up logged in  screen
     public void ShowUserProfile()
     {
@@ -54,22 +82,6 @@ public class RNFTUIManager : MonoBehaviour
         uiContainer.SetActive(true);
         loggedInWindow.SetActive(false);
         loginWindow.SetActive(true);
-    }
-
-    void Awake()
-    {
-        Debug.Log("[RNFT] UI Manager Awake!");
-
-
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
     }
 
 }
