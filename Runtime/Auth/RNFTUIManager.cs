@@ -15,6 +15,7 @@ public class RNFTUIManager : MonoBehaviour
     [SerializeField] private Button closeButton;
 
     public System.Action OnShowRNFTLogin;
+    public System.Action OnShowRNFTLoggedIn;
 
     private void Awake()
     {
@@ -83,6 +84,8 @@ public class RNFTUIManager : MonoBehaviour
         uiContainer.SetActive(true);
         loginWindow.SetActive(false);
         loggedInWindow.SetActive(true);
+
+        OnShowRNFTLoggedIn?.Invoke();
     }
 
     // function to bring up log in screen
