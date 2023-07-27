@@ -15,3 +15,12 @@ Features
   - updated the functions to use the latest stable api endpoints
   - supported versioning of images
   - logging to collect crash reports (if any)
+
+
+## 1.1.0
+
+Features
+
+  - passwordless authentication for users (they can sign in with otp)
+  - creation of a custodial wallet for the user on the backend
+  - gassless minting of nfts - on bsc chain
