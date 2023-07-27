@@ -14,6 +14,8 @@ public class RNFTUIManager : MonoBehaviour
     [SerializeField] private Button bgBtn;
     [SerializeField] private Button closeButton;
 
+    public System.Action OnShowRNFTLogin;
+
     private void Awake()
     {
         Debug.Log("[RNFT] UI Manager Awake!");
@@ -89,6 +91,8 @@ public class RNFTUIManager : MonoBehaviour
         uiContainer.SetActive(true);
         loggedInWindow.SetActive(false);
         loginWindow.SetActive(true);
+
+        OnShowRNFTLogin?.Invoke();
     }
 
 }
