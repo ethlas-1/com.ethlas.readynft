@@ -62,7 +62,7 @@ public class RNFTLoginWindowManager : MonoBehaviour
         }
         else
         {
-            otpText.text = "In (" + Mathf.CeilToInt(timeCounter) + ")";
+            otpText.text = "In " + Mathf.CeilToInt(timeCounter) + "s";
         }
     }
 
