@@ -66,7 +66,7 @@ public class RNFTAuthManager : MonoBehaviour
         RNFTAuthHelpers.RevokeAccessToken(this.tokens);
         RNFTAuthSessionHelpers.DeleteAuthDataFile();
 
-        this.IsUserLoggedIn = false;
+        SetUserLoggedInStatus(false);
         this.tokens = new RNFTAuthTokensType();
         this.userDetials = new RNFTUserDetails();
 
