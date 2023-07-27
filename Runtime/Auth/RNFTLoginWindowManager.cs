@@ -13,6 +13,7 @@ public class RNFTLoginWindowManager : MonoBehaviour
     [SerializeField] private InputField email;
     [SerializeField] private InputField otp;
     [SerializeField] private Button loginButton;
+    [SerializeField] private Button createButton;
     [SerializeField] private Button generateOTPButton;
     [SerializeField] private Text otpText;
     [SerializeField] private Text helpText;
@@ -78,6 +79,9 @@ public class RNFTLoginWindowManager : MonoBehaviour
     {
         loginButton.onClick.RemoveAllListeners();
         loginButton.onClick.AddListener(HandleLoginButtonClick);
+
+        createButton.onClick.RemoveAllListeners();
+        createButton.onClick.AddListener(HandleLoginButtonClick);
     }
 
     // function to hanlde the generate otp button click 
