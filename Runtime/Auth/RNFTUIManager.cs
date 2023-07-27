@@ -45,8 +45,8 @@ public class RNFTUIManager : MonoBehaviour
         loginWithRNFTButton.onClick.RemoveAllListeners();
         loginWithRNFTButton.onClick.AddListener(ShowReadyNFTScreen);
 
-        bgBtn.onClick.RemoveAllListeners();
-        bgBtn.onClick.AddListener(HideReadyNFTScreen);
+        // bgBtn.onClick.RemoveAllListeners();
+        // bgBtn.onClick.AddListener(HideReadyNFTScreen);
 
         closeButton.onClick.RemoveAllListeners();
         closeButton.onClick.AddListener(HideReadyNFTScreen);
