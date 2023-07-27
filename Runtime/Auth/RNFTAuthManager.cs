@@ -58,7 +58,7 @@ public class RNFTAuthManager : MonoBehaviour
         this.IsUserLoggedIn = _isUserLoggedIn;
 
         // callback for the login status
-        OnUserLoginCallback?.Invoke(_isUserLoggedIn);
+        OnUserLoginCallback?.Invoke(this.IsUserLoggedIn);
     }
 
     void LogOutUser()
@@ -79,6 +79,8 @@ public class RNFTAuthManager : MonoBehaviour
     public void SetUserLoggedInStatus(bool status)
     {
         this.IsUserLoggedIn = status;
+        // callback for the login status
+        OnUserLoginCallback?.Invoke(this.IsUserLoggedIn);
     }
 
     // method to set the tokens
