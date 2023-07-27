@@ -13,7 +13,7 @@ public class RNFTLoggedInWindowManager : MonoBehaviour
     [SerializeField] private Text emailText;
     [SerializeField] private Text walletText;
 
-    private private void OnEnable() 
+    private void OnEnable() 
     {
         SetupPanel();
         SetupCopyButton();
@@ -32,7 +32,7 @@ public class RNFTLoggedInWindowManager : MonoBehaviour
 
             string last4Chara = 
             !String.IsNullOrEmpty(walletAdd) && walletAdd.Length >= 4
-            ? walletAdd.Substring(mystring.Length - 4) 
+            ? walletAdd.Substring(walletAdd.Length - 4) 
             : walletAdd;
             
             walletText.text = first6Chara + "..." + last4Chara;
@@ -42,7 +42,7 @@ public class RNFTLoggedInWindowManager : MonoBehaviour
     private void SetupCopyButton()
     {
         copyBtn.onClick.RemoveAllListeners();
-        copyBtn.onClick.AddListener(() => HandleCopyButtonClick);
+        copyBtn.onClick.AddListener(() => HandleCopyButtonClick());
     }
 
     private void HandleCopyButtonClick()
