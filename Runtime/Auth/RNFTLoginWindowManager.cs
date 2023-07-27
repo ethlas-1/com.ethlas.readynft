@@ -9,6 +9,8 @@ public class RNFTLoginWindowManager : MonoBehaviour
 {
 
     public static RNFTLoginWindowManager Instance { get; private set; }
+    public System.Action<bool> OnUserLoginCallback;
+
 
     [SerializeField] private InputField email;
     [SerializeField] private InputField otp;
@@ -106,6 +108,13 @@ public class RNFTLoginWindowManager : MonoBehaviour
             RNFTAuthTokensType tokens = RNFTAuthHelpers.VerifyUserOTP(submittedEmail, otp.text, session);
             string accessToken = tokens.AccessToken;
 
+            if (accessToken == "" || accessToken == null)
+            {
+                OnUserLoginCallback?.Invoke(false);
+                return;
+
+            }
+
             // get the user details
             RNFTUserDetails userDetails = RNFTAuthHelpers.GetUserDetails(accessToken);
             string uid = userDetails.UID;
@@ -113,15 +122,19 @@ public class RNFTLoginWindowManager : MonoBehaviour
             // ensure that uid is not an empty string or null
             if (uid == "" || uid == null)
             {
+                OnUserLoginCallback?.Invoke(false);
+
                 return;
             }
 
+            OnUserLoginCallback?.Invoke(true);
             RNFTAuthSessionHelpers.UpdateAuthSessionData(tokens);
             RNFTUserDetails userDetailsFromDB = await RNFTAuthHelpers.FetchUserDetailsFromDB(uid, submittedEmail);
             RNFTAuthManager.Instance?.SetUserDetails(userDetailsFromDB);
             RNFTAuthManager.Instance?.SetTokens(tokens);
             RNFTAuthManager.Instance?.SetUserLoggedInStatus(true);
             RNFTUIManager.Instance?.ShowUserProfile();
+
         }
         else
         {

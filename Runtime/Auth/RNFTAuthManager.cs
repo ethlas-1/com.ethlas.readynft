@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Security.AccessControl;
+using UnityEngine;
 using System.Collections;
 using System.Threading.Tasks;
 
@@ -6,6 +7,7 @@ public class RNFTAuthManager : MonoBehaviour
 {
 
     public static RNFTAuthManager Instance { get; private set; }
+    public System.Action<bool> OnUserLoginCallback;
 
     public bool IsUserLoggedIn;
     public RNFTAuthTokensType tokens;
@@ -54,6 +56,9 @@ public class RNFTAuthManager : MonoBehaviour
         }
 
         this.IsUserLoggedIn = _isUserLoggedIn;
+
+        // callback for the login status
+        OnUserLoginCallback?.Invoke(_isUserLoggedIn);
     }
 
     void LogOutUser()

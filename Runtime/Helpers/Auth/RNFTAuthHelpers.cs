@@ -52,49 +52,61 @@ public static class RNFTAuthHelpers
     // function to verify the otp entered by the user
     public static RNFTAuthTokensType VerifyUserOTP(string email, string otp, string session)
     {
-        // create a response to the auth challenge
-        Amazon.CognitoIdentityProvider.Model.RespondToAuthChallengeRequest authChallengeResponse = new Amazon.CognitoIdentityProvider.Model.RespondToAuthChallengeRequest();
-
-        // set the client id
-        authChallengeResponse.ClientId = RNFTAuthConfig.UserPoolClientID;
-
-        // set the challenge name
-        authChallengeResponse.ChallengeName = Amazon.CognitoIdentityProvider.ChallengeNameType.CUSTOM_CHALLENGE;
-
-        // set the session
-        authChallengeResponse.Session = session;
-
-        // define the challenge responses
-        Dictionary<string, string> challengeResponses = new Dictionary<string, string>();
-        challengeResponses.Add("USERNAME", email);
-        challengeResponses.Add("ANSWER", otp);
-
-        // set the challenge responses
-        authChallengeResponse.ChallengeResponses = challengeResponses;
-
-        // create a new instance of the cognito identity provider client
-        AmazonCognitoIdentityProviderClient providerClient = new AmazonCognitoIdentityProviderClient(new Amazon.Runtime.AnonymousAWSCredentials(), RegionEndpoint.APSoutheast1);
-
-        // respond to the auth challenge and store the response
-        Amazon.CognitoIdentityProvider.Model.RespondToAuthChallengeResponse authChallengeResponseResult
-            = providerClient.RespondToAuthChallengeAsync(authChallengeResponse).Result;
+        try
+        {
 
 
-        // get the authentication result
-        Amazon.CognitoIdentityProvider.Model.AuthenticationResultType authResult = authChallengeResponseResult.AuthenticationResult;
+            // create a response to the auth challenge
+            Amazon.CognitoIdentityProvider.Model.RespondToAuthChallengeRequest authChallengeResponse = new Amazon.CognitoIdentityProvider.Model.RespondToAuthChallengeRequest();
 
-        // retreive the id tokem, the access token and the refresh token of the user
-        string idToken = authResult.IdToken;
-        string accessToken = authResult.AccessToken;
-        string refreshToken = authResult.RefreshToken;
+            // set the client id
+            authChallengeResponse.ClientId = RNFTAuthConfig.UserPoolClientID;
+
+            // set the challenge name
+            authChallengeResponse.ChallengeName = Amazon.CognitoIdentityProvider.ChallengeNameType.CUSTOM_CHALLENGE;
+
+            // set the session
+            authChallengeResponse.Session = session;
+
+            // define the challenge responses
+            Dictionary<string, string> challengeResponses = new Dictionary<string, string>();
+            challengeResponses.Add("USERNAME", email);
+            challengeResponses.Add("ANSWER", otp);
+
+            // set the challenge responses
+            authChallengeResponse.ChallengeResponses = challengeResponses;
+
+            // create a new instance of the cognito identity provider client
+            AmazonCognitoIdentityProviderClient providerClient = new AmazonCognitoIdentityProviderClient(new Amazon.Runtime.AnonymousAWSCredentials(), RegionEndpoint.APSoutheast1);
+
+            // respond to the auth challenge and store the response
+            Amazon.CognitoIdentityProvider.Model.RespondToAuthChallengeResponse authChallengeResponseResult
+                = providerClient.RespondToAuthChallengeAsync(authChallengeResponse).Result;
 
 
-        // log the response challenge type
-        Debug.Log("[RNFT] The custom challenge has been responded to.");
+            // get the authentication result
+            Amazon.CognitoIdentityProvider.Model.AuthenticationResultType authResult = authChallengeResponseResult.AuthenticationResult;
 
-        // create the response
-        RNFTAuthTokensType res = new RNFTAuthTokensType(idToken, accessToken, refreshToken);
-        return res;
+            // retreive the id tokem, the access token and the refresh token of the user
+            string idToken = authResult.IdToken;
+            string accessToken = authResult.AccessToken;
+            string refreshToken = authResult.RefreshToken;
+
+
+            // log the response challenge type
+            Debug.Log("[RNFT] The custom challenge has been responded to.");
+
+            // create the response
+            RNFTAuthTokensType res = new RNFTAuthTokensType(idToken, accessToken, refreshToken);
+            return res;
+
+        }
+        catch (Exception e)
+        {
+            Debug.Log("[RNFT] Error: " + e.Message);
+            RNFTAuthTokensType res = new RNFTAuthTokensType();
+            return res;
+        }
     }
 
     public static void SignUpUser(string email)
@@ -285,7 +297,7 @@ public static class RNFTAuthHelpers
             return new RNFTUserDetails();
         }
 
-        string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL+ RNFTRequestsConfig.API_FETCH_USER_DETAILS_FROM_DB_ROUTE;
+        string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_FETCH_USER_DETAILS_FROM_DB_ROUTE;
 
         using (HttpClient client = new HttpClient())
         {
@@ -301,7 +313,7 @@ public static class RNFTAuthHelpers
                 {
                     string responseString = await response.Content.ReadAsStringAsync();
                     FetchUserDataFromDBResponse result = JsonConvert.DeserializeObject<FetchUserDataFromDBResponse>(responseString);
-                    
+
                     string _uid = result.data.uid;
                     string _email = result.data.email;
                     string _custodialWalletAddress = result.data.custodialWalletAddress;
