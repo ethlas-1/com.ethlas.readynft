@@ -46,6 +46,12 @@ public class RNFTLoggedInWindowManager : MonoBehaviour
 
         logoutBtn.onClick.RemoveAllListeners();
         logoutBtn.onClick.AddListener(() => HandleLogoutButtonClick());
+
+        portalBtn.onClick.RemoveAllListeners();
+        portalBtn.onClick.AddListener(() => HandlePortalButtonClick());
+
+        walletBtn.onClick.RemoveAllListeners();
+        walletBtn.onClick.AddListener(() => HandleWalletButtonClick());
     }
 
     private void HandleCopyButtonClick()
@@ -61,6 +67,19 @@ public class RNFTLoggedInWindowManager : MonoBehaviour
         if (RNFTAuthManager.Instance.IsUserLoggedIn)
         {
             RNFTAuthManager.Instance.LogOutUser();
+        }
+    }
+
+    private void HandlePortalButtonClick()
+    {
+        Application.OpenURL("https://ethlas.com/readynft/");
+    }
+
+    private void HandleWalletButtonClick()
+    {
+        if (RNFTAuthManager.Instance.IsUserLoggedIn)
+        {
+            Application.OpenURL($"https://bscscan.com/address/{RNFTAuthManager.Instance.userDetials.custodialWalletAddress}");
         }
     }
 }
