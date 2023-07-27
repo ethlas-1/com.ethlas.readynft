@@ -7,8 +7,6 @@ using System;
 
 public class RNFTLoginWindowManager : MonoBehaviour
 {
-
-    public static RNFTLoginWindowManager Instance { get; private set; }
     public System.Action<bool> OnUserLoginCallback;
 
 
@@ -29,22 +27,7 @@ public class RNFTLoginWindowManager : MonoBehaviour
         SetupLoginButton();
         SetupGenerateOTPButton();
     }
-
-    void Awake()
-    {
-        Debug.Log("[RNFT] Passwordless Auth Manager Awake!");
-
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
+    
     // function to setup listeners for the generate otp button
     private void SetupGenerateOTPButton()
     {

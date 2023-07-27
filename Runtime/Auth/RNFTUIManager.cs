@@ -22,7 +22,6 @@ public class RNFTUIManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -30,6 +29,14 @@ public class RNFTUIManager : MonoBehaviour
         }
 
          SetupRNFTButtonListeners();
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
     }
 
     // function to setup listeners for the ready nft button
