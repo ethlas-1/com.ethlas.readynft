@@ -61,7 +61,7 @@ public class RNFTAuthManager : MonoBehaviour
         OnUserLoginCallback?.Invoke(this.IsUserLoggedIn);
     }
 
-    void LogOutUser()
+    public void LogOutUser()
     {
         RNFTAuthHelpers.RevokeAccessToken(this.tokens);
         RNFTAuthSessionHelpers.DeleteAuthDataFile();
