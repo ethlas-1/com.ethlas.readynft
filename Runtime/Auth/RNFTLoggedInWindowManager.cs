@@ -8,8 +8,6 @@ public class RNFTLoggedInWindowManager : MonoBehaviour
 {
     [SerializeField] private Button copyBtn;
     [SerializeField] private Button logoutBtn;
-    [SerializeField] private Button walletBtn;
-    [SerializeField] private Button portalBtn;
     [SerializeField] private Text emailText;
     [SerializeField] private Text walletText;
 
@@ -46,12 +44,6 @@ public class RNFTLoggedInWindowManager : MonoBehaviour
 
         logoutBtn.onClick.RemoveAllListeners();
         logoutBtn.onClick.AddListener(() => HandleLogoutButtonClick());
-
-        portalBtn.onClick.RemoveAllListeners();
-        portalBtn.onClick.AddListener(() => HandlePortalButtonClick());
-
-        walletBtn.onClick.RemoveAllListeners();
-        walletBtn.onClick.AddListener(() => HandleWalletButtonClick());
     }
 
     private void HandleCopyButtonClick()
