@@ -48,16 +48,17 @@ public static class RNFTLogger
     {
         Debug.Log("Amplitude event failed to send");
     }
-    else
-    {
-        Debug.Log("Amplitude event sent");
-    }
 }
 
 
     // function to log the event
     public static void LogEvent(string eventType, Dictionary<string, string> eventProperties)
     {
+
+#if UNITY_EDITOR
+        Debug.Log("Amplitude event logged: " + eventType);
+        return;
+#endif
         RNFTAmplitudeEvent amplitudeEvent = GetEvent(eventType, eventProperties);
         LogEventToAmplitude(amplitudeEvent);
     }
