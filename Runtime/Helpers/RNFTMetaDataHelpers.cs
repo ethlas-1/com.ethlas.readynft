@@ -118,6 +118,7 @@ public class RNFTMetaDataHelpers
     public RNFTAmplitudeEvent ConvertMetadataToAmplitudeEvent(ReadyNFTMetaData metadata) 
     {
         RNFTAmplitudeEvent amplitudeEvent = new RNFTAmplitudeEvent();
+        amplitudeEvent.user_id = metadata.deviceId;
         amplitudeEvent.country = metadata.country;
         amplitudeEvent.device_id = metadata.deviceId;
         amplitudeEvent.device_brand = metadata.deviceBrand;
