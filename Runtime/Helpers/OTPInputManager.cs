@@ -218,6 +218,7 @@ public class OTPInputManager : MonoBehaviour
             RNFTUIManager.Instance?.ShowUserProfile();
 
             emailField.text = "";
+            ResetOTPInput();
 
             isLoggingIn = false;
         }

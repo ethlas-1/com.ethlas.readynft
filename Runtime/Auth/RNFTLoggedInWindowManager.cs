@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
 
@@ -10,7 +8,7 @@ public class RNFTLoggedInWindowManager : MonoBehaviour
     [SerializeField] private Button logoutBtn;
     [SerializeField] private Text emailText;
     [SerializeField] private Text walletText;
-
+    
     private void OnEnable() 
     {
         SetupPanel();
@@ -19,6 +17,12 @@ public class RNFTLoggedInWindowManager : MonoBehaviour
 
     private void SetupPanel()
     {
+        if (!RNFTAuthManager.Instance)
+        {
+            Debug.Log("auth manager is not instantiated");
+            return;
+        };
+
         if (RNFTAuthManager.Instance.IsUserLoggedIn)
         {
             emailText.text = RNFTAuthManager.Instance.userDetials.email;

@@ -15,9 +15,12 @@ public class RNFTLoginWindowManager : MonoBehaviour
     [SerializeField] private InputField email;
     [SerializeField] private Button loginButton;
     [SerializeField] private Button generateOTPButton;
+    [SerializeField] private Button learnMoreButton;
     [SerializeField] private Text helpText;
     [SerializeField] private GameObject loginWindow;
     [SerializeField] private GameObject otpWindow;
+    [SerializeField] private GameObject learnMorePopup;
+
 
     // submitted email and the session class vaiables
     public string submittedEmail;
@@ -44,7 +47,7 @@ public class RNFTLoginWindowManager : MonoBehaviour
 
     void Start()
     {
-        SetupGenerateOTPButton();
+        SetupButtons();
     }
 
     void OnEnable()
@@ -75,10 +78,18 @@ public class RNFTLoginWindowManager : MonoBehaviour
     }
 
     // function to setup listeners for the generate otp button
-    private void SetupGenerateOTPButton()
+    private void SetupButtons()
     {
         generateOTPButton.onClick.RemoveAllListeners();
         generateOTPButton.onClick.AddListener(HandleGenerateOTPButtonClick);
+
+        learnMoreButton.onClick.RemoveAllListeners();
+        learnMoreButton.onClick.AddListener(() => HandleLearnMorePress());
+    }
+
+    private void HandleLearnMorePress ()
+    {
+        learnMorePopup.SetActive(true);
     }
 
     // function to hanlde the generate otp button click 
