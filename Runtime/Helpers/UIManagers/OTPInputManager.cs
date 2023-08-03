@@ -38,12 +38,23 @@ public class OTPInputManager : MonoBehaviour
         backButton.onClick.AddListener(() => HandleBackButtonPress());
     }
 
+    void OnEnable()
+    {
+        RNFTLogger.LogEvent("RNFT_otp_window_show");
+    }
+
+    void OnDisable()
+    {
+        ResetOTPInput();
+    }
+
     private void HandleBackButtonPress()
     {
         RNFTUIManager.Instance?.ShowLoginScreen();
         helpText.text = "";
         helpText.gameObject.SetActive(false);
         ResetOTPInput();
+        RNFTLogger.LogEvent("RNFT_otp_window_backbutton");
     }
 
     private void ResetOTPInput()
@@ -175,6 +186,7 @@ public class OTPInputManager : MonoBehaviour
     // function to handle the login button click
     private async void HandleLoginButtonClick(string submittedEmail, string otp, string session)
     {
+        RNFTLogger.LogEvent("RNFT_otp_window_otp_input_finish");
         if (isLoggingIn)
             return;
 
@@ -226,7 +238,7 @@ public class OTPInputManager : MonoBehaviour
         {
             Debug.Log("One of the required fields is empty");
         }
-
+        RNFTLogger.LogEvent("RNFT_otp_window_otp_success");
         isLoggingIn = false;
     }
 }

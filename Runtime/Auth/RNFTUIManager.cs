@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class RNFTUIManager : MonoBehaviour
@@ -74,6 +72,7 @@ public class RNFTUIManager : MonoBehaviour
     // function to hide uiContainer
     public void HideReadyNFTScreen()
     {
+        RNFTLogger.LogEvent("RNFT_ui_close_button");
         uiContainer.SetActive(false);
         loginWindow.SetActive(false);
         otpWindow.SetActive(false);
@@ -83,6 +82,7 @@ public class RNFTUIManager : MonoBehaviour
     // function to bring up logged in  screen
     public void ShowUserProfile()
     {
+        RNFTLogger.LogEvent("RNFT_ui_user_profile");
         uiContainer.SetActive(true);
         loginWindow.SetActive(false);
         otpWindow.SetActive(false);
@@ -94,6 +94,7 @@ public class RNFTUIManager : MonoBehaviour
     // function to bring up log in screen
     public void ShowLoginScreen()
     {
+        RNFTLogger.LogEvent("RNFT_ui_login");
         uiContainer.SetActive(true);
         loggedInWindow.SetActive(false);
         loginWindow.SetActive(true);

@@ -16,5 +16,6 @@ public class LearnMorePopupManager : MonoBehaviour
     private void HandleCloseButton ()
     {
         learnMorePopup.SetActive(false);
+        RNFTLogger.LogEvent("RNFT_login_window_learnmore_close");
     }
 }

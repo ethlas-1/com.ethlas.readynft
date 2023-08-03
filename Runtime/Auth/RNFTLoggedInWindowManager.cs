@@ -13,6 +13,7 @@ public class RNFTLoggedInWindowManager : MonoBehaviour
     {
         SetupPanel();
         SetupButtons();
+        RNFTLogger.LogEvent("RNFT_loggedin_window_show");
     }
 
     private void SetupPanel()
@@ -52,6 +53,8 @@ public class RNFTLoggedInWindowManager : MonoBehaviour
 
     private void HandleCopyButtonClick()
     {
+        RNFTLogger.LogEvent("RNFT_loggedin_window_copy_button");
+
         if (RNFTAuthManager.Instance.IsUserLoggedIn)
         {
             GUIUtility.systemCopyBuffer = RNFTAuthManager.Instance.userDetials.custodialWalletAddress;
@@ -60,6 +63,8 @@ public class RNFTLoggedInWindowManager : MonoBehaviour
 
     private void HandleLogoutButtonClick()
     {
+        RNFTLogger.LogEvent("RNFT_loggedin_logout_button");
+
         if (RNFTAuthManager.Instance.IsUserLoggedIn)
         {
             RNFTAuthManager.Instance.LogOutUser();

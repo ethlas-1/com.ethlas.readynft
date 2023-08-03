@@ -55,6 +55,8 @@ public class RNFTLoginWindowManager : MonoBehaviour
         isOTPRunning = false;
         helpText.gameObject.SetActive(false);
         generateOTPButton.interactable = true;
+
+        RNFTLogger.LogEvent("RNFT_login_window_show");
     }
 
     void OnDisable()
@@ -90,11 +92,13 @@ public class RNFTLoginWindowManager : MonoBehaviour
     private void HandleLearnMorePress ()
     {
         learnMorePopup.SetActive(true);
+        RNFTLogger.LogEvent("RNFT_login_window_learnmore_open");
     }
 
     // function to hanlde the generate otp button click 
     private void HandleGenerateOTPButtonClick()
     {
+        RNFTLogger.LogEvent("RNFT_login_window_continue_start");
         helpText.gameObject.SetActive(false);
 
         // convert the email to all lower case
@@ -142,6 +146,8 @@ public class RNFTLoginWindowManager : MonoBehaviour
             HandleGenerateOTPButtonClick();
             return;
         }
+
+        RNFTLogger.LogEvent("RNFT_login_window_continue_end");
 
         session = _session;
         submittedEmail = _submittedEmail;
