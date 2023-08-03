@@ -25,8 +25,6 @@ public class OTPInputManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        otp1.Select();
-
         otp1.onValueChanged.AddListener(onValueChangeHanlder1);
         otp2.onValueChanged.AddListener(onValueChangeHanlder2);
         otp3.onValueChanged.AddListener(onValueChangeHanlder3);
@@ -40,6 +38,7 @@ public class OTPInputManager : MonoBehaviour
 
     void OnEnable()
     {
+        otp1.Select();
         RNFTLogger.LogEvent("RNFT_otp_window_show");
     }
 
