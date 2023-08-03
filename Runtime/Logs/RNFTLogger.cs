@@ -52,13 +52,18 @@ public static class RNFTLogger
 
 
     // function to log the event
-    public static void LogEvent(string eventType, Dictionary<string, string> eventProperties)
+    public static void LogEvent(string eventType, Dictionary<string, string> eventProperties = null)
     {
-
 #if UNITY_EDITOR
-        Debug.Log("Amplitude event logged: " + eventType);
-        return;
+    Debug.Log("Amplitude event logged: " + eventType);
+    return;
 #endif
+
+        if (eventProperties == null)
+        {
+            eventProperties = new Dictionary<string, string>();
+        }
+
         RNFTAmplitudeEvent amplitudeEvent = GetEvent(eventType, eventProperties);
         LogEventToAmplitude(amplitudeEvent);
     }
