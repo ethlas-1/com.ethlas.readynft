@@ -10,6 +10,7 @@ public class RNFTUIManager : MonoBehaviour
     [SerializeField] private Button loginWithRNFTButton;
     [SerializeField] private GameObject uiContainer;
     [SerializeField] private GameObject loginWindow;
+    [SerializeField] private GameObject otpWindow;
     [SerializeField] private GameObject loggedInWindow;
     [SerializeField] private Button bgBtn;
     [SerializeField] private Button closeButton;
@@ -75,6 +76,7 @@ public class RNFTUIManager : MonoBehaviour
     {
         uiContainer.SetActive(false);
         loginWindow.SetActive(false);
+        otpWindow.SetActive(false);
         loggedInWindow.SetActive(false);
     }
 
@@ -83,6 +85,7 @@ public class RNFTUIManager : MonoBehaviour
     {
         uiContainer.SetActive(true);
         loginWindow.SetActive(false);
+        otpWindow.SetActive(false);
         loggedInWindow.SetActive(true);
 
         OnShowRNFTLoggedIn?.Invoke();
@@ -94,6 +97,7 @@ public class RNFTUIManager : MonoBehaviour
         uiContainer.SetActive(true);
         loggedInWindow.SetActive(false);
         loginWindow.SetActive(true);
+        otpWindow.SetActive(false);
 
         OnShowRNFTLogin?.Invoke();
     }

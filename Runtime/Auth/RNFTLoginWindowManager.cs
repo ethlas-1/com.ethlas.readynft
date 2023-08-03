@@ -7,32 +7,43 @@ using System;
 
 public class RNFTLoginWindowManager : MonoBehaviour
 {
+    public static RNFTLoginWindowManager Instance { get; private set; }
+
     public System.Action<bool> OnUserLoginCallback;
 
 
     [SerializeField] private InputField email;
-    [SerializeField] private InputField otp;
     [SerializeField] private Button loginButton;
-    [SerializeField] private Button createButton;
     [SerializeField] private Button generateOTPButton;
-    [SerializeField] private Text otpText;
     [SerializeField] private Text helpText;
+    [SerializeField] private GameObject loginWindow;
+    [SerializeField] private GameObject otpWindow;
 
     // submitted email and the session class vaiables
     public string submittedEmail;
     public string session;
-    private string idToken;
-    private string accessToken;
-    private string refreshToken;
 
     private bool isOTPRunning = false;
     private float timeMax = 30f;
     private float timeCounter = 0f;
-    private bool isLoggingIn = false;
+
+    void Awake()
+    {
+        Debug.Log("[RNFT] RNFTLoginWindowManager Awake!");
+
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
-        SetupLoginButton();
         SetupGenerateOTPButton();
     }
 
@@ -41,12 +52,10 @@ public class RNFTLoginWindowManager : MonoBehaviour
         isOTPRunning = false;
         helpText.gameObject.SetActive(false);
         generateOTPButton.interactable = true;
-        otpText.text = "Get Code";
     }
 
     void OnDisable()
     {
-        otp.text = "";
     }
 
     private void Update()
@@ -59,11 +68,9 @@ public class RNFTLoginWindowManager : MonoBehaviour
         {
             isOTPRunning = false;
             generateOTPButton.interactable = true;
-            otpText.text = "Get Code";
         }
         else
         {
-            otpText.text = "In " + Mathf.CeilToInt(timeCounter) + "s";
         }
     }
 
@@ -72,16 +79,6 @@ public class RNFTLoginWindowManager : MonoBehaviour
     {
         generateOTPButton.onClick.RemoveAllListeners();
         generateOTPButton.onClick.AddListener(HandleGenerateOTPButtonClick);
-    }
-
-    // function to setup listeners for the login button
-    private void SetupLoginButton()
-    {
-        loginButton.onClick.RemoveAllListeners();
-        loginButton.onClick.AddListener(HandleLoginButtonClick);
-
-        createButton.onClick.RemoveAllListeners();
-        createButton.onClick.AddListener(HandleLoginButtonClick);
     }
 
     // function to hanlde the generate otp button click 
@@ -97,22 +94,32 @@ public class RNFTLoginWindowManager : MonoBehaviour
             return;
         }
 
+        if(!IsValidEmail(_submittedEmail))
+        {
+            helpText.text = "Please make sure provided email is correct.";
+            helpText.gameObject.SetActive(true);
+
+            return;
+        }
+
         string _session;
         // check if the error thrown is due to the cognito user not existing using a try catch
 
         try
-        {
-            helpText.text = "Check your email for the OTP";
-            helpText.gameObject.SetActive(true);
+        {            
             _session = RNFTAuthHelpers.SignInUser(_submittedEmail);
 
             isOTPRunning = true;
             timeCounter = timeMax;
             generateOTPButton.interactable = false;
+            loginWindow.SetActive(false);
+            otpWindow.SetActive(true);
+            helpText.text = "Check your email for the OTP.";
+            helpText.gameObject.SetActive(true);
         }
         catch (Exception e)
         {
-            // check if eroor is due to user not existing
+            // check if error is due to user not existing
 
             if (!e.Message.Contains("User does not exist"))
             {
@@ -129,64 +136,23 @@ public class RNFTLoginWindowManager : MonoBehaviour
         submittedEmail = _submittedEmail;
     }
 
-    // function to handle the login button click
-    private async void HandleLoginButtonClick()
+    bool IsValidEmail(string email)
     {
-        if (isLoggingIn)
-            return;
+        var trimmedEmail = email.Trim();
 
-        helpText.gameObject.SetActive(false);
-
-        // submitted email should not be "" or null
-        if (otp.text != "" && submittedEmail != "" && submittedEmail != null)
+        if (trimmedEmail.EndsWith("."))
         {
-            isLoggingIn = true;
-            
-            RNFTAuthTokensType tokens = RNFTAuthHelpers.VerifyUserOTP(submittedEmail, otp.text, session);
-            string accessToken = tokens.AccessToken;
-
-            if (accessToken == "" || accessToken == null)
-            {
-                helpText.text = "Invalid OTP";
-                helpText.gameObject.SetActive(true);
-                otp.text = "";
-                OnUserLoginCallback?.Invoke(false);
-                isLoggingIn = false;
-                return;
-
-            }
-
-            // get the user details
-            RNFTUserDetails userDetails = RNFTAuthHelpers.GetUserDetails(accessToken);
-            string uid = userDetails.UID;
-
-            // ensure that uid is not an empty string or null
-            if (uid == "" || uid == null)
-            {
-                OnUserLoginCallback?.Invoke(false);
-                isLoggingIn = false;
-                return;
-            }
-
-            OnUserLoginCallback?.Invoke(true);
-            RNFTAuthSessionHelpers.UpdateAuthSessionData(tokens);
-            RNFTUserDetails userDetailsFromDB = await RNFTAuthHelpers.FetchUserDetailsFromDB(uid, submittedEmail);
-            RNFTAuthManager.Instance?.SetUserDetails(userDetailsFromDB);
-            RNFTAuthManager.Instance?.SetTokens(tokens);
-            RNFTAuthManager.Instance?.SetUserLoggedInStatus(true);
-            RNFTUIManager.Instance?.ShowUserProfile();
-
-            email.text = "";
-            otp.text = "";
-
-            isLoggingIn = false;
+            return false;
         }
-        else
+        try
         {
-            Debug.Log("One of the required fields is empty");
+            var addr = new System.Net.Mail.MailAddress(email);
+            return addr.Address == trimmedEmail;
         }
-
-        isLoggingIn = false;
+        catch
+        {
+            return false;
+        }
     }
 }
 
