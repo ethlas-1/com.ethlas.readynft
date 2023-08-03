@@ -115,4 +115,16 @@ public class RNFTMetaDataHelpers
         return metaData;
     }
 
+    public RNFTAmplitudeEvent ConvertMetadataToAmplitudeEvent(ReadyNFTMetaData metadata) 
+    {
+        RNFTAmplitudeEvent amplitudeEvent = new RNFTAmplitudeEvent();
+        amplitudeEvent.country = metadata.country;
+        amplitudeEvent.device_id = metadata.deviceId;
+        amplitudeEvent.device_brand = metadata.deviceBrand;
+        amplitudeEvent.device_manufacturer = metadata.deviceManufacturer;
+        amplitudeEvent.device_model = metadata.deviceModel;
+        amplitudeEvent.os_name = metadata.osName;
+        amplitudeEvent.os_version = metadata.osVersion;
+        return amplitudeEvent;
+    }
 }
