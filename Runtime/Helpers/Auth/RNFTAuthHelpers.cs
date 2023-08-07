@@ -220,7 +220,7 @@ public static class RNFTAuthHelpers
         }
     }
 
-    public static bool IsUserLoggedIn(RNFTAuthTokensType tokens)
+    public static (bool, RNFTAuthTokensType) IsUserLoggedIn(RNFTAuthTokensType tokens)
     {
         string accessToken = tokens.AccessToken;
         string refreshToken = tokens.RefreshToken;
@@ -228,40 +228,34 @@ public static class RNFTAuthHelpers
         // if the access token is null, the user is not logged in
         if (accessToken == null || accessToken == "")
         {
-            return false;
+            return (false, new RNFTAuthTokensType());
         }
 
         if (refreshToken == null || refreshToken == "")
         {
-            return false;
+            return (false, new RNFTAuthTokensType());
         }
 
         // check if the access token is still valid. if not, refersh the access token using the refresh token
         try
         {
             RNFTUserDetails userDetails = GetUserDetails(accessToken);
-            return true;
+            return (true, tokens);
         }
         catch (Exception e)
         {
-            if (e.Message.Contains("NotAuthorizedException"))
+            if (e.Message.Contains("NotAuthorizedException") || e.Message.Contains("Access Token has expired"))
             {
                 // refresh the access token
                 RNFTAuthTokensType newTokens = RefreshAccessToken(tokens);
                 string _accessToken = newTokens.AccessToken;
                 string _refreshToken = newTokens.RefreshToken;
                 string _idToken = newTokens.IdToken;
-
-                if (_accessToken == "" || _refreshToken == "" || _idToken == "")
-                {
-                    return false;
-                }
-
-                return true;
+                return (true, newTokens);
             }
             else
             {
-                return false;
+                return (false, new RNFTAuthTokensType());
             }
         }
     }
@@ -283,7 +277,6 @@ public static class RNFTAuthHelpers
         {
             // revoke the access token
             providerClient.GlobalSignOutAsync(globalSignOutRequest);
-
             Debug.Log("[RNFT] The access token has been revoked.");
         }
         catch (Exception e)

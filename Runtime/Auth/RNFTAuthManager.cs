@@ -43,13 +43,14 @@ public class RNFTAuthManager : MonoBehaviour
             return;
         }
 
-        bool _isUserLoggedIn = RNFTAuthHelpers.IsUserLoggedIn(tokens);
+        var (_isUserLoggedIn, newTokens) = RNFTAuthHelpers.IsUserLoggedIn(tokens);
+        SetTokens(newTokens);
+        RNFTAuthSessionHelpers.UpdateAuthSessionData(newTokens);
 
         if (_isUserLoggedIn)
         {
             Debug.Log("[RNFT] Logged in user detected");
-            this.tokens = tokens;
-            RNFTUserDetails _userDetials = RNFTAuthHelpers.GetUserDetails(tokens.AccessToken);
+            RNFTUserDetails _userDetials = RNFTAuthHelpers.GetUserDetails(newTokens.AccessToken);
 
             RNFTUserDetails userDetailsFromDB = await RNFTAuthHelpers.FetchUserDetailsFromDB(_userDetials.UID, _userDetials.email);
             this.userDetials = userDetailsFromDB;
