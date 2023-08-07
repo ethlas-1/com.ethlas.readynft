@@ -106,12 +106,14 @@ public class RNFTLoginWindowManager : MonoBehaviour
         if (_submittedEmail == "")
         {
             Debug.Log("[RNFT] Email field is empty");
+            helpText.text = "Email field is empty";
+            helpText.gameObject.SetActive(true);
             return;
         }
 
         if (!IsValidEmail(_submittedEmail))
         {
-            helpText.text = "Please make sure provided email is correct.";
+            helpText.text = "Please make sure provided email is correct";
             helpText.gameObject.SetActive(true);
 
             return;
@@ -129,8 +131,9 @@ public class RNFTLoginWindowManager : MonoBehaviour
             generateOTPButton.interactable = false;
             loginWindow.SetActive(false);
             otpWindow.SetActive(true);
-            helpText.text = "Check your email for the OTP.";
-            helpText.gameObject.SetActive(true);
+
+            helpText.text = "";
+            helpText.gameObject.SetActive(false);
         }
         catch (Exception e)
         {

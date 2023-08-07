@@ -10,7 +10,6 @@ public class RNFTUIManager : MonoBehaviour
     [SerializeField] private GameObject loginWindow;
     [SerializeField] private GameObject otpWindow;
     [SerializeField] private GameObject loggedInWindow;
-    [SerializeField] private Button bgBtn;
     [SerializeField] private Button closeButton;
 
     public System.Action OnShowRNFTLogin;
@@ -46,9 +45,6 @@ public class RNFTUIManager : MonoBehaviour
     {
         loginWithRNFTButton.onClick.RemoveAllListeners();
         loginWithRNFTButton.onClick.AddListener(ShowReadyNFTScreen);
-
-        // bgBtn.onClick.RemoveAllListeners();
-        // bgBtn.onClick.AddListener(HideReadyNFTScreen);
 
         closeButton.onClick.RemoveAllListeners();
         closeButton.onClick.AddListener(HideReadyNFTScreen);
