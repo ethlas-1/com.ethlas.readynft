@@ -54,8 +54,6 @@ public static class RNFTAuthHelpers
     {
         try
         {
-
-
             // create a response to the auth challenge
             Amazon.CognitoIdentityProvider.Model.RespondToAuthChallengeRequest authChallengeResponse = new Amazon.CognitoIdentityProvider.Model.RespondToAuthChallengeRequest();
 
@@ -83,6 +81,15 @@ public static class RNFTAuthHelpers
             Amazon.CognitoIdentityProvider.Model.RespondToAuthChallengeResponse authChallengeResponseResult
                 = providerClient.RespondToAuthChallengeAsync(authChallengeResponse).Result;
 
+            // check if the authentication result attribute exists before trying to access it
+            if (authChallengeResponseResult.AuthenticationResult == null)
+            {
+                Debug.Log("[RNFT] The authentication result is null.");
+                string newSession = authChallengeResponseResult.Session;
+                RNFTAuthTokensType failedAttemptRes = new RNFTAuthTokensType();
+                failedAttemptRes.Session = newSession;
+                return failedAttemptRes;
+            }
 
             // get the authentication result
             Amazon.CognitoIdentityProvider.Model.AuthenticationResultType authResult = authChallengeResponseResult.AuthenticationResult;
@@ -91,7 +98,6 @@ public static class RNFTAuthHelpers
             string idToken = authResult.IdToken;
             string accessToken = authResult.AccessToken;
             string refreshToken = authResult.RefreshToken;
-
 
             // log the response challenge type
             Debug.Log("[RNFT] The custom challenge has been responded to.");
@@ -103,7 +109,7 @@ public static class RNFTAuthHelpers
         }
         catch (Exception e)
         {
-            Debug.Log("[RNFT] Error: " + e.Message);
+            Debug.Log("[RNFT] OTP verification Error: " + e.ToString());
             RNFTAuthTokensType res = new RNFTAuthTokensType();
             return res;
         }

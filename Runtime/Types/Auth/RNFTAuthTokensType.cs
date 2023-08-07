@@ -20,6 +20,10 @@ public class RNFTAuthTokensType
     [JsonProperty("RefreshToken")]
     public string RefreshToken { get; set; } = "";
 
+	[Preserve]
+	[JsonProperty("Session")]
+	public string Session { get; set; } = ""; // the session that is used to log the user in
+
 	public RNFTAuthTokensType()
 	{
 		// default constructor
@@ -30,6 +34,14 @@ public class RNFTAuthTokensType
 		this.IdToken = idToken;
 		this.AccessToken = accessToken;
 		this.RefreshToken = refreshToken;
-	}	
+	}
+
+	public RNFTAuthTokensType(string idToken, string accessToken, string refreshToken, string session)
+	{
+		this.IdToken = idToken;
+		this.AccessToken = accessToken;
+		this.RefreshToken = refreshToken;
+		this.Session = session;
+	}
 }
 

@@ -89,7 +89,7 @@ public class RNFTLoginWindowManager : MonoBehaviour
         learnMoreButton.onClick.AddListener(() => HandleLearnMorePress());
     }
 
-    private void HandleLearnMorePress ()
+    private void HandleLearnMorePress()
     {
         learnMorePopup.SetActive(true);
         RNFTLogger.LogEvent("RNFT_login_window_learnmore_open");
@@ -109,7 +109,7 @@ public class RNFTLoginWindowManager : MonoBehaviour
             return;
         }
 
-        if(!IsValidEmail(_submittedEmail))
+        if (!IsValidEmail(_submittedEmail))
         {
             helpText.text = "Please make sure provided email is correct.";
             helpText.gameObject.SetActive(true);
@@ -121,7 +121,7 @@ public class RNFTLoginWindowManager : MonoBehaviour
         // check if the error thrown is due to the cognito user not existing using a try catch
 
         try
-        {            
+        {
             _session = RNFTAuthHelpers.SignInUser(_submittedEmail);
 
             isOTPRunning = true;
@@ -171,6 +171,14 @@ public class RNFTLoginWindowManager : MonoBehaviour
             return false;
         }
     }
+
+    // function to set the session 
+    public void SetSession(string _session)
+    {
+        session = _session;
+    }
+
 }
+
 
 

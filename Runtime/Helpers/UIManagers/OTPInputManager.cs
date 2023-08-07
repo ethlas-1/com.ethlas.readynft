@@ -208,6 +208,12 @@ public class OTPInputManager : MonoBehaviour
                 helpText.gameObject.SetActive(true);
                 OnUserLoginCallback?.Invoke(false);
                 isLoggingIn = false;
+
+                if (tokens.Session != null && tokens.Session != "")
+                {
+                    RNFTLoginWindowManager.Instance?.SetSession(tokens.Session);
+                }
+
                 return;
             }
 
