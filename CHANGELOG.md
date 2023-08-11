@@ -31,3 +31,5 @@ Features
 Features
 
   - logging from the sdk to collect crash reports (if any) and to track usage
+  - updated copy and visuals for the login flow
+  - a few bug fixes
