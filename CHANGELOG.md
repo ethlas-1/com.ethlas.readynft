@@ -24,3 +24,10 @@ Features
   - passwordless authentication for users (they can sign in with otp)
   - creation of a custodial wallet for the user on the backend
   - gassless minting of nfts - on bsc chain
+
+
+## 1.1.1
+
+Features
+
+  - logging from the sdk to collect crash reports (if any) and to track usage
