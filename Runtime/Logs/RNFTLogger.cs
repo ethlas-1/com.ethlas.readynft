@@ -21,6 +21,10 @@ public static class RNFTLogger
         RNFTAmplitudeEvent amplitudeEvent = metaDataHelpers.ConvertMetadataToAmplitudeEvent(metadata);
         amplitudeEvent.event_properties = eventProperties;
         amplitudeEvent.event_type = eventType;
+
+        // add the app version and the bundle identifier to the event properties
+        amplitudeEvent.event_properties.Add("app_version", metadata.appVersion);
+        amplitudeEvent.event_properties.Add("bundle_identifier", metadata.bundleIdentifier);
         return amplitudeEvent;
     }
 
