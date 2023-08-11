@@ -64,6 +64,8 @@ public class FetchOwnedNFTsRequestData : ReadyNFTMetaData
         deviceModel = _readyNFTMetaData.deviceModel;
         osName = _readyNFTMetaData.osName;
         osVersion = _readyNFTMetaData.osVersion;
+        appVersion = _readyNFTMetaData.appVersion;
+        bundleIdentifier = _readyNFTMetaData.bundleIdentifier;
     }
 }
 

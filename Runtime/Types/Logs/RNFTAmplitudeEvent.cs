@@ -44,6 +44,14 @@ public class RNFTAmplitudeEvent
     [JsonProperty("event_type")]
     public string event_type { get; set; } = "default_eventType";
 
+    (Preserve)
+    [JsonProperty("app_version")]
+    public string app_version { get; set; } = "default_appVersion";
+    
+    [Preserve]
+    [JsonProperty("bundle_identifier")]
+    public string bundle_identifier { get; set; } = "default_bundle_identifier";
+
     [Preserve]
     [JsonProperty("event_properties")]
     public Dictionary<string, string> event_properties { get; set; } = new Dictionary<string, string>();

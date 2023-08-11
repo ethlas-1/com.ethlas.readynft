@@ -36,6 +36,16 @@ public class ReadyNFTMetaData
     [JsonProperty("osVersion")]
     public string osVersion { get; set; } = "default_osVersion";
 
+    // appVersion
+    [Preserve]
+    [JsonProperty("appVersion")]
+    public string appVersion { get; set; } = "default_appVersion";
+
+    // appBundleId
+    [Preserve]
+    [JsonProperty("bundleIdentifier")]
+    public string bundleIdentifier { get; set; } = "default_bundleIdentifier";
+
     public ReadyNFTMetaData()
     {
         // Default constructor
@@ -51,5 +61,18 @@ public class ReadyNFTMetaData
         deviceModel = _deviceModel;
         osName = _osName;
         osVersion = _osVersion;
+    }
+
+    public ReadyNFTMetaData(string _country, string _deviceId, string _deviceBrand, string _deviceManufacturer, string _deviceModel, string _osName, string _osVersion, string _appVersion, string _bundleIdentifier)
+    {
+        country = _country;
+        deviceId = _deviceId;
+        deviceBrand = _deviceBrand;
+        deviceManufacturer = _deviceManufacturer;
+        deviceModel = _deviceModel;
+        osName = _osName;
+        osVersion = _osVersion;
+        appVersion = _appVersion;
+        bundleIdentifier = _bundleIdentifier;
     }
 }

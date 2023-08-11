@@ -101,6 +101,31 @@ public class RNFTMetaDataHelpers
         return version;
     }
 
+    private string GetAppVersion()
+    {
+        string version = "default";
+        string _version = Application.version;
+        if (_version != null && _version != "")
+        {
+            version = _version;
+        }
+
+        return version;
+    }
+
+    private string GetBundleIdentifier()
+    {
+        string identifier = "default";
+        string _identifier = Application.identifier;
+        if (_identifier != null && _identifier != "")
+        {
+            identifier = _identifier;
+        }
+
+        return identifier;
+    }
+
+
     public ReadyNFTMetaData GetMetaData()
     {
         string country = RegionInfo.CurrentRegion.EnglishName;
@@ -110,12 +135,14 @@ public class RNFTMetaDataHelpers
         string deviceModel = GetDeviceModel();
         string osName = GetOperatingSystemName();
         string osVersion = GetOperatingSystemVersion();
+        string appVersion = GetAppVersion();
+        string bundleIdentifier = GetBundleIdentifier();
 
-        ReadyNFTMetaData metaData = new ReadyNFTMetaData(country, deviceId, deviceBrand, deviceManufacturer, deviceModel, osName, osVersion);
+        ReadyNFTMetaData metaData = new ReadyNFTMetaData(country, deviceId, deviceBrand, deviceManufacturer, deviceModel, osName, osVersion, appVersion, bundleIdentifier);
         return metaData;
     }
 
-    public RNFTAmplitudeEvent ConvertMetadataToAmplitudeEvent(ReadyNFTMetaData metadata) 
+    public RNFTAmplitudeEvent ConvertMetadataToAmplitudeEvent(ReadyNFTMetaData metadata)
     {
         RNFTAmplitudeEvent amplitudeEvent = new RNFTAmplitudeEvent();
         amplitudeEvent.user_id = metadata.deviceId;
@@ -126,6 +153,8 @@ public class RNFTMetaDataHelpers
         amplitudeEvent.device_model = metadata.deviceModel;
         amplitudeEvent.os_name = metadata.osName;
         amplitudeEvent.os_version = metadata.osVersion;
+        amplitudeEvent.app_version = metadata.appVersion;
+        amplitudeEvent.bundle_identifier = metadata.bundleIdentifier;
         return amplitudeEvent;
     }
 }
