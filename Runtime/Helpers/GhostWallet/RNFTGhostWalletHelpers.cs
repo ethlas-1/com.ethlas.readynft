@@ -417,6 +417,9 @@ public static class RNFTGhostWalletHelpers
                 string requestDataJson = JsonConvert.SerializeObject(requestData);
                 HttpContent content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
 
+                // Add the header
+                client.DefaultRequestHeaders.Add("x-api-key", apiKey);
+
                 HttpResponseMessage response = await client.PostAsync(url, content);
 
                 if (response.IsSuccessStatusCode)
