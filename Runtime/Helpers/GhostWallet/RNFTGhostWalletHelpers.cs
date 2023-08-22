@@ -260,25 +260,25 @@ public static class RNFTGhostWalletHelpers
         return false;
     }
 
-    // function to check if a ghost walelt exists or not
+    // function to trigger a transfer wallet address lambda
     public static async Task<bool> BindAccount(string from, string to, string toType)
     {
         // ensure that the from and game id are not empty
         if (string.IsNullOrEmpty(from))
         {
-            Debug.Log("DoesGhostWalletExist: from not set!");
+            Debug.Log("BindAccount: from not set!");
             return false;
         }
 
         if (string.IsNullOrEmpty(to))
         {
-            Debug.Log("DoesGhostWalletExist: to not set!");
+            Debug.Log("BindAccount: to not set!");
             return false;
         }
 
         if (string.IsNullOrEmpty(toType))
         {
-            Debug.Log("DoesGhostWalletExist: toType not set!");
+            Debug.Log("BindAccount: toType not set!");
             return false;
         }
 
@@ -296,22 +296,70 @@ public static class RNFTGhostWalletHelpers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    string responseString = await response.Content.ReadAsStringAsync();
-                    RNFTDoesGhostWalletExistResponse result = JsonConvert.DeserializeObject<RNFTDoesGhostWalletExistResponse>(responseString);
-                    return result.data.exists;
+                    return true;
                 }
                 else
                 {
-                    Debug.Log("DoesGhostWalletExist: Request failed: " + response.StatusCode);
+                    Debug.Log("BindAccount: Request failed: " + response.StatusCode);
                 }
                 
             }
             catch (Exception e)
             {
-                Debug.Log("DoesGhostWalletExist: Request failed: " + e.Message);
+                Debug.Log("BindAccount: Request failed: " + e.Message);
             }
         }
 
+        return false;
+    }
+
+    // function to login a ghost wallet
+    public static async Task<bool> WalletLogin(string uuid, string gameId)
+    {
+        // ensure that the uuid and game id are not empty
+        if (string.IsNullOrEmpty(uuid))
+        {
+            Debug.Log("WalletLogin: uuid not set!");
+            return false;
+        }
+
+        if (string.IsNullOrEmpty(gameId))
+        {
+            Debug.Log("WalletLogin: Game ID not set!");
+            return false;
+        }
+
+        string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_WALLET_LOGIN_ROUTE;
+
+        using (HttpClient client = new HttpClient())
+        {
+            try
+            {
+                RNFTWalletLoginRequest requestData = new RNFTWalletLoginRequest(uuid, gameId);
+                string requestDataJson = JsonConvert.SerializeObject(requestData);
+                HttpContent content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await client.PostAsync(url, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseString = await response.Content.ReadAsStringAsync();
+                    RNFTWalletLoginResponse result = JsonConvert.DeserializeObject<RNFTWalletLoginResponse>(responseString);
+                    return result.data.loggedIn;
+                }
+                else
+                {
+                    Debug.Log("WalletLogin: Request failed: " + response.StatusCode);
+                }
+
+            }
+            catch (Exception e)
+            {
+                Debug.Log("WalletLogin: Request failed: " + e.Message);
+            }
+        }
+
+        // default return value
         return false;
     }
 }
