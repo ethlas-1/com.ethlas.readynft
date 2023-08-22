@@ -13,17 +13,17 @@ public class RNFTAuthManager : MonoBehaviour
     public RNFTAuthTokensType tokens;
     public RNFTUserDetails userDetials;
     private string RNFTGhostWalletAddress = "";
-    private string ExternalUid;
+    private string ExternalUid = "";
     private bool RNFTAuthCheckDone = false;
-    
+
     // Use this for initialization
     void Start()
-	{
-		CheckUserAuth();		
-	}
+    {
+        CheckUserAuth();
+    }
 
-	void Awake()
-	{
+    void Awake()
+    {
         Debug.Log("[RNFT] Auth Manager Awake!");
 
         if (Instance == null)
@@ -37,9 +37,9 @@ public class RNFTAuthManager : MonoBehaviour
         }
     }
 
-	async void CheckUserAuth()
-	{
-        RNFTAuthTokensType tokens =  await RNFTAuthSessionHelpers.ReadAuthDataFileAsync();
+    async void CheckUserAuth()
+    {
+        RNFTAuthTokensType tokens = await RNFTAuthSessionHelpers.ReadAuthDataFileAsync();
 
         if (tokens.AccessToken == "" || tokens.RefreshToken == "")
         {
@@ -92,12 +92,14 @@ public class RNFTAuthManager : MonoBehaviour
         // if the user has a ready nft wallet, then sign in on chain with the ready nft wallet
         // and transfer the assets from the ghost wallet to the ready nft wallet 
         string _custodialWalletAddress = this.userDetials.custodialWalletAddress;
-        bool isRNFTWalletPresent = _custodialWalletAddress != "" && _custodialWalletAddress != null && _custodialWalletAddress;
-        if (this.RNFTGhostWalletAddress && isRNFTWalletPresent) 
+        bool isRNFTWalletPresent = _custodialWalletAddress != "" && _custodialWalletAddress != null;
+        if (this.RNFTGhostWalletAddress != "" && isRNFTWalletPresent)
         {
             // TODO: transfer the assets from the ghost wallet to the ready nft wallet (dont await)
             // TODO: sign in on chain with the ready nft wallet (dont await)
-        } else {
+        }
+        else
+        {
             // TODO: transfer ownership of the ghost wallet to the rnft user (await)
         }
     }
@@ -123,17 +125,42 @@ public class RNFTAuthManager : MonoBehaviour
             return;
         }
 
-        if (this.RNFTAuthCheckDone && this.IsUserLoggedIn) {
-            // user details have already been fethced and strored in the user details 
-            // trigger the on chain rnft wallet sign in method
-            // TODO: implement the on chain rnft wallet sign in method
-        } else {
-            // use the euid to fetch the ghost wallet 
-            // TODO: call the fetch ghost wallet method here
-            // store the ghost wallet in the ghost wallet address field
-            // trigger the ghost wallet on chain sing in method
-            // TODO: implement the ghost wallet on chain sing in method
+        // if ExternalUid is not null or empty, then there is a change in euid
+        bool isEUIDChanging = this.ExternalUid != "" && this.ExternalUid != null;
+        if (isEUIDChanging)
+        {
+            // TODO: does ghost wallet exist for external uid (the new one)
+            bool doesGhostWalletExistForNewEUID = false;
+
+            if (doesGhostWalletExistForNewEUID)
+            {
+                // TODO: transfer the assets from the ghost wallet to the ready nft wallet (dont await)
+                // TODO: sign in on chain with the ready nft wallet (dont await)
+            } else {
+                // TODO: trnasfer ownership of the ghost wallet from euid 1 to euid 2 (await)
+            }
+
         }
+        else
+        {
+            if (this.RNFTAuthCheckDone && this.IsUserLoggedIn)
+            {
+                // user details have already been fethced and strored in the user details 
+                // trigger the on chain rnft wallet sign in method
+                // TODO: implement the on chain rnft wallet sign in method
+            }
+            else
+            {
+                // use the euid to fetch the ghost wallet 
+                // TODO: call the fetch ghost wallet method here
+                // store the ghost wallet in the ghost wallet address field
+                // trigger the ghost wallet on chain sing in method
+                // TODO: implement the ghost wallet on chain sing in method
+            }
+
+        }
+
+
 
         this.ExternalUid = externalUid;
     }
