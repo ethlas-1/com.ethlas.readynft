@@ -78,6 +78,7 @@ public static class RNFTGhostWalletHelpers
             return null;
         }
 
+        string apiKey = RNFTAuthManager.Instance?.apiKey;
         string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_FETCH_GHOST_WALLET_ROUTE;
 
         using (HttpClient client = new HttpClient())
@@ -87,6 +88,9 @@ public static class RNFTGhostWalletHelpers
                 RNFTFetchGhostWalletRequest requestData = new RNFTFetchGhostWalletRequest(euid, gameId);
                 string requestDataJson = JsonConvert.SerializeObject(requestData);
                 HttpContent content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+
+                // Add the header
+                client.DefaultRequestHeaders.Add("x-api-key", apiKey);
 
                 HttpResponseMessage response = await client.PostAsync(url, content);
 
@@ -128,6 +132,7 @@ public static class RNFTGhostWalletHelpers
             return false;
         }
 
+        string apiKey = RNFTAuthManager.Instance?.apiKey;
         string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_TRF_GHOST_WALLET_TO_RNFT_USER_ROUTE;
 
         using (HttpClient client = new HttpClient())
@@ -137,6 +142,9 @@ public static class RNFTGhostWalletHelpers
                 RNFTTrfGWToRNFTUserRequest requestData = new RNFTTrfGWToRNFTUserRequest(euid, uuid);
                 string requestDataJson = JsonConvert.SerializeObject(requestData);
                 HttpContent content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+
+                // Add the header
+                client.DefaultRequestHeaders.Add("x-api-key", apiKey);
 
                 HttpResponseMessage response = await client.PostAsync(url, content);
 
@@ -178,6 +186,7 @@ public static class RNFTGhostWalletHelpers
             return false;
         }
 
+        string apiKey = RNFTAuthManager.Instance?.apiKey;
         string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_GHOST_WALLET_LOGIN_ROUTE;
 
         using (HttpClient client = new HttpClient())
@@ -187,6 +196,9 @@ public static class RNFTGhostWalletHelpers
                 RNFTGhostWalletLoginRequest requestData = new RNFTGhostWalletLoginRequest(euid, gameId);
                 string requestDataJson = JsonConvert.SerializeObject(requestData);
                 HttpContent content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+
+                // add the header
+                client.DefaultRequestHeaders.Add("x-api-key", apiKey);
 
                 HttpResponseMessage response = await client.PostAsync(url, content);
 
@@ -228,6 +240,7 @@ public static class RNFTGhostWalletHelpers
             return false;
         }
 
+        string apiKey = RNFTAuthManager.Instance?.apiKey;
         string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_GHOST_WALLET_LOGIN_ROUTE;
 
         using (HttpClient client = new HttpClient())
@@ -237,6 +250,9 @@ public static class RNFTGhostWalletHelpers
                 RNFTGhostWalletLoginRequest requestData = new RNFTGhostWalletLoginRequest(euid, gameId);
                 string requestDataJson = JsonConvert.SerializeObject(requestData);
                 HttpContent content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+
+                // add the header
+                client.DefaultRequestHeaders.Add("x-api-key", apiKey);
 
                 HttpResponseMessage response = await client.PostAsync(url, content);
 
@@ -286,6 +302,7 @@ public static class RNFTGhostWalletHelpers
             return false;
         }
 
+        string apiKey = RNFTAuthManager.Instance?.apiKey;
         string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_BIND_ACCOUNT;
 
         using (HttpClient client = new HttpClient())
@@ -295,6 +312,9 @@ public static class RNFTGhostWalletHelpers
                 RNFTBindAccountRequest requestData = new RNFTBindAccountRequest(from, to, toType);
                 string requestDataJson = JsonConvert.SerializeObject(requestData);
                 HttpContent content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+
+                // add the header
+                client.DefaultRequestHeaders.Add("x-api-key", apiKey);
 
                 HttpResponseMessage response = await client.PostAsync(url, content);
 
@@ -333,6 +353,7 @@ public static class RNFTGhostWalletHelpers
             return false;
         }
 
+        string apiKey = RNFTAuthManager.Instance?.apiKey;
         string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_WALLET_LOGIN_ROUTE;
 
         using (HttpClient client = new HttpClient())
@@ -342,6 +363,9 @@ public static class RNFTGhostWalletHelpers
                 RNFTWalletLoginRequest requestData = new RNFTWalletLoginRequest(uuid, gameId);
                 string requestDataJson = JsonConvert.SerializeObject(requestData);
                 HttpContent content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+
+                // add the header
+                client.DefaultRequestHeaders.Add("x-api-key", apiKey);
 
                 HttpResponseMessage response = await client.PostAsync(url, content);
 
