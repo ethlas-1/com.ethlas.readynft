@@ -407,6 +407,7 @@ public static class RNFTGhostWalletHelpers
             return false;
         }
 
+        string apiKey = RNFTAuthManager.Instance?.apiKey;
         string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_BIND_ACCOUNT;
 
         using (HttpClient client = new HttpClient())
@@ -416,6 +417,9 @@ public static class RNFTGhostWalletHelpers
                 RNFTEuidTransferRequest requestData = new RNFTEuidTransferRequest(from, to);
                 string requestDataJson = JsonConvert.SerializeObject(requestData);
                 HttpContent content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+
+                // Add the header
+                client.DefaultRequestHeaders.Add("x-api-key", apiKey);
 
                 HttpResponseMessage response = await client.PostAsync(url, content);
 
