@@ -9,6 +9,7 @@ public class RNFTAuthManager : MonoBehaviour
     public static RNFTAuthManager Instance { get; private set; }
     public System.Action<bool> OnUserLoginCallback;
 
+    public string apiKey;
     public bool IsUserLoggedIn = false;
     public RNFTAuthTokensType tokens;
     public RNFTUserDetails userDetials;
