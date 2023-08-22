@@ -407,6 +407,7 @@ public static class RNFTGhostWalletHelpers
             return false;
         }
 
+        string apiKey = RNFTAuthManager.Instance?.apiKey;
         string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_BIND_ACCOUNT;
 
         using (HttpClient client = new HttpClient())
