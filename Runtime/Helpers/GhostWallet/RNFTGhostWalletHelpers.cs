@@ -259,4 +259,59 @@ public static class RNFTGhostWalletHelpers
         callback(false);
         return false;
     }
+
+    // function to check if a ghost walelt exists or not
+    public static async Task<bool> BindAccount(string from, string to, string toType)
+    {
+        // ensure that the from and game id are not empty
+        if (string.IsNullOrEmpty(from))
+        {
+            Debug.Log("DoesGhostWalletExist: from not set!");
+            return false;
+        }
+
+        if (string.IsNullOrEmpty(to))
+        {
+            Debug.Log("DoesGhostWalletExist: to not set!");
+            return false;
+        }
+
+        if (string.IsNullOrEmpty(toType))
+        {
+            Debug.Log("DoesGhostWalletExist: toType not set!");
+            return false;
+        }
+
+        string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_BIND_ACCOUNT;
+
+        using (HttpClient client = new HttpClient())
+        {
+            try
+            {
+                RNFTBindAccountRequest requestData = new RNFTBindAccountRequest(from, to, toType);
+                string requestDataJson = JsonConvert.SerializeObject(requestData);
+                HttpContent content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await client.PostAsync(url, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseString = await response.Content.ReadAsStringAsync();
+                    RNFTDoesGhostWalletExistResponse result = JsonConvert.DeserializeObject<RNFTDoesGhostWalletExistResponse>(responseString);
+                    return result.data.exists;
+                }
+                else
+                {
+                    Debug.Log("DoesGhostWalletExist: Request failed: " + response.StatusCode);
+                }
+                
+            }
+            catch (Exception e)
+            {
+                Debug.Log("DoesGhostWalletExist: Request failed: " + e.Message);
+            }
+        }
+
+        return false;
+    }
 }
