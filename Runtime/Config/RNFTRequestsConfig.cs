@@ -29,4 +29,7 @@ public static class RNFTRequestsConfig
     // API trf ghost wallet to rnft user route
     public const string API_TRF_GHOST_WALLET_TO_RNFT_USER_ROUTE = "/trfGhostWalletToRNFTUser";
 
+    // API ghost wallet login route
+    public const string API_GHOST_WALLET_LOGIN_ROUTE = "/ghostWalletLogin";
+
 }

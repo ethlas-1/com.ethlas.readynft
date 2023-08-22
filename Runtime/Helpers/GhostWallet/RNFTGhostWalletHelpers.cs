@@ -47,7 +47,7 @@ public static class RNFTGhostWalletHelpers
                 {
                     Debug.Log("DoesGhostWalletExist: Request failed: " + response.StatusCode);
                 }
-                
+
             }
             catch (Exception e)
             {
@@ -96,7 +96,7 @@ public static class RNFTGhostWalletHelpers
                 {
                     Debug.Log("FetchGhostWallet: Request failed: " + response.StatusCode);
                 }
-                
+
             }
             catch (Exception e)
             {
@@ -109,7 +109,7 @@ public static class RNFTGhostWalletHelpers
     }
 
     // function to transfer ghost wallet ownership to a rnft user
-    public static async Task<bool> TrfGhostWalletToRNFTUser (string euid, string uuid)
+    public static async Task<bool> TrfGhostWalletToRNFTUser(string euid, string uuid)
     {
         // ensure that the euid and uuid are not empty
         if (string.IsNullOrEmpty(euid))
@@ -146,7 +146,7 @@ public static class RNFTGhostWalletHelpers
                 {
                     Debug.Log("TrfGhostWalletToRNFTUser: Request failed: " + response.StatusCode);
                 }
-                
+
             }
             catch (Exception e)
             {
@@ -155,6 +155,108 @@ public static class RNFTGhostWalletHelpers
         }
 
         // default return value
+        return false;
+    }
+
+    // function to login a ghost wallet
+    public static async Task<bool> GhostWalletLogin(string euid, string gameId)
+    {
+        // ensure that the euid and game id are not empty
+        if (string.IsNullOrEmpty(euid))
+        {
+            Debug.Log("GhostWalletLogin: EUID not set!");
+            return false;
+        }
+
+        if (string.IsNullOrEmpty(gameId))
+        {
+            Debug.Log("GhostWalletLogin: Game ID not set!");
+            return false;
+        }
+
+        string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_GHOST_WALLET_LOGIN_ROUTE;
+
+        using (HttpClient client = new HttpClient())
+        {
+            try
+            {
+                RNFTGhostWalletLoginRequest requestData = new RNFTGhostWalletLoginRequest(euid, gameId);
+                string requestDataJson = JsonConvert.SerializeObject(requestData);
+                HttpContent content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await client.PostAsync(url, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseString = await response.Content.ReadAsStringAsync();
+                    RNFTGhostWalletLoginResponse result = JsonConvert.DeserializeObject<RNFTGhostWalletLoginResponse>(responseString);
+                    return result.data.loggedIn;
+                }
+                else
+                {
+                    Debug.Log("GhostWalletLogin: Request failed: " + response.StatusCode);
+                }
+
+            }
+            catch (Exception e)
+            {
+                Debug.Log("GhostWalletLogin: Request failed: " + e.Message);
+            }
+        }
+
+        // default return value
+        return false;
+    }
+
+    // function to login a ghost wallet - with a callback
+    public static async Task<bool> GhostWalletLoginWithCallback(string euid, string gameId, Action<bool> callback)
+    {
+        // ensure that the euid and game id are not empty
+        if (string.IsNullOrEmpty(euid))
+        {
+            Debug.Log("GhostWalletLogin: EUID not set!");
+            return false;
+        }
+
+        if (string.IsNullOrEmpty(gameId))
+        {
+            Debug.Log("GhostWalletLogin: Game ID not set!");
+            return false;
+        }
+
+        string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_GHOST_WALLET_LOGIN_ROUTE;
+
+        using (HttpClient client = new HttpClient())
+        {
+            try
+            {
+                RNFTGhostWalletLoginRequest requestData = new RNFTGhostWalletLoginRequest(euid, gameId);
+                string requestDataJson = JsonConvert.SerializeObject(requestData);
+                HttpContent content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await client.PostAsync(url, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseString = await response.Content.ReadAsStringAsync();
+                    RNFTGhostWalletLoginResponse result = JsonConvert.DeserializeObject<RNFTGhostWalletLoginResponse>(responseString);
+                    callback(result.data.loggedIn);
+                    return result.data.loggedIn;
+                }
+                else
+                {
+                    Debug.Log("GhostWalletLogin: Request failed: " + response.StatusCode);
+                }
+
+            }
+            catch (Exception e)
+            {
+                Debug.Log("GhostWalletLogin: Request failed: " + e.Message);
+            }
+        }
+
+        // default return value
+        callback(false);
         return false;
     }
 }
