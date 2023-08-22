@@ -36,11 +36,6 @@ public class RNFTBindAccountRequest
 		to = _to;
 		toType = _toType;
 	}
-	{
-		from = _from;
-		to = _to;
-		toType = _toType;
-	}
 }
 
 [Preserve]
