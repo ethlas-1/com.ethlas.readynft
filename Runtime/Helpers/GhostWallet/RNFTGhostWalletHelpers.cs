@@ -107,4 +107,54 @@ public static class RNFTGhostWalletHelpers
         // default return value
         return "";
     }
+
+    // function to transfer ghost wallet ownership to a rnft user
+    public static async Task<bool> TrfGhostWalletToRNFTUser (string euid, string uuid)
+    {
+        // ensure that the euid and uuid are not empty
+        if (string.IsNullOrEmpty(euid))
+        {
+            Debug.Log("TrfGhostWalletToRNFTUser: EUID not set!");
+            return false;
+        }
+
+        if (string.IsNullOrEmpty(uuid))
+        {
+            Debug.Log("TrfGhostWalletToRNFTUser: UUID not set!");
+            return false;
+        }
+
+        string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_TRF_GHOST_WALLET_TO_RNFT_USER_ROUTE;
+
+        using (HttpClient client = new HttpClient())
+        {
+            try
+            {
+                RNFTTrfGWToRNFTUserRequest requestData = new RNFTTrfGWToRNFTUserRequest(euid, uuid);
+                string requestDataJson = JsonConvert.SerializeObject(requestData);
+                HttpContent content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await client.PostAsync(url, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseString = await response.Content.ReadAsStringAsync();
+                    RNFTTrfGWToRNFTUserResponse result = JsonConvert.DeserializeObject<RNFTTrfGWToRNFTUserResponse>(responseString);
+                    return result.data.transferred;
+                }
+                else
+                {
+                    Debug.Log("TrfGhostWalletToRNFTUser: Request failed: " + response.StatusCode);
+                }
+                
+            }
+            catch (Exception e)
+            {
+                Debug.Log("TrfGhostWalletToRNFTUser: Request failed: " + e.Message);
+            }
+        }
+
+        // default return value
+        return false;
+    }
 }
