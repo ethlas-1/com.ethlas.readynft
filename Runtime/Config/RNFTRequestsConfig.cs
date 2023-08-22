@@ -23,4 +23,7 @@ public static class RNFTRequestsConfig
     // API ghost wallet exists route
     public const string API_GHOST_WALLET_EXISTS_ROUTE = "/doesGhostWalletExist";
 
+    // API fetch ghost wallet route
+    public const string API_FETCH_GHOST_WALLET_ROUTE = "/fetchGhostWallet";
+
 }

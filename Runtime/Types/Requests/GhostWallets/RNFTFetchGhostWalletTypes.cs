@@ -44,8 +44,8 @@ public class RNFTFetchGhostWalletResponseData
 
 	// wallet address
 	[Preserve]
-	[JsonProperty("wallet_address")]
-	public string wallet_address { get; set; } = "";
+	[JsonProperty("walletAddress")]
+	public string walletAddress { get; set; } = "";
 
 	// default constructor
 	public RNFTFetchGhostWalletResponseData()
@@ -54,10 +54,10 @@ public class RNFTFetchGhostWalletResponseData
 	}
 
 	// constructor
-	public RNFTFetchGhostWalletResponseData(string _euid, string _wallet_address)
+	public RNFTFetchGhostWalletResponseData(string _euid, string _walletAddress)
 	{
 		euid = _euid;
-		wallet_address = _wallet_address;
+		walletAddress = _walletAddress;
 	}
 }
 
