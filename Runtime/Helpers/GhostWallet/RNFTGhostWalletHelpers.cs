@@ -366,4 +366,51 @@ public static class RNFTGhostWalletHelpers
         // default return value
         return false;
     }
+
+    // function to trigger a transfer wallet address lambda
+    public static async Task<bool> EuidTransfer(string from, string to)
+    {
+        // ensure that the from and game id are not empty
+        if (string.IsNullOrEmpty(from))
+        {
+            Debug.Log("EuidTransfer: from not set!");
+            return false;
+        }
+
+        if (string.IsNullOrEmpty(to))
+        {
+            Debug.Log("EuidTransfer: to not set!");
+            return false;
+        }
+
+        string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_BIND_ACCOUNT;
+
+        using (HttpClient client = new HttpClient())
+        {
+            try
+            {
+                RNFTEuidTransferRequest requestData = new RNFTEuidTransferRequest(from, to);
+                string requestDataJson = JsonConvert.SerializeObject(requestData);
+                HttpContent content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await client.PostAsync(url, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    Debug.Log("EuidTransfer: Request failed: " + response.StatusCode);
+                }
+                
+            }
+            catch (Exception e)
+            {
+                Debug.Log("EuidTransfer: Request failed: " + e.Message);
+            }
+        }
+
+        return false;
+    }
 }
