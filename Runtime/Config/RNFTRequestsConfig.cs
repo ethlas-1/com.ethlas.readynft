@@ -20,4 +20,7 @@ public static class RNFTRequestsConfig
     // API mint nft route
     public const string API_MINT_NFT_ROUTE = "/mintNFT";
 
+    // API ghost wallet exists route
+    public const string API_GHOST_WALLET_EXISTS_ROUTE = "/doesGhostWalletExist";
+
 }
