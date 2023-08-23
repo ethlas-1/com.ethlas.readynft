@@ -9,9 +9,6 @@ public class RNFTAuthManager : MonoBehaviour
     public static RNFTAuthManager Instance { get; private set; }
     public System.Action<bool> OnUserLoginCallback;
 
-    public string apiKey;
-    public string gameId;
-
     public bool IsUserLoggedIn = false;
     public RNFTAuthTokensType tokens;
     public RNFTUserDetails userDetials;
@@ -99,7 +96,7 @@ public class RNFTAuthManager : MonoBehaviour
         if (this.RNFTGhostWalletAddress != "" && isRNFTWalletPresent)
         {
             RNFTGhostWalletHelpers.BindAccount(this.ExternalUid, uuid, "uuid");
-            RNFTGhostWalletHelpers.WalletLogin(uuid, this.gameId);
+            RNFTGhostWalletHelpers.WalletLogin(uuid);
         }
         else
         {
@@ -156,12 +153,12 @@ public class RNFTAuthManager : MonoBehaviour
 
     public async Task<bool> EUIDChangeHandler(string externalUid)
     {
-        bool doesGhostWalletExistForNewEUID = await RNFTGhostWalletHelpers.DoesGhostWalletExist(externalUid, this.gameId);
+        bool doesGhostWalletExistForNewEUID = await RNFTGhostWalletHelpers.DoesGhostWalletExist(externalUid);
 
         if (doesGhostWalletExistForNewEUID)
         {
             RNFTGhostWalletHelpers.BindAccount(this.ExternalUid, externalUid, "euid");
-            RNFTGhostWalletHelpers.GhostWalletLogin(externalUid, this.gameId);
+            RNFTGhostWalletHelpers.GhostWalletLogin(externalUid);
         }
         else
         {
@@ -174,13 +171,13 @@ public class RNFTAuthManager : MonoBehaviour
     {
         if (this.IsUserLoggedIn)
         {
-            RNFTGhostWalletHelpers.WalletLogin(uuid, this.gameId);
+            RNFTGhostWalletHelpers.WalletLogin(uuid);
         }
         else
         {
-            string _ghostWallet = await RNFTGhostWalletHelpers.FetchGhostWallet(externalUid, this.gameId);
+            string _ghostWallet = await RNFTGhostWalletHelpers.FetchGhostWallet(externalUid);
             SetRNFTGhostWalletAddress(_ghostWallet);
-            RNFTGhostWalletHelpers.GhostWalletLogin(externalUid, this.gameId);
+            RNFTGhostWalletHelpers.GhostWalletLogin(externalUid);
         }
 
         return true;

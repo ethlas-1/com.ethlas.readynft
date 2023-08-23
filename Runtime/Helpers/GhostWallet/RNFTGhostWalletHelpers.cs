@@ -10,8 +10,12 @@ using Newtonsoft.Json;
 public static class RNFTGhostWalletHelpers
 {
     // function to check if a ghost walelt exists or not
-    public static async Task<bool> DoesGhostWalletExist(string euid, string gameId)
+    public static async Task<bool> DoesGhostWalletExist(string euid)
     {
+        string apiKey = RNFTManager.Instance?.apiKey;
+        string gameId = RNFTManager.Instance?.gameId;
+
+
         // ensure that the euid and game id are not empty
         if (string.IsNullOrEmpty(euid))
         {
@@ -25,7 +29,12 @@ public static class RNFTGhostWalletHelpers
             return false;
         }
 
-        string apiKey = RNFTAuthManager.Instance?.apiKey;
+        if (string.IsNullOrEmpty(apiKey))
+        {
+            Debug.Log("DoesGhostWalletExist: API key not set!");
+            return false;
+        }
+
         string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_GHOST_WALLET_EXISTS_ROUTE;
 
         using (HttpClient client = new HttpClient())
@@ -64,8 +73,11 @@ public static class RNFTGhostWalletHelpers
     }
 
     // function to fetch ghost wallet 
-    public static async Task<string> FetchGhostWallet(string euid, string gameId)
+    public static async Task<string> FetchGhostWallet(string euid)
     {
+        string apiKey = RNFTAuthManager.Instance?.apiKey;
+        string gameId = RNFTAuthManager.Instance?.gameId;
+
         // ensure that the euid and game id are not empty
         if (string.IsNullOrEmpty(euid))
         {
@@ -79,7 +91,12 @@ public static class RNFTGhostWalletHelpers
             return null;
         }
 
-        string apiKey = RNFTAuthManager.Instance?.apiKey;
+        if (string.IsNullOrEmpty(apiKey))
+        {
+            Debug.Log("FetchGhostWallet: API key not set!");
+            return null;
+        }
+
         string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_FETCH_GHOST_WALLET_ROUTE;
 
         using (HttpClient client = new HttpClient())
@@ -122,6 +139,8 @@ public static class RNFTGhostWalletHelpers
     // function to transfer ghost wallet ownership to a rnft user
     public static async Task<bool> TrfGhostWalletToRNFTUser(string euid, string uuid)
     {
+        string apiKey = RNFTAuthManager.Instance?.apiKey;
+
         // ensure that the euid and uuid are not empty
         if (string.IsNullOrEmpty(euid))
         {
@@ -135,7 +154,12 @@ public static class RNFTGhostWalletHelpers
             return false;
         }
 
-        string apiKey = RNFTAuthManager.Instance?.apiKey;
+        if (string.IsNullOrEmpty(apiKey))
+        {
+            Debug.Log("TrfGhostWalletToRNFTUser: API key not set!");
+            return false;
+        }
+
         string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_TRF_GHOST_WALLET_TO_RNFT_USER_ROUTE;
 
         using (HttpClient client = new HttpClient())
@@ -175,8 +199,11 @@ public static class RNFTGhostWalletHelpers
     }
 
     // function to login a ghost wallet
-    public static async Task<bool> GhostWalletLogin(string euid, string gameId)
+    public static async Task<bool> GhostWalletLogin(string euid)
     {
+        string apiKey = RNFTAuthManager.Instance?.apiKey;
+        string gameId = RNFTAuthManager.Instance?.gameId;
+
         // ensure that the euid and game id are not empty
         if (string.IsNullOrEmpty(euid))
         {
@@ -190,7 +217,12 @@ public static class RNFTGhostWalletHelpers
             return false;
         }
 
-        string apiKey = RNFTAuthManager.Instance?.apiKey;
+        if (string.IsNullOrEmpty(apiKey))
+        {
+            Debug.Log("GhostWalletLogin: API key not set!");
+            return false;
+        }
+
         string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_GHOST_WALLET_LOGIN_ROUTE;
 
         using (HttpClient client = new HttpClient())
@@ -231,6 +263,9 @@ public static class RNFTGhostWalletHelpers
     // function to login a ghost wallet - with a callback
     public static async Task<bool> GhostWalletLoginWithCallback(string euid, string gameId, Action<bool> callback)
     {
+        string apiKey = RNFTAuthManager.Instance?.apiKey;
+        string gameId = RNFTAuthManager.Instance?.gameId;
+
         // ensure that the euid and game id are not empty
         if (string.IsNullOrEmpty(euid))
         {
@@ -244,7 +279,12 @@ public static class RNFTGhostWalletHelpers
             return false;
         }
 
-        string apiKey = RNFTAuthManager.Instance?.apiKey;
+        if (string.IsNullOrEmpty(apiKey))
+        {
+            Debug.Log("GhostWalletLogin: API key not set!");
+            return false;
+        }
+
         string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_GHOST_WALLET_LOGIN_ROUTE;
 
         using (HttpClient client = new HttpClient())
@@ -288,6 +328,8 @@ public static class RNFTGhostWalletHelpers
     // function to trigger a transfer wallet address lambda
     public static async Task<bool> BindAccount(string from, string to, string toType)
     {
+        string apiKey = RNFTAuthManager.Instance?.apiKey;
+        
         // ensure that the from and game id are not empty
         if (string.IsNullOrEmpty(from))
         {
@@ -307,7 +349,12 @@ public static class RNFTGhostWalletHelpers
             return false;
         }
 
-        string apiKey = RNFTAuthManager.Instance?.apiKey;
+        if (string.IsNullOrEmpty(apiKey))
+        {
+            Debug.Log("BindAccount: API key not set!");
+            return false;
+        }
+
         string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_BIND_ACCOUNT_ROUTE;
 
         using (HttpClient client = new HttpClient())
@@ -343,8 +390,11 @@ public static class RNFTGhostWalletHelpers
     }
 
     // function to login a ghost wallet
-    public static async Task<bool> WalletLogin(string uuid, string gameId)
+    public static async Task<bool> WalletLogin(string uuid)
     {
+        string apiKey = RNFTAuthManager.Instance?.apiKey;
+        string gameId = RNFTAuthManager.Instance?.gameId;
+
         // ensure that the uuid and game id are not empty
         if (string.IsNullOrEmpty(uuid))
         {
@@ -358,7 +408,12 @@ public static class RNFTGhostWalletHelpers
             return false;
         }
 
-        string apiKey = RNFTAuthManager.Instance?.apiKey;
+        if (string.IsNullOrEmpty(apiKey))
+        {
+            Debug.Log("WalletLogin: API key not set!");
+            return false;
+        }
+
         string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_WALLET_LOGIN_ROUTE;
 
         using (HttpClient client = new HttpClient())
@@ -399,6 +454,8 @@ public static class RNFTGhostWalletHelpers
     // function to trigger a transfer wallet address lambda
     public static async Task<bool> EuidTransfer(string from, string to)
     {
+        string apiKey = RNFTAuthManager.Instance?.apiKey;
+
         // ensure that the from and game id are not empty
         if (string.IsNullOrEmpty(from))
         {
@@ -412,7 +469,12 @@ public static class RNFTGhostWalletHelpers
             return false;
         }
 
-        string apiKey = RNFTAuthManager.Instance?.apiKey;
+        if (string.IsNullOrEmpty(apiKey))
+        {
+            Debug.Log("EuidTransfer: API key not set!");
+            return false;
+        }
+
         string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_EUID_TRANSFER_ROUTE;
 
         using (HttpClient client = new HttpClient())
