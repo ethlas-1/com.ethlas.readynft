@@ -42,10 +42,14 @@ public class RNFTAuthManager : MonoBehaviour
 
     async void CheckUserAuth()
     {
+        Debug.Log("[RNFT] Checking user auth");
         RNFTAuthTokensType tokens = await RNFTAuthSessionHelpers.ReadAuthDataFileAsync();
 
         if (tokens.AccessToken == "" || tokens.RefreshToken == "")
         {
+            Debug.Log("[RNFT]: The RNFTAuthCheckDone is being set to true right now!");
+            Debug.Log("[RNFT]: However, no previous RNFT user was found.");
+            SetRNFTAuthCheckDone(true);
             return;
         }
 
