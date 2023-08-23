@@ -10,40 +10,11 @@ using UnityEngine.Networking;
 
 public class ReadyNFT
 {
-    private string apiKey;
-    private string gameId;
-    
-    // Get the API key
-    public string GetApiKey()
-    {
-        return apiKey;
-    }
-
-    // Get the Game ID
-    public string GetGameId()
-    {
-        return gameId;
-    }
-
-    // Initialization method to store the API key
-    public void Init(string _apiKey, string _gameId)
-    {
-        if (string.IsNullOrEmpty(_apiKey))
-        {
-            Debug.Log("Invalid API key provided!");
-            return;
-        }
-        if (string.IsNullOrEmpty(_gameId))
-        {
-            Debug.Log("Invalid Game ID provided!");
-            return;
-        }
-        apiKey = _apiKey;
-        gameId = _gameId;
-    }
-
     public async Task<List<ReadyNFTSpriteObject>> FetchSpritesAsync()
     {
+
+        string apiKey = RNFTManager.Instance?.apiKey;
+        string gameId = RNFTManager.Instance?.gameId;
 
         if (string.IsNullOrEmpty(apiKey))
         {
@@ -101,6 +72,9 @@ public class ReadyNFT
 
     public async Task<List<ReadyNFTOwnedNFTObject>> FetchOwnedNFTsAsync(string email)
     {
+        string apiKey = RNFTManager.Instance?.apiKey;
+        string gameId = RNFTManager.Instance?.gameId;
+
         if (string.IsNullOrEmpty(apiKey))
         {
             Debug.Log("FetchOwnedNFTsAsync: API key not set!");
