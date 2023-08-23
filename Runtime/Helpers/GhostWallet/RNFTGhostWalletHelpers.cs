@@ -45,6 +45,7 @@ public static class RNFTGhostWalletHelpers
                 {
                     string responseString = await response.Content.ReadAsStringAsync();
                     RNFTDoesGhostWalletExistResponse result = JsonConvert.DeserializeObject<RNFTDoesGhostWalletExistResponse>(responseString);
+                    Debug.Log(("[RNFT]: DoesGhostWalletExist: " + result.data.exists));
                     return result.data.exists;
                 }
                 else
@@ -98,6 +99,7 @@ public static class RNFTGhostWalletHelpers
                 {
                     string responseString = await response.Content.ReadAsStringAsync();
                     RNFTFetchGhostWalletResponse result = JsonConvert.DeserializeObject<RNFTFetchGhostWalletResponse>(responseString);
+                    Debug.Log(("[RNFT]: FetchGhostWallet Wallet Address: " + result.data.walletAddress));
                     return result.data.walletAddress;
                 }
                 else
@@ -153,6 +155,7 @@ public static class RNFTGhostWalletHelpers
                 {
                     string responseString = await response.Content.ReadAsStringAsync();
                     RNFTTrfGWToRNFTUserResponse result = JsonConvert.DeserializeObject<RNFTTrfGWToRNFTUserResponse>(responseString);
+                    Debug.Log(("[RNFT]: TransferGhostWalletToRNFTUser : " + result.data.transferred));
                     return result.data.transferred;
                 }
                 else
@@ -206,6 +209,7 @@ public static class RNFTGhostWalletHelpers
                 {
                     string responseString = await response.Content.ReadAsStringAsync();
                     RNFTGhostWalletLoginResponse result = JsonConvert.DeserializeObject<RNFTGhostWalletLoginResponse>(responseString);
+                    Debug.Log("[RNFT] GhostWalletLogin: " + result.data.loggedIn);
                     return result.data.loggedIn;
                 }
                 else
@@ -260,6 +264,7 @@ public static class RNFTGhostWalletHelpers
                 {
                     string responseString = await response.Content.ReadAsStringAsync();
                     RNFTGhostWalletLoginResponse result = JsonConvert.DeserializeObject<RNFTGhostWalletLoginResponse>(responseString);
+                    Debug.Log("[RNFT] GhostWalletLogin: " + result.data.loggedIn);
                     callback(result.data.loggedIn);
                     return result.data.loggedIn;
                 }
@@ -319,6 +324,7 @@ public static class RNFTGhostWalletHelpers
 
                 if (response.IsSuccessStatusCode)
                 {
+                    Debug.Log("[RNFT] BindAccount Succeeded");
                     return true;
                 }
                 else
@@ -371,6 +377,7 @@ public static class RNFTGhostWalletHelpers
                 {
                     string responseString = await response.Content.ReadAsStringAsync();
                     RNFTWalletLoginResponse result = JsonConvert.DeserializeObject<RNFTWalletLoginResponse>(responseString);
+                    Debug.Log("[RNFT] RNFT Wallet Login: " + result.data.loggedIn);
                     return result.data.loggedIn;
                 }
                 else
@@ -423,6 +430,7 @@ public static class RNFTGhostWalletHelpers
 
                 if (response.IsSuccessStatusCode)
                 {
+                    Debug.Log("[RNFT] EUIDTransfer succeeded");
                     return true;
                 }
                 else
