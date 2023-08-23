@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Threading.Tasks;
+using System.Threading;
 
 public class RNFTAuthManager : MonoBehaviour
 {
@@ -62,8 +63,9 @@ public class RNFTAuthManager : MonoBehaviour
         }
 
         this.IsUserLoggedIn = _isUserLoggedIn;
-        Debug.Log("RNFT Auth Check done has been set to true already");
-        this.RNFTAuthCheckDone = true;
+        Debug.Log("[RNFT]: The RNFTAuthCheckDone is being set to true right now!");
+        Debug.Log("[RNFT]: The value of IsUserLoggedIn is " + _isUserLoggedIn);
+        SetRNFTAuthCheckDone(true);
 
         // callback for the login status
         OnUserLoginCallback?.Invoke(this.IsUserLoggedIn);
@@ -88,29 +90,22 @@ public class RNFTAuthManager : MonoBehaviour
     public async void SetUserLoggedInStatus(bool status)
     {
         this.IsUserLoggedIn = status;
-        // callback for the login status
         OnUserLoginCallback?.Invoke(this.IsUserLoggedIn);
 
         if (!status) return;
 
-        // user logs into rnft
-        // if the user has a ready nft wallet, then sign in on chain with the ready nft wallet
-        // and transfer the assets from the ghost wallet to the ready nft wallet 
+
         string _custodialWalletAddress = this.userDetials.custodialWalletAddress;
         bool isRNFTWalletPresent = _custodialWalletAddress != "" && _custodialWalletAddress != null;
         string uuid = this.userDetials.UID;
 
         if (this.RNFTGhostWalletAddress != "" && isRNFTWalletPresent)
         {
-            // transfer the assets from the ghost wallet to the ready nft wallet (dont await)
             RNFTGhostWalletHelpers.BindAccount(this.ExternalUid, uuid, "uuid");
-
-            // sign in on chain with the ready nft wallet (dont await)
             RNFTGhostWalletHelpers.WalletLogin(uuid, this.gameId);
         }
         else
         {
-            // transfer ownership of the ghost wallet to the rnft user (await)
             await RNFTGhostWalletHelpers.TrfGhostWalletToRNFTUser(this.ExternalUid, uuid);
         }
     }
@@ -148,7 +143,6 @@ public class RNFTAuthManager : MonoBehaviour
             return;
         }
 
-        // if ExternalUid is not null or empty, then there is a change in euid
         string uuid = this.userDetials.UID;
         bool isEUIDChanging = this.ExternalUid != "" && this.ExternalUid != null;
         if (isEUIDChanging)
@@ -169,7 +163,6 @@ public class RNFTAuthManager : MonoBehaviour
     public async Task<bool> EUIDChangeHandler(string externalUid)
     {
         Debug.Log("[RNFT]: The EUID is changing");
-        // does ghost wallet exist for external uid (the new one)
         bool doesGhostWalletExistForNewEUID = await RNFTGhostWalletHelpers.DoesGhostWalletExist(externalUid, this.gameId);
 
         if (doesGhostWalletExistForNewEUID)
@@ -192,19 +185,16 @@ public class RNFTAuthManager : MonoBehaviour
         if (this.IsUserLoggedIn)
         {
             Debug.Log("[RNFT]: User has already logged into RNFT");
-            // user details have already been fethced and strored in the user details 
-            // trigger the on chain rnft wallet sign in method
             RNFTGhostWalletHelpers.WalletLogin(uuid, this.gameId);
         }
         else
         {
             Debug.Log("[RNFT]: User has not logged into RNFT");
-            // use the euid to fetch the ghost wallet and store it 
             string _ghostWallet = await RNFTGhostWalletHelpers.FetchGhostWallet(externalUid, this.gameId);
             SetRNFTGhostWalletAddress(_ghostWallet);
-
-            // trigger the ghost wallet on chain sing in method
             RNFTGhostWalletHelpers.GhostWalletLogin(externalUid, this.gameId);
+
+            Debug.Log("[RNFT]: Gonna go to sleep now -----------------------------------------------------");
         }
 
         return true;
