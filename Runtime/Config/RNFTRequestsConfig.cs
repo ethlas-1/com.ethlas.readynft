@@ -39,6 +39,6 @@ public static class RNFTRequestsConfig
     public const string API_WALLET_LOGIN_ROUTE = "/walletLogin";
 
     // API for euid account transfer
-    public const string API_EUID_TRANSFER_ROUTE = "/euidTransfer";
+    public const string API_EUID_TRANSFER_ROUTE = "/readyNFT/euidTransfer";
 
 }

@@ -197,8 +197,6 @@ public class RNFTAuthManager : MonoBehaviour
             string _ghostWallet = await RNFTGhostWalletHelpers.FetchGhostWallet(externalUid, this.gameId);
             SetRNFTGhostWalletAddress(_ghostWallet);
             RNFTGhostWalletHelpers.GhostWalletLogin(externalUid, this.gameId);
-
-            Debug.Log("[RNFT]: Gonna go to sleep now -----------------------------------------------------");
         }
 
         return true;
