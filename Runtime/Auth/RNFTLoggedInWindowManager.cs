@@ -65,9 +65,9 @@ public class RNFTLoggedInWindowManager : MonoBehaviour
     {
         RNFTLogger.LogEvent("RNFT_loggedin_logout_button");
 
-        if (RNFTAuthManager.Instance.IsUserLoggedIn)
+        if (RNFTAuthManager.Instance && RNFTAuthManager.Instance.IsUserLoggedIn)
         {
-            RNFTAuthManager.Instance.LogOutUser();
+            RNFTAuthManager.Instance?.LogOutUser();
         }
     }
 

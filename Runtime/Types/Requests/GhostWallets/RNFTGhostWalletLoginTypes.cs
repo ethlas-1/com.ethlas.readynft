@@ -69,6 +69,11 @@ public class RNFTGhostWalletLoginResponse
 	[JsonProperty("data")]
 	public RNFTGhostWalletLoginResponseData data { get; set; } = new RNFTGhostWalletLoginResponseData();
 
+	// message
+	[Preserve]
+	[JsonProperty("message")]
+	public string message { get; set; } = "";
+
 	// default constructor
 	public RNFTGhostWalletLoginResponse()
 	{
@@ -79,6 +84,13 @@ public class RNFTGhostWalletLoginResponse
 	public RNFTGhostWalletLoginResponse(RNFTGhostWalletLoginResponseData _data)
 	{
 		data = _data;
+	}
+
+	// constructor
+	public RNFTGhostWalletLoginResponse(RNFTGhostWalletLoginResponseData _data, string _message)
+	{
+		data = _data;
+		message = _message;
 	}
 }
 

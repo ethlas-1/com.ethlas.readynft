@@ -3,7 +3,7 @@ using System;
 public static class RNFTRequestsConfig
 {
 	// API endpoints root url
-	public const string API_ENDPOINTS_ROOT_URL = "https://g8gtmcjiud.execute-api.ap-southeast-1.amazonaws.com/prod";
+	public const string API_ENDPOINTS_ROOT_URL = "https://lj2id2d5tb.execute-api.ap-southeast-1.amazonaws.com/dev";
 
 	// API ready nft route
     public const string API_READY_NFT_ROUTE = "/readyNFT";

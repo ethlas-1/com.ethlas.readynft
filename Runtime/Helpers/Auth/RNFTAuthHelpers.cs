@@ -296,6 +296,7 @@ public static class RNFTAuthHelpers
             return new RNFTUserDetails();
         }
 
+        string apiKey = RNFTAuthManager.Instance?.apiKey;
         string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_FETCH_USER_DETAILS_FROM_DB_ROUTE;
 
         using (HttpClient client = new HttpClient())
@@ -305,6 +306,9 @@ public static class RNFTAuthHelpers
                 FetchUserDataFromDBRequestData requestData = new FetchUserDataFromDBRequestData(uid, email);
                 string requestDataJson = JsonConvert.SerializeObject(requestData);
                 HttpContent content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+
+                // add the api key to the header
+                client.DefaultRequestHeaders.Add("x-api-key", apiKey);
 
                 HttpResponseMessage response = await client.PostAsync(url, content);
 
