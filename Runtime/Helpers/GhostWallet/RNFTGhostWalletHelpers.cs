@@ -315,7 +315,7 @@ public static class RNFTGhostWalletHelpers
         }
 
         string apiKey = RNFTAuthManager.Instance?.apiKey;
-        string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_BIND_ACCOUNT;
+        string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_BIND_ACCOUNT_ROUTE;
         Debug.Log("the url for the bind account is " + url + " and the params are " + from + " " + to + " " + toType);
 
         using (HttpClient client = new HttpClient())

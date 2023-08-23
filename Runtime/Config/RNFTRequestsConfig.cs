@@ -33,7 +33,7 @@ public static class RNFTRequestsConfig
     public const string API_GHOST_WALLET_LOGIN_ROUTE = "/ghostWalletLogin";
 
     // API ghost wallet exists route
-    public const string API_BIND_ACCOUNT = "/bindAccount";
+    public const string API_BIND_ACCOUNT_ROUTE = "/readyNFT/bindAccount";
 
     // API wallet login  route
     public const string API_WALLET_LOGIN_ROUTE = "/walletLogin";
