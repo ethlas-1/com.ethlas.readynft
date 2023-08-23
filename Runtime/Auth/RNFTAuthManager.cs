@@ -47,8 +47,6 @@ public class RNFTAuthManager : MonoBehaviour
 
         if (tokens.AccessToken == "" || tokens.RefreshToken == "")
         {
-            Debug.Log("[RNFT]: The RNFTAuthCheckDone is being set to true right now!");
-            Debug.Log("[RNFT]: However, no previous RNFT user was found.");
             SetRNFTAuthCheckDone(true);
             return;
         }
@@ -59,16 +57,12 @@ public class RNFTAuthManager : MonoBehaviour
 
         if (_isUserLoggedIn)
         {
-            Debug.Log("[RNFT] Logged in user detected");
             RNFTUserDetails _userDetials = RNFTAuthHelpers.GetUserDetails(newTokens.AccessToken);
-
             RNFTUserDetails userDetailsFromDB = await RNFTAuthHelpers.FetchUserDetailsFromDB(_userDetials.UID, _userDetials.email);
             this.userDetials = userDetailsFromDB;
         }
 
         this.IsUserLoggedIn = _isUserLoggedIn;
-        Debug.Log("[RNFT]: The RNFTAuthCheckDone is being set to true right now!");
-        Debug.Log("[RNFT]: The value of IsUserLoggedIn is " + _isUserLoggedIn);
         SetRNFTAuthCheckDone(true);
 
         // callback for the login status
@@ -86,7 +80,6 @@ public class RNFTAuthManager : MonoBehaviour
         this.userDetials = new RNFTUserDetails();
 
         RNFTUIManager.Instance?.ShowLoginScreen();
-
         Debug.Log("[RNFT] User logged out.");
     }
 
@@ -140,7 +133,6 @@ public class RNFTAuthManager : MonoBehaviour
     // method to set the external uid
     public async void SetExternalUid(string externalUid)
     {
-        Debug.Log("[RNFT] Setting external uid with uid " + externalUid);
         if (externalUid == "")
         {
             Debug.Log("[RNFT] External UID is empty");
@@ -151,13 +143,11 @@ public class RNFTAuthManager : MonoBehaviour
         bool isEUIDChanging = this.ExternalUid != "" && this.ExternalUid != null;
         if (isEUIDChanging)
         {
-            Debug.Log("[RNFT]: The EUID Is changing");
             await EUIDChangeHandler(externalUid);
 
         }
         else
         {
-            Debug.Log("[RNFT]: The EUID Is being set for the first time");
             if (this.RNFTAuthCheckDone) await EUIDInitHandler(externalUid, uuid);
         }
 
@@ -166,18 +156,15 @@ public class RNFTAuthManager : MonoBehaviour
 
     public async Task<bool> EUIDChangeHandler(string externalUid)
     {
-        Debug.Log("[RNFT]: The EUID is changing");
         bool doesGhostWalletExistForNewEUID = await RNFTGhostWalletHelpers.DoesGhostWalletExist(externalUid, this.gameId);
 
         if (doesGhostWalletExistForNewEUID)
         {
-            Debug.Log("[RNFT]: The New EUID HAS an existing Ghost Wallet");
             RNFTGhostWalletHelpers.BindAccount(this.ExternalUid, externalUid, "euid");
             RNFTGhostWalletHelpers.GhostWalletLogin(externalUid, this.gameId);
         }
         else
         {
-            Debug.Log("[RNFT]: The New EUID does not have an existing Ghost Wallet");
             await RNFTGhostWalletHelpers.EuidTransfer(this.ExternalUid, externalUid);
         }
         return true;
@@ -185,15 +172,12 @@ public class RNFTAuthManager : MonoBehaviour
 
     public async Task<bool> EUIDInitHandler(string externalUid, string uuid)
     {
-        Debug.Log("[RNFT]: EUID Init Handler Trigerred");
         if (this.IsUserLoggedIn)
         {
-            Debug.Log("[RNFT]: User has already logged into RNFT");
             RNFTGhostWalletHelpers.WalletLogin(uuid, this.gameId);
         }
         else
         {
-            Debug.Log("[RNFT]: User has not logged into RNFT");
             string _ghostWallet = await RNFTGhostWalletHelpers.FetchGhostWallet(externalUid, this.gameId);
             SetRNFTGhostWalletAddress(_ghostWallet);
             RNFTGhostWalletHelpers.GhostWalletLogin(externalUid, this.gameId);
@@ -210,8 +194,6 @@ public class RNFTAuthManager : MonoBehaviour
             Debug.Log("[RNFT] RNFTGhostWalletAddress is empty");
             return;
         }
-        Debug.Log("[RNFT]: SetRNFTGhostWalletAddress with Ghost Wallet Address " + RNFTGhostWalletAddress);
-
         this.RNFTGhostWalletAddress = RNFTGhostWalletAddress;
     }
 }

@@ -45,7 +45,6 @@ public static class RNFTGhostWalletHelpers
                 {
                     string responseString = await response.Content.ReadAsStringAsync();
                     RNFTDoesGhostWalletExistResponse result = JsonConvert.DeserializeObject<RNFTDoesGhostWalletExistResponse>(responseString);
-                    Debug.Log("DoesGhostWalletExist: the ghost wallet does exist ?: " + result.data.exists);
                     return result.data.exists;
                 }
                 else
@@ -82,8 +81,6 @@ public static class RNFTGhostWalletHelpers
         string apiKey = RNFTAuthManager.Instance?.apiKey;
         string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_FETCH_GHOST_WALLET_ROUTE;
 
-        Debug.Log("the data is euid: " + euid + " ---- gameId: " + gameId + " ------- apiKey: " + apiKey);
-
         using (HttpClient client = new HttpClient())
         {
             try
@@ -101,7 +98,6 @@ public static class RNFTGhostWalletHelpers
                 {
                     string responseString = await response.Content.ReadAsStringAsync();
                     RNFTFetchGhostWalletResponse result = JsonConvert.DeserializeObject<RNFTFetchGhostWalletResponse>(responseString);
-                    Debug.Log("FetchGhostWallet: the ghost wallet address is: " + result.data.walletAddress);
                     return result.data.walletAddress;
                 }
                 else
@@ -157,7 +153,6 @@ public static class RNFTGhostWalletHelpers
                 {
                     string responseString = await response.Content.ReadAsStringAsync();
                     RNFTTrfGWToRNFTUserResponse result = JsonConvert.DeserializeObject<RNFTTrfGWToRNFTUserResponse>(responseString);
-                    Debug.Log("TrfGhostWalletToRNFTUser: " + result.data.transferred);
                     return result.data.transferred;
                 }
                 else
@@ -195,9 +190,6 @@ public static class RNFTGhostWalletHelpers
         string apiKey = RNFTAuthManager.Instance?.apiKey;
         string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_GHOST_WALLET_LOGIN_ROUTE;
 
-        Debug.Log("the url for the ghost wallet login is " + url);
-        Debug.Log("the data is euid: " + euid + " ---- gameId: " + gameId + " ------- apiKey: " + apiKey);
-
         using (HttpClient client = new HttpClient())
         {
             try
@@ -208,16 +200,12 @@ public static class RNFTGhostWalletHelpers
 
                 // add the header
                 client.DefaultRequestHeaders.Add("x-api-key", apiKey);
-
                 HttpResponseMessage response = await client.PostAsync(url, content);
-                string resString = await response.Content.ReadAsStringAsync();
-                Debug.Log("the res string is " + resString);
 
                 if (response.IsSuccessStatusCode)
                 {
                     string responseString = await response.Content.ReadAsStringAsync();
                     RNFTGhostWalletLoginResponse result = JsonConvert.DeserializeObject<RNFTGhostWalletLoginResponse>(responseString);
-                    Debug.Log("GhostWalletLogin: " + result.data.loggedIn);
                     return result.data.loggedIn;
                 }
                 else
@@ -316,7 +304,6 @@ public static class RNFTGhostWalletHelpers
 
         string apiKey = RNFTAuthManager.Instance?.apiKey;
         string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_BIND_ACCOUNT_ROUTE;
-        Debug.Log("the url for the bind account is " + url + " and the params are " + from + " " + to + " " + toType);
 
         using (HttpClient client = new HttpClient())
         {
@@ -328,14 +315,10 @@ public static class RNFTGhostWalletHelpers
 
                 // add the header
                 client.DefaultRequestHeaders.Add("x-api-key", apiKey);
-
                 HttpResponseMessage response = await client.PostAsync(url, content);
-                string resString = await response.Content.ReadAsStringAsync();
-                Debug.Log("the res string of bind account is " + resString);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.Log("BindAccount: " + " was successful");
                     return true;
                 }
                 else
@@ -382,16 +365,12 @@ public static class RNFTGhostWalletHelpers
 
                 // add the header
                 client.DefaultRequestHeaders.Add("x-api-key", apiKey);
-
                 HttpResponseMessage response = await client.PostAsync(url, content);
-                string resString = await response.Content.ReadAsStringAsync();
-                Debug.Log("the res string of wallet login is " + resString);
 
                 if (response.IsSuccessStatusCode)
                 {
                     string responseString = await response.Content.ReadAsStringAsync();
                     RNFTWalletLoginResponse result = JsonConvert.DeserializeObject<RNFTWalletLoginResponse>(responseString);
-                    Debug.Log("WalletLogin: " + result.data.loggedIn);
                     return result.data.loggedIn;
                 }
                 else
@@ -444,7 +423,6 @@ public static class RNFTGhostWalletHelpers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Debug.Log("EuidTransfer: " + " was successful");
                     return true;
                 }
                 else
