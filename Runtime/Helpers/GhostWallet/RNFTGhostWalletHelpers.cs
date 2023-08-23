@@ -75,8 +75,8 @@ public static class RNFTGhostWalletHelpers
     // function to fetch ghost wallet 
     public static async Task<string> FetchGhostWallet(string euid)
     {
-        string apiKey = RNFTAuthManager.Instance?.apiKey;
-        string gameId = RNFTAuthManager.Instance?.gameId;
+        string apiKey = RNFTManager.Instance?.apiKey;
+        string gameId = RNFTManager.Instance?.gameId;
 
         // ensure that the euid and game id are not empty
         if (string.IsNullOrEmpty(euid))
@@ -139,7 +139,7 @@ public static class RNFTGhostWalletHelpers
     // function to transfer ghost wallet ownership to a rnft user
     public static async Task<bool> TrfGhostWalletToRNFTUser(string euid, string uuid)
     {
-        string apiKey = RNFTAuthManager.Instance?.apiKey;
+        string apiKey = RNFTManager.Instance?.apiKey;
 
         // ensure that the euid and uuid are not empty
         if (string.IsNullOrEmpty(euid))
@@ -201,8 +201,8 @@ public static class RNFTGhostWalletHelpers
     // function to login a ghost wallet
     public static async Task<bool> GhostWalletLogin(string euid)
     {
-        string apiKey = RNFTAuthManager.Instance?.apiKey;
-        string gameId = RNFTAuthManager.Instance?.gameId;
+        string apiKey = RNFTManager.Instance?.apiKey;
+        string gameId = RNFTManager.Instance?.gameId;
 
         // ensure that the euid and game id are not empty
         if (string.IsNullOrEmpty(euid))
@@ -261,10 +261,10 @@ public static class RNFTGhostWalletHelpers
     }
 
     // function to login a ghost wallet - with a callback
-    public static async Task<bool> GhostWalletLoginWithCallback(string euid, string gameId, Action<bool> callback)
+    public static async Task<bool> GhostWalletLoginWithCallback(string euid, Action<bool> callback)
     {
-        string apiKey = RNFTAuthManager.Instance?.apiKey;
-        string gameId = RNFTAuthManager.Instance?.gameId;
+        string apiKey = RNFTManager.Instance?.apiKey;
+        string gameId = RNFTManager.Instance?.gameId;
 
         // ensure that the euid and game id are not empty
         if (string.IsNullOrEmpty(euid))
@@ -328,7 +328,7 @@ public static class RNFTGhostWalletHelpers
     // function to trigger a transfer wallet address lambda
     public static async Task<bool> BindAccount(string from, string to, string toType)
     {
-        string apiKey = RNFTAuthManager.Instance?.apiKey;
+        string apiKey = RNFTManager.Instance?.apiKey;
         
         // ensure that the from and game id are not empty
         if (string.IsNullOrEmpty(from))
@@ -392,8 +392,8 @@ public static class RNFTGhostWalletHelpers
     // function to login a ghost wallet
     public static async Task<bool> WalletLogin(string uuid)
     {
-        string apiKey = RNFTAuthManager.Instance?.apiKey;
-        string gameId = RNFTAuthManager.Instance?.gameId;
+        string apiKey = RNFTManager.Instance?.apiKey;
+        string gameId = RNFTManager.Instance?.gameId;
 
         // ensure that the uuid and game id are not empty
         if (string.IsNullOrEmpty(uuid))
@@ -454,7 +454,7 @@ public static class RNFTGhostWalletHelpers
     // function to trigger a transfer wallet address lambda
     public static async Task<bool> EuidTransfer(string from, string to)
     {
-        string apiKey = RNFTAuthManager.Instance?.apiKey;
+        string apiKey = RNFTManager.Instance?.apiKey;
 
         // ensure that the from and game id are not empty
         if (string.IsNullOrEmpty(from))

@@ -296,7 +296,7 @@ public static class RNFTAuthHelpers
             return new RNFTUserDetails();
         }
 
-        string apiKey = RNFTAuthManager.Instance?.apiKey;
+        string apiKey = RNFTManager.Instance?.apiKey;
         string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_FETCH_USER_DETAILS_FROM_DB_ROUTE;
 
         using (HttpClient client = new HttpClient())

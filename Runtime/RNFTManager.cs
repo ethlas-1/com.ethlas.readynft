@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
-public class RNFTManager: MonoBehaviour
+public class RNFTManager : MonoBehaviour
 {
-    public static RNFTAuthManager Instance { get; private set; }
+    public static RNFTManager Instance { get; private set; }
     public string apiKey;
     public string gameId;
 
@@ -41,7 +41,7 @@ public class RNFTManager: MonoBehaviour
         gameId = _gameId;
     }
 
-        void Awake()
+    void Awake()
     {
         Debug.Log("[RNFT] Auth Manager Awake!");
 
