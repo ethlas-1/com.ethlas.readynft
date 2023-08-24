@@ -169,8 +169,11 @@ public class RNFTAuthManager : MonoBehaviour
 
         if (doesGhostWalletExistForNewEUID)
         {
+            string newGhostWallet = await RNFTGhostWalletHelpers.FetchGhostWallet(externalUid);
+            SetRNFTGhostWalletAddress(newGhostWallet);
             RNFTGhostWalletHelpers.BindAccount(this.ExternalUid, externalUid, "euid");
             RNFTGhostWalletHelpers.GhostWalletLogin(externalUid);
+
         }
         else
         {
