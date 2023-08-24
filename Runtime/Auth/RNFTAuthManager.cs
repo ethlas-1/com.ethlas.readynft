@@ -146,6 +146,8 @@ public class RNFTAuthManager : MonoBehaviour
             return;
         }
 
+        if (this.ExternalUid == externalUid) return;
+
         string uuid = this.userDetials.UID;
         bool isEUIDChanging = this.ExternalUid != "" && this.ExternalUid != null;
         if (isEUIDChanging)
