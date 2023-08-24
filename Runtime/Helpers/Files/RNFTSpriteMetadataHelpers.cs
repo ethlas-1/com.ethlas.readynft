@@ -118,6 +118,16 @@ public class RNFTSpriteMetadataHelpers
 
         int total = updatedCollections.Count;
         int current = 0;
+
+        if (total == 0) {
+            if (progress != null)
+            {
+                ReadyNFTDownloadReport report = new ReadyNFTDownloadReport(100f, 1, 1);
+                progress.Report(report);
+            }
+            return;
+        }
+
         foreach (ReadyNFTSpriteObject sprite in sprites)
         {
             if (!updatedCollections.Contains(sprite.contract))
