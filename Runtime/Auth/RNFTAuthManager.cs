@@ -37,10 +37,10 @@ public class RNFTAuthManager : MonoBehaviour
         }
     }
 
-    string GetUserWalletAddress() {
+    public string GetUserWalletAddress() {
         // if the custodial wallet address in the user details is empty
         // then we return the RNFTGhostWalletAddress
-        
+
         string _custodialWalletAddress = this.userDetials.custodialWalletAddress;
         bool isRNFTWalletPresent = _custodialWalletAddress != "" && _custodialWalletAddress != null;
         if (!isRNFTWalletPresent) return this.RNFTGhostWalletAddress;
