@@ -12,8 +12,9 @@ public static class RNFTWeb3Helpers
 {
 
     // function to mint a gasless nft
-    public static async Task<bool> MintNFT(string walletAddress, string nftId)
+    public static async Task<bool> MintNFT(string nftId)
     {
+        string walletAddress = RNFTAuthManager.Instance?.GetUserWalletAddress();
 
         if (string.IsNullOrEmpty(walletAddress))
         {
@@ -60,8 +61,9 @@ public static class RNFTWeb3Helpers
     }
 
     // a variation of the gasless mint function that takes a call back function and executes it after the mint is successful
-    public static async Task<bool> MintNFTWithCallback(string walletAddress, string nftId, Action<bool> callback)
+    public static async Task<bool> MintNFTWithCallback(string nftId, Action<bool> callback)
     {
+        string walletAddress = RNFTAuthManager.Instance?.GetUserWalletAddress();
 
         if (string.IsNullOrEmpty(walletAddress))
         {

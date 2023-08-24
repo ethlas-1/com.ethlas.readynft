@@ -27,7 +27,7 @@ public class RNFTLoggedInWindowManager : MonoBehaviour
         if (RNFTAuthManager.Instance.IsUserLoggedIn)
         {
             emailText.text = RNFTAuthManager.Instance.userDetials.email;
-            string walletAdd = RNFTAuthManager.Instance.userDetials.custodialWalletAddress;
+            string walletAdd = RNFTAuthManager.Instance?.GetUserWalletAddress();;
             string first6Chara = 
             !String.IsNullOrEmpty(walletAdd) && walletAdd.Length >= 6
             ? walletAdd.Substring(0, 6)
