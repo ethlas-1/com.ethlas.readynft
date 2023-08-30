@@ -18,7 +18,7 @@ public static class RNFTRequestsConfig
     public const string API_FETCH_USER_DETAILS_FROM_DB_ROUTE = "/fetchUserDetails";
 
     // API mint nft route
-    public const string API_MINT_NFT_ROUTE = "/mintNFT";
+    public const string API_MINT_NFT_ROUTE = "/MQMintNFT";
 
     // API ghost wallet exists route
     public const string API_GHOST_WALLET_EXISTS_ROUTE = "/doesGhostWalletExist";
@@ -30,13 +30,13 @@ public static class RNFTRequestsConfig
     public const string API_TRF_GHOST_WALLET_TO_RNFT_USER_ROUTE = "/trfGhostWalletToRNFTUser";
 
     // API ghost wallet login route
-    public const string API_GHOST_WALLET_LOGIN_ROUTE = "/ghostWalletLogin";
+    public const string API_GHOST_WALLET_LOGIN_ROUTE = "/MQGhostWalletLogin";
 
     // API ghost wallet exists route
-    public const string API_BIND_ACCOUNT_ROUTE = "/readyNFT/bindAccount";
+    public const string API_BIND_ACCOUNT_ROUTE = "/MQBindAccount";
 
     // API wallet login  route
-    public const string API_WALLET_LOGIN_ROUTE = "/walletLogin";
+    public const string API_WALLET_LOGIN_ROUTE = "/MQWalletLogin";
 
     // API for euid account transfer
     public const string API_EUID_TRANSFER_ROUTE = "/readyNFT/euidTransfer";
