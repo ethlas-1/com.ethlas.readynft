@@ -34,6 +34,10 @@ public class ReadyNFTSpriteObject
     public Dictionary<string, string> images { get; set; } = new Dictionary<string, string>();
 
     [Preserve]
+    [JsonProperty("customData")]
+    public Dictionary<string, string> customData { get; set; } = new Dictionary<string, string>();
+
+    [Preserve]
     [JsonProperty("stats")]
     public Dictionary<string, int> stats { get; set; } = new Dictionary<string, int>();
 
