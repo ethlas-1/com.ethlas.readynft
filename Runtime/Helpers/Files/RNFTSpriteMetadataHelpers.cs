@@ -160,6 +160,7 @@ public class RNFTSpriteMetadataHelpers
 
     public async Task DownloadSpriteImagesAsync(ReadyNFTSpriteObject sprite)
     {
+        List<Task> waitTasksList = new List<Task>();
         // sprite.images is a Dictionary<string, string> of key and image url
         // loop thtough images and download them
         foreach (KeyValuePair<string, string> entry in sprite.images)
@@ -167,8 +168,10 @@ public class RNFTSpriteMetadataHelpers
             string key = entry.Key;
             string imageUrl = entry.Value;
             string savePath = GetReadyNFTImageDirectory() + sprite.contract + "_" + key + ".png";
-            await DownloadImageAsync(imageUrl, savePath);
+            waitTasksList.Add(DownloadImageAsync(imageUrl, savePath));
         }
+
+        await Task.WhenAll(waitTasksList);
     }
 
     public async Task DownloadImageAsync(string imageUrl, string savePath)
