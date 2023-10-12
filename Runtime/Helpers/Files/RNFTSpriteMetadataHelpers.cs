@@ -13,6 +13,8 @@ using UnityEngine.Networking;
 
 public class RNFTSpriteMetadataHelpers
 {
+    private int currentProgress = 0;
+
     public string SPRITE_METADATA_JSON = "sprite_metadata.json";
     public string GetReadyNFTImageDirectory()
     {
@@ -117,9 +119,10 @@ public class RNFTSpriteMetadataHelpers
         List<string> updatedCollections = await GetCollectionsToUpdate(sprites);
 
         int total = updatedCollections.Count;
-        int current = 0;
+        currentProgress = 0;
 
-        if (total == 0) {
+        if (total == 0)
+        {
             if (progress != null)
             {
                 ReadyNFTDownloadReport report = new ReadyNFTDownloadReport(100f, 1, 1);
@@ -128,37 +131,34 @@ public class RNFTSpriteMetadataHelpers
             return;
         }
 
+        List<Task> waitTasksList = new List<Task>();
+
         foreach (ReadyNFTSpriteObject sprite in sprites)
         {
             if (!updatedCollections.Contains(sprite.contract))
             {
-                current++;
+                ++currentProgress;
                 // no decimal places in percentage
-                float newPercent = (float)current / (float)total * 100f;
+                float newPercent = (float)currentProgress / (float)total * 100f;
                 if (progress != null)
                 {
-                    ReadyNFTDownloadReport report = new ReadyNFTDownloadReport(newPercent, total, current);
+                    ReadyNFTDownloadReport report = new ReadyNFTDownloadReport(newPercent, total, currentProgress);
                     progress.Report(report);
                 }
                 continue;
             }
 
-            await DownloadSpriteImagesAsync(sprite);
-            current++;
-            // no decimal places in percentage
-            float percent = (float)current / (float)total * 100f;
-            if (progress != null)
-            {
-                ReadyNFTDownloadReport report = new ReadyNFTDownloadReport(percent, total, current);
-                progress.Report(report);
-            }
+            waitTasksList.Add(DownloadSpriteImagesAsync(sprite, total, progress));
+            
         }
+
+        await Task.WhenAll(waitTasksList);
 
         // update the metadata file
         await CreateSpriteMetadataFileAsync(sprites);
     }
 
-    public async Task DownloadSpriteImagesAsync(ReadyNFTSpriteObject sprite)
+    public async Task DownloadSpriteImagesAsync(ReadyNFTSpriteObject sprite, int total, IProgress<ReadyNFTDownloadReport> progress = null)
     {
         List<Task> waitTasksList = new List<Task>();
         // sprite.images is a Dictionary<string, string> of key and image url
@@ -172,6 +172,15 @@ public class RNFTSpriteMetadataHelpers
         }
 
         await Task.WhenAll(waitTasksList);
+
+        ++currentProgress;
+        // no decimal places in percentage
+        float percent = (float)currentProgress / (float)total * 100f;
+        if (progress != null)
+        {
+            ReadyNFTDownloadReport report = new ReadyNFTDownloadReport(percent, total, currentProgress);
+            progress.Report(report);
+        }
     }
 
     public async Task DownloadImageAsync(string imageUrl, string savePath)
