@@ -208,7 +208,7 @@ public class RNFTSpriteMetadataHelpers
             byte[] bytes = texture.EncodeToPNG();
 
             // Save the image to disk
-            File.WriteAllBytes(savePath, bytes);
+            await File.WriteAllBytesAsync(savePath, bytes);
             Debug.Log($"Image downloaded and saved to: {savePath}");
         }
     }
