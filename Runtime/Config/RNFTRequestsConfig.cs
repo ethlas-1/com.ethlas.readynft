@@ -8,6 +8,9 @@ public static class RNFTRequestsConfig
 	// API ready nft route
     public const string API_READY_NFT_ROUTE = "/readyNFT";
 
+    // API for the ai portal route 
+    public const string API_AI_PORTAL_ROUTE = "/aiPortal";
+
     // API fetch sprites route
     public const string API_FETCH_SPRITES_ROUTE = "/v1/fetchSprites";
 
@@ -40,5 +43,8 @@ public static class RNFTRequestsConfig
 
     // API for euid account transfer
     public const string API_EUID_TRANSFER_ROUTE = "/readyNFT/euidTransfer";
+
+    // API for fetching the assets from the ai portal
+    public const string API_FETCH_AI_PORTAL_ASSETS_ROUTE = "/fetchAiPortalAssets";
 
 }
