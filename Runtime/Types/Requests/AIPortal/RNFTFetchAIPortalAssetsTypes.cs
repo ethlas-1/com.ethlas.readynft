@@ -61,6 +61,11 @@ public class RNFTAIPortalAssetObject
     [JsonProperty("imageUrl")]
     public string imageUrl { get; set; } = "";
 
+    // version
+    [Preserve]
+    [JsonProperty("version")]
+    public int version { get; set; } = 0;
+
     // default constructor
     public RNFTAIPortalAssetObject()
     {
@@ -68,13 +73,14 @@ public class RNFTAIPortalAssetObject
     }
 
     // constructor
-    public RNFTAIPortalAssetObject(string _assetId, string _playerUuid, string _gameId, string _assetType, string _imageUrl)
+    public RNFTAIPortalAssetObject(string _assetId, string _playerUuid, string _gameId, string _assetType, string _imageUrl, int _version)
     {
         assetId = _assetId;
         playerUuid = _playerUuid;
         gameId = _gameId;
         assetType = _assetType;
         imageUrl = _imageUrl;
+        version = _version;
     }
 }
 
