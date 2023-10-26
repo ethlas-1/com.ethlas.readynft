@@ -194,7 +194,8 @@ public class RNFTAIPortalAssetsHelpers
             if (progress != null)
             {
                 ++currentProgress;
-                ReadyNFTDownloadReport report = new ReadyNFTDownloadReport(0f, total, currentProgress);
+                float newPercent = (float)currentProgress / (float)total * 100f;
+                ReadyNFTDownloadReport report = new ReadyNFTDownloadReport(newPercent, total, currentProgress);
                 progress.Report(report);
             }
 
