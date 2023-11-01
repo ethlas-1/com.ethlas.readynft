@@ -118,6 +118,7 @@ public class RNFTAIPortalAssetsHelpers
         List<string> assetsToUpdate = await GetAssetsToUpdate(assets);
 
         int totalAssets = assetsToUpdate.Count;
+        currentProgress = 0;
 
         if (totalAssets == 0)
         {
