@@ -157,7 +157,7 @@ public class RNFTAIPortalAssetsHelpers
 
     public async Task DownloadImageAsync(RNFTAIPortalAssetObject asset, int total, IProgress<ReadyNFTDownloadReport> progress = null)
     {
-        string savePath = GetRNFTAIPortalAssetsDirectory() + asset.assetId + ".png";
+        string savePath = GetRNFTAIPortalAssetsDirectory() + asset.playerUuid + ".png";
         string imageUrl = asset.imageUrl;
 
         using (UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(asset.imageUrl))
