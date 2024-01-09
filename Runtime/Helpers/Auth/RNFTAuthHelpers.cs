@@ -12,6 +12,77 @@ using Newtonsoft.Json;
 
 public static class RNFTAuthHelpers
 {
+    public static async Task<string> GetBalance(string accessToken) {
+        string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_WALLET_LOGIN_ROUTE;
+
+        using (HttpClient client = new HttpClient())
+        {
+            try
+            {
+                // add the header
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
+                HttpResponseMessage response = await client.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseString = await response.Content.ReadAsStringAsync();
+                    GetBalanceResponse result = JsonConvert.DeserializeObject<GetBalanceResponse>(responseString);
+                    Debug.Log("Account Balance: " + result.data.totalBalance);
+                    return result.data.totalBalance;
+                }
+                else
+                {
+                    Debug.Log("GetBalance: Request failed: " + response.StatusCode);
+                }
+
+            }
+            catch (Exception e)
+            {
+                Debug.Log("GetBalance: Request failed: " + e.Message);
+            }
+        }
+        // default return value
+        return "0";
+    }
+
+    public static async Task<string> Login(string accessToken, string provider)
+    {
+        string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_LOGIN;
+
+        using (HttpClient client = new HttpClient())
+        {
+            try
+            {
+                LoginRequestData requestData = new LoginRequestData(provider);
+                string requestDataJson = JsonConvert.SerializeObject(requestData);
+                HttpContent content = new StringContent(requestDataJson, Encoding.UTF8, "application/json");
+
+                // add the header
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
+                HttpResponseMessage response = await client.PostAsync(url, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseString = await response.Content.ReadAsStringAsync();
+                    LoginResponse result = JsonConvert.DeserializeObject<LoginResponse>(responseString);
+                    Debug.Log("User Loggedin: " + result.data.uid);
+                    return result.data.uid;
+                }
+                else
+                {
+                    Debug.Log("User Loggedin: Request failed: " + response.StatusCode);
+                }
+
+            }
+            catch (Exception e)
+            {
+                Debug.Log("User Loggedin: Request failed: " + e.Message);
+            }
+        }
+        // default return value
+        return null;
+    }
+
     public static string SignInUser(string email)
     {
         // create a new instance of the cognito identity provider client

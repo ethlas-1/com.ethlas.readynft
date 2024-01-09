@@ -81,4 +81,3 @@ public class RNFTWalletLoginResponse
 		data = _data;
 	}
 }
-

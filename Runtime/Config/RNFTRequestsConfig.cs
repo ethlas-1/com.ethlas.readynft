@@ -47,4 +47,9 @@ public static class RNFTRequestsConfig
     // API for fetching the assets from the ai portal
     public const string API_FETCH_AI_PORTAL_ASSETS_ROUTE = "/fetchAiPortalAssets";
 
+    // Get Balance of User's Portal EWS Currency
+    public const string API_GET_BALANCE = "/getBalance";
+
+    // Get Balance of User's Portal EWS Currency
+    public const string API_LOGIN = "/login";
 }
