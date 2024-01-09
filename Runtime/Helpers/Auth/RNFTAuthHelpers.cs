@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 public static class RNFTAuthHelpers
 {
     public static async Task<string> GetBalance(string accessToken) {
-        string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_WALLET_LOGIN_ROUTE;
+        string url = RNFTRequestsConfig.API_ENDPOINTS_ROOT_URL + RNFTRequestsConfig.API_GET_BALANCE;
 
         using (HttpClient client = new HttpClient())
         {
