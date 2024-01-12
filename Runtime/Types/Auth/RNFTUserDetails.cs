@@ -46,8 +46,8 @@ public class GetBalanceResponseData
 {
 	// totalBalance
 	[Preserve]
-	[JsonProperty("totalBalance")]
-	public string totalBalance { get; set; } = "";
+	[JsonProperty("availableBalance")]
+	public string availableBalance { get; set; } = "";
 
 	// default constructor
 	public GetBalanceResponseData()
@@ -56,9 +56,9 @@ public class GetBalanceResponseData
 	}
 
 	// constructor
-	public GetBalanceResponseData(string _totalBalance)
+	public GetBalanceResponseData(string _availableBalance)
 	{
-		totalBalance = _totalBalance;
+		availableBalance = _availableBalance;
 	}
 }
 

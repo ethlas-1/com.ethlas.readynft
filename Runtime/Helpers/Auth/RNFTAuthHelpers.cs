@@ -27,8 +27,8 @@ public static class RNFTAuthHelpers
                 {
                     string responseString = await response.Content.ReadAsStringAsync();
                     GetBalanceResponse result = JsonConvert.DeserializeObject<GetBalanceResponse>(responseString);
-                    Debug.Log("Account Balance: " + result.data.totalBalance);
-                    return result.data.totalBalance;
+                    Debug.Log("Account Balance: " + result.data.availableBalance);
+                    return result.data.availableBalance;
                 }
                 else
                 {
